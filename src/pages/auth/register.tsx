@@ -3,14 +3,87 @@ import logo from '../../assets/img/logo.png';
 import { path } from '../../enum/path';
 import { MdOutlineEmail } from 'react-icons/md';
 import { TbPassword } from 'react-icons/tb';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import helper from '../../helper';
+import toast from 'react-hot-toast';
+import { IResponse } from '../../model/Common.model';
+import { IUser } from '../../model/User.model';
+import { useLoading } from '../../context/loadingContext';
+import { useNavigate } from 'react-router-dom';
 
-enum keyOptionLogin {
-    EMAIL = 'email',
-    FACEBOOK = 'facbooke',
-    GITHUB = 'github',
-    GOOGLE = 'google',
-}
+const registerFetch = async (userData: { email: string; password: string }): Promise<IResponse<IUser, IUser>> => {
+    try {
+        const response = await fetch('https://localhost:7005/api/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const responseData: IResponse<IUser, IUser> = await response.json();
+        return responseData;
+    } catch (error) {
+        console.error('Error during registration:', error);
+        throw error; // You might want to handle or log the error differently
+    }
+};
+
+type Inputs = {
+    email: string;
+    password: string;
+    confirmPassword: string;
+};
+
 function Register() {
+    const loading = useLoading();
+    const history = useNavigate();
+    const { register, handleSubmit, formState, watch } = useForm<Inputs>();
+
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        if (validateEmail(data.email)) {
+            toast.error('Email không hợp lệ!');
+            return;
+        } else if (!data.password) {
+            toast.error('Vui lòng nhập mật khẩu!');
+            return;
+        } else if (!validateAgeConfirmation(data.confirmPassword)) {
+            toast.error('Xác nhận mật khẩu không khớp!');
+            return;
+        }
+        const registerUser = {
+            email: data.email,
+            password: data.password,
+        };
+        loading.startLoading();
+        const response = await registerFetch(registerUser);
+        loading.stopLoading();
+
+        if (response.status === 200) {
+            toast.success(response.message);
+            history(path.AUTH.LOGIN);
+        } else {
+            toast.error(response.message);
+        }
+    };
+
+    const validateAgeConfirmation = (value: string) => {
+        if (value !== watch('password')) {
+            return false;
+        }
+        return true;
+    };
+    const validateEmail = (value: string) => {
+        if (helper.isValidEmail(value)) {
+            return false;
+        }
+        return true;
+    };
+
     return (
         <div className="max-w-2xl m-auto mt-5 select-none">
             <Breadcrumbs isDisabled>
@@ -26,34 +99,39 @@ function Register() {
 
                 <div className="flex flex-col gap-6 justify-center items-center">
                     <h5 className="font-extrabold text-2xl">Đăng ký tài khoản Course EDU👌</h5>
-                    <Input
-                        startContent={<MdOutlineEmail className="text-xl" />}
-                        key={'outside'}
-                        type="email"
-                        label="Email"
-                        labelPlacement={'outside'}
-                        placeholder="Nhập email của bạn..."
-                    />
-                    <Input
-                        startContent={<TbPassword className="text-xl" />}
-                        key={'outside'}
-                        type="password"
-                        label="Mật khẩu"
-                        labelPlacement={'outside'}
-                        placeholder="Nhập mật khẩu của bạn..."
-                    />
-                    <Input
-                        startContent={<TbPassword className="text-xl" />}
-                        key={'outside'}
-                        type="password"
-                        label="Nhập lại mật khẩu"
-                        labelPlacement={'outside'}
-                        placeholder="Nhập lại mật khẩu của bạn..."
-                    />
-                    <h5 className="w-full text-sm">
-                        <span className="text-primary">Gợi ý:</span> Mật khẩu ít nhất 6 ký tự,..
-                    </h5>
-                    <Button color="primary">Đăng ký</Button>
+                    <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-4">
+                        <Input
+                            {...register('email')}
+                            startContent={<MdOutlineEmail className="text-xl" />}
+                            type="text"
+                            label="Email của bạn"
+                            labelPlacement={'outside'}
+                            placeholder="Nhập email của bạn..."
+                        />
+                        <Input
+                            {...register('password')}
+                            startContent={<TbPassword className="text-xl" />}
+                            type="password"
+                            label="Mật khẩu"
+                            labelPlacement={'outside'}
+                            placeholder="Nhập mật khẩu của bạn..."
+                        />
+                        <Input
+                            {...register('confirmPassword')}
+                            startContent={<TbPassword className="text-xl" />}
+                            type="password"
+                            label="Nhập lại mật khẩu"
+                            labelPlacement={'outside'}
+                            placeholder="Nhập lại mật khẩu của bạn..."
+                        />
+                        <h5 className="w-full text-sm">
+                            <span className="text-primary">Gợi ý:</span> Mật khẩu ít nhất 6 ký tự,..
+                        </h5>
+                        <Button color="primary" type="submit">
+                            Đăng ký
+                        </Button>
+                    </form>
+
                     <span>
                         Bạn đã có tài khoản?
                         <Link href={path.AUTH.LOGIN} className="text-primary ml-2">

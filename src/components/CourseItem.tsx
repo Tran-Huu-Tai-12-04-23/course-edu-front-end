@@ -12,7 +12,7 @@ function CourseItem(props: CourseItemProps) {
         <Card
             isFooterBlurred
             radius="lg"
-            className="hover:shadow-md transition-all cursor-pointer select-none overflow-hidden group border-none shadow-none  "
+            className="relative hover:shadow-md transition-all cursor-pointer select-none overflow-hidden group border-none shadow-none  "
         >
             <CardHeader
                 onClick={() => {
@@ -20,8 +20,8 @@ function CourseItem(props: CourseItemProps) {
                 }}
                 className="  flex-col !items-start"
             >
-                <h5 className="text-2xl uppercase font-extrabold ">{props.data.title}</h5>
-                <h4 className=" font-medium text-md">{props.data.description}</h4>
+                <h5 className="text-2xl uppercase font-extrabold max-w-full truncate">{props.data.title}</h5>
+                <h4 className=" font-medium text-md  max-w-[90%] truncate">{props.data.description}</h4>
             </CardHeader>
             <CardBody
                 onClick={() => {
@@ -30,7 +30,7 @@ function CourseItem(props: CourseItemProps) {
                 className="overflow-visible py-2"
             >
                 <Image
-                    alt="Woman listing to music"
+                    alt={props.data.title}
                     className="h-[12rem] min-w-[24rem] w-full bg-contain"
                     src={props.data.thumbnails}
                 />

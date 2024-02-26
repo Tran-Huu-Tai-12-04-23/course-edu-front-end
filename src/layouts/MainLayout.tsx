@@ -1,5 +1,6 @@
 import Header from '../components/Header';
 import NavigateBar from '../components/NavigateBar';
+import Footer from '../components/Footer';
 
 type MainLayoutProps = {
     children: React.ReactNode;
@@ -13,6 +14,8 @@ function MainLayout(props: MainLayoutProps) {
                 <div className="w-full">{props.children}</div>
             </div>
             <NavigateBar />
+
+            <Footer />
         </div>
     );
 }

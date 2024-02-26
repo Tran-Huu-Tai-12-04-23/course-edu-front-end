@@ -1,10 +1,16 @@
 import { Link, Popover, PopoverContent, PopoverTrigger, User } from '@nextui-org/react';
+import helper from '../helper';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import { path } from '../enum/path';
 type UserActionItem = {
     name: string;
     path: string;
+    action?: () => void;
 };
 
 function UserInfo() {
+    const history = useNavigate();
     const userAction: UserActionItem[][] = [
         [
             {
@@ -36,6 +42,11 @@ function UserInfo() {
             {
                 name: 'Đăng xuất ',
                 path: '',
+                action: () => {
+                    helper.logout();
+                    toast.success('Đăng xuất thành công!');
+                    history(path.AUTH.LOGIN);
+                },
             },
         ],
     ];
@@ -64,20 +75,20 @@ function UserInfo() {
                     <div className="w-full border-b-[1px] border-solid border-second mb-2"></div>
                     {userAction.map((actions, index) => {
                         return (
-                            <>
+                            <div key={index} className="flex flex-col w-full">
                                 {actions.map((ac, index) => (
-                                    <Link
-                                        href={ac.path}
+                                    <div
+                                        onClick={ac.action}
                                         key={index}
                                         className="text-black/2 h-[2rem] hover:text-primary cursor-pointer"
                                     >
                                         {ac.name}
-                                    </Link>
+                                    </div>
                                 ))}
                                 {index < userAction.length - 1 && (
                                     <div className="w-full border-b-[1px] border-solid border-second mb-2 mt-2"></div>
                                 )}
-                            </>
+                            </div>
                         );
                     })}
                 </div>

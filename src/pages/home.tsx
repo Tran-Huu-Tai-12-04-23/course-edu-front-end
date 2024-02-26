@@ -1,5 +1,5 @@
 import CourseItem from '../components/CourseItem';
-import { Button, Link } from '@nextui-org/react';
+import { Link } from '@nextui-org/react';
 // import ListTag from '../components/ListTag';
 import BannerSlide from '../components/BannerSlide';
 import { useEffect, useState } from 'react';
@@ -35,8 +35,6 @@ function Home() {
         };
         getCourse();
     }, []);
-
-    console.log(homeData);
     return (
         <>
             <div className="w-full mt-5 mb-10">{homeData?.banners && <BannerSlide data={homeData?.banners} />}</div>

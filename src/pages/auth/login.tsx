@@ -14,6 +14,7 @@ enum keyOptionLogin {
     GITHUB = 'github',
     GOOGLE = 'google',
 }
+
 function Login() {
     const [typeLogin, setTypeLogin] = useState<keyOptionLogin | -1>(-1);
     const optionLogin = [
@@ -38,6 +39,7 @@ function Login() {
             key: keyOptionLogin.GITHUB,
         },
     ];
+
     return (
         <div className="max-w-2xl m-auto mt-5 select-none">
             <Breadcrumbs isDisabled>

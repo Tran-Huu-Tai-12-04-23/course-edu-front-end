@@ -26,3 +26,10 @@ export type IBanner = {
     startColor: string;
     endColor: string;
 };
+
+export type IResponse<T, U> = {
+    status: number;
+    meta: T;
+    data: U | null;
+    message: string;
+};

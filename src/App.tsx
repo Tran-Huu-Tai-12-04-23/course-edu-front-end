@@ -1,14 +1,15 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { learningRoutes, privateRoutes, protectedRoutes, publicRoutes, typeRole, typeRoute } from './routes/_routes';
+import { learningRoutes, privateRoutes, protectedRoutes, publicRoutes, typeRole } from './routes/_routes';
 import { path } from './enum/path';
 import MainLayout from './layouts/MainLayout';
 import { useEffect } from 'react';
 import { useTheme } from './context/themeContext';
 import LearningLayout from './layouts/LearningLayout';
+import { Toaster } from 'react-hot-toast';
 
 export default function App() {
     const isAuthenticated = true;
-    const isAllowed = typeRole.ADMIN === typeRole.ADMIN && isAuthenticated;
+    // const isAllowed = typeRole.ADMIN === typeRole.ADMIN && isAuthenticated;
     const { theme } = useTheme();
 
     useEffect(() => {
@@ -17,6 +18,20 @@ export default function App() {
 
     return (
         <>
+            <Toaster
+                position="top-center"
+                containerStyle={{
+                    zIndex: 10000000,
+                }}
+                toastOptions={{
+                    style: {
+                        background: theme ? 'rgba(0,0,0,0.5)' : 'rgba(0,0,0,0.5)',
+                        color: theme ? 'white' : 'black',
+                        backdropFilter: 'blur(20rem)',
+                        userSelect: 'none',
+                    },
+                }}
+            />
             <Routes>
                 {/* Public Routes */}
                 {publicRoutes.map((route, index) => (
