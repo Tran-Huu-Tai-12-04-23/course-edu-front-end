@@ -1,10 +1,11 @@
-import CourseItem from '../components/CourseItem';
+import CourseItem from '../../components/CourseItem';
 import { Link } from '@nextui-org/react';
 // import ListTag from '../components/ListTag';
-import BannerSlide from '../components/BannerSlide';
+import BannerSlide from '../../components/BannerSlide';
 import { useEffect, useState } from 'react';
-import { useLoading } from '../context/loadingContext';
-import { IHomeResponse } from '../model/Common.model';
+import { useLoading } from '../../context/loadingContext';
+import { IHomeResponse } from '../../model/Common.model';
+import Skeleton from './skeleton';
 
 const fetchData = async (): Promise<IHomeResponse | null> => {
     try {
@@ -29,13 +30,19 @@ function Home() {
         const getCourse = async () => {
             loading.startLoading();
             const data = await fetchData();
-            loading.stopLoading();
+
+            setTimeout(() => {
+                loading.stopLoading();
+            }, 2000);
+
             if (data === null) return;
             setHomeData(data);
         };
         getCourse();
     }, []);
-    return (
+    return loading.isLoading ? (
+        <Skeleton />
+    ) : (
         <>
             <div className="w-full mt-5 mb-10">{homeData?.banners && <BannerSlide data={homeData?.banners} />}</div>
             <div className="max-w-screen-xl mt-5 m-auto ">
