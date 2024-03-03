@@ -7,6 +7,7 @@ import { FaGithub } from 'react-icons/fa';
 import { path } from '../../enum/path';
 import { useState } from 'react';
 import LoginWithEmail from './_login_email';
+import { GoogleLogin } from '@react-oauth/google';
 
 enum keyOptionLogin {
     EMAIL = 'email',
@@ -42,11 +43,18 @@ function Login() {
 
     return (
         <div className="max-w-2xl m-auto mt-5 select-none">
+            <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                    console.log(credentialResponse);
+                }}
+                onError={() => {
+                    console.log('Login Failed');
+                }}
+            />
             <Breadcrumbs isDisabled>
                 <BreadcrumbItem>Trang chủ</BreadcrumbItem>
                 <BreadcrumbItem>Đăng nhập</BreadcrumbItem>
             </Breadcrumbs>
-
             <div className="flex flex-col gap-4 p-10 mt-5 rounded-lg border-solid border-second border-[1px] ">
                 {typeLogin === -1 && (
                     <>

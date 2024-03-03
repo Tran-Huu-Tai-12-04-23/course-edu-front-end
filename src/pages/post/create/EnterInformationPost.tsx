@@ -1,15 +1,26 @@
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input, Image } from '@nextui-org/react';
 import { MdOutlineSubtitles } from 'react-icons/md';
 import { MdTitle } from 'react-icons/md';
 import UploadFile from '../../../components/UploadFile';
+import { useState } from 'react';
 
 function EnterInformationPost() {
+    const [thumbnail, setThumbnail] = useState<string>('');
     return (
         <div className="w-full h-full fixed top-0 bottom-0 right-0 left-0 dark:bg-black bg-white z-[100000000]">
             <div className="w-full items-center p-24 pb-12 flex justify-center gap-24">
                 <div className="w-[30rem]">
                     <h5 className="mb-5">Xem trước</h5>
-                    <UploadFile />
+                    {!thumbnail && (
+                        <UploadFile
+                            onFinished={(res: string) => {
+                                setThumbnail(res);
+                            }}
+                        />
+                    )}
+                    {thumbnail && (
+                        <Image alt={thumbnail} className="h-[12rem] min-w-[24rem] w-full bg-contain" src={thumbnail} />
+                    )}
                 </div>
                 <div className="p-10 w-[30rem] flex flex-col gap-4">
                     <Input

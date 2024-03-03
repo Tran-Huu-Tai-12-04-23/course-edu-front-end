@@ -6,15 +6,18 @@ import { ThemeProvider } from './context/themeContext.tsx';
 import { NextUIProvider } from '@nextui-org/react';
 import { BrowserRouter } from 'react-router-dom';
 import { LoadingProvider } from './context/loadingContext.tsx';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <NextUIProvider>
             <ThemeProvider>
                 <LoadingProvider>
-                    <BrowserRouter>
-                        <App />
-                    </BrowserRouter>
+                    <GoogleOAuthProvider clientId="256335771767-ut4jmn0g202kp7lrtkkp8cgn6dsr6tue.apps.googleusercontent.com">
+                        <BrowserRouter>
+                            <App />
+                        </BrowserRouter>
+                    </GoogleOAuthProvider>
                 </LoadingProvider>
             </ThemeProvider>
         </NextUIProvider>
