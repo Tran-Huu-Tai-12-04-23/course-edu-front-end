@@ -6,6 +6,12 @@ import { useEffect, useState } from 'react';
 import { useLoading } from '../../context/loadingContext';
 import { IHomeResponse } from '../../model/Common.model';
 import Skeleton from './skeleton';
+import { useGoogleOneTapLogin } from '@react-oauth/google';
+import { decodeUserInfoFromJWT, fetchLoginWithGoogle } from '../../services/auth.service';
+import toast from 'react-hot-toast';
+import { path } from '../../enum/path';
+import helper from '../../helper';
+import { useNavigate } from 'react-router-dom';
 
 const fetchData = async (): Promise<IHomeResponse | null> => {
     try {
@@ -24,7 +30,34 @@ const fetchData = async (): Promise<IHomeResponse | null> => {
 function Home() {
     const [homeData, setHomeData] = useState<IHomeResponse | null>();
     const loading = useLoading();
+    const history = useNavigate();
 
+    useGoogleOneTapLogin({
+        onSuccess: async (credentialResponse) => {
+            console.log(credentialResponse);
+
+            if (credentialResponse.credential) {
+                const userInfo = decodeUserInfoFromJWT(credentialResponse.credential);
+
+                if (!userInfo) return;
+
+                loading.startLoading();
+                const response = await fetchLoginWithGoogle(userInfo);
+                loading.stopLoading();
+
+                if (response.status === 200) {
+                    toast.success(response.message);
+                    response.data && helper.login(response.data);
+                    history(path.HOME);
+                } else {
+                    toast.error(response.message);
+                }
+            }
+        },
+        onError: () => {
+            console.log('Login Failed');
+        },
+    });
     // init data
     useEffect(() => {
         const getCourse = async () => {

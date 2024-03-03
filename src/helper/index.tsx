@@ -1,7 +1,16 @@
 import Cookies from 'js-cookie';
 import { IToken } from '../model/Token.model';
 import { AES, enc } from 'crypto-js';
-
+const key = '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';
+export interface JwtPayload {
+    credential: string;
+    sub: string;
+    name: string;
+    given_name: string;
+    family_name: string;
+    picture: string;
+    email: string;
+}
 class Helper {
     keyTk = 'tk';
     key = 'your-secret-key';

@@ -5,9 +5,17 @@ import { TiSocialFacebook } from 'react-icons/ti';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { path } from '../../enum/path';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import LoginWithEmail from './_login_email';
-import { GoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin } from '@react-oauth/google';
+import { IUser } from '../../model/User.model';
+import { IResponse } from '../../model/Common.model';
+import { IToken } from '../../model/Token.model';
+import { useLoading } from '../../context/loadingContext';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import helper from '../../helper';
+import { fetchLoginWithGoogle, fetchUserInfoGoogle } from '../../services/auth.service';
 
 enum keyOptionLogin {
     EMAIL = 'email',
@@ -16,9 +24,38 @@ enum keyOptionLogin {
     GOOGLE = 'google',
 }
 
+type IOptionLogin = {
+    name: string;
+    icon: React.ReactNode;
+    key: keyOptionLogin;
+    action?: () => void;
+};
+
 function Login() {
+    const loading = useLoading();
+    const history = useNavigate();
     const [typeLogin, setTypeLogin] = useState<keyOptionLogin | -1>(-1);
-    const optionLogin = [
+    const loginWithGoogle = useGoogleLogin({
+        onSuccess: async (codeResponse) => {
+            const userInfo = await fetchUserInfoGoogle(codeResponse.access_token);
+            console.log(userInfo);
+            if (!userInfo) return;
+            loading.startLoading();
+            const response = await fetchLoginWithGoogle(userInfo);
+            loading.stopLoading();
+
+            if (response.status === 200) {
+                toast.success(response.message);
+                response.data && helper.login(response.data);
+                history(path.HOME);
+            } else {
+                toast.error(response.message);
+            }
+        },
+        scope: 'profile',
+    });
+
+    const optionLogin: IOptionLogin[] = [
         {
             name: 'Sử dụng email',
             icon: <BsFillPersonFill className="text-xl" />,
@@ -33,6 +70,7 @@ function Login() {
             name: 'Sử dụng google',
             icon: <FcGoogle className="text-xl " />,
             key: keyOptionLogin.GOOGLE,
+            action: loginWithGoogle,
         },
         {
             name: 'Sử dụng github',
@@ -43,14 +81,6 @@ function Login() {
 
     return (
         <div className="max-w-2xl m-auto mt-5 select-none">
-            <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                    console.log(credentialResponse);
-                }}
-                onError={() => {
-                    console.log('Login Failed');
-                }}
-            />
             <Breadcrumbs isDisabled>
                 <BreadcrumbItem>Trang chủ</BreadcrumbItem>
                 <BreadcrumbItem>Đăng nhập</BreadcrumbItem>
@@ -67,7 +97,9 @@ function Login() {
 
                             {optionLogin.map((bt, index) => (
                                 <Button
-                                    onClick={() => setTypeLogin(bt.key)}
+                                    onClick={() => {
+                                        bt.action ? bt.action() : setTypeLogin(bt.key);
+                                    }}
                                     className="w-1/2"
                                     key={index}
                                     startContent={bt.icon}
