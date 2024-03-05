@@ -1,14 +1,4 @@
-import {
-    Navbar,
-    NavbarBrand,
-    NavbarContent,
-    NavbarItem,
-    Button,
-    Image,
-    Link,
-    Accordion,
-    AccordionItem,
-} from '@nextui-org/react';
+import { Image, Accordion, AccordionItem } from '@nextui-org/react';
 import logo from '../../assets/img/logo.png';
 import { GiOpenBook } from 'react-icons/gi';
 import { BiBookContent } from 'react-icons/bi';

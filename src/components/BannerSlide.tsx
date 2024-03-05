@@ -1,7 +1,6 @@
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { exampleCarousels } from '../model/CarouselItem.model';
 import { Button, Image } from '@nextui-org/react';
 import { IBanner } from '../model/Common.model';
 

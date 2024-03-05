@@ -1,5 +1,5 @@
 import { Spinner } from '@nextui-org/react';
-import React, { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface LoadingContextProps {
     children: ReactNode;

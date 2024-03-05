@@ -103,31 +103,30 @@ export const request = async (
     }
 };
 
-const refreshToken = async (): Promise<void> => {
-    const refreshToken = getRefreshToken();
-
-    try {
-        // Make the request again with the updated token
-        await axios({
-            method: 'POST',
-            url: '/api/v1/auth/refresh-token',
-            data: {
-                token: refreshToken,
-            },
-        })
-            .then((response) => {
-                const data = response.data;
-                console.log('refresh token', data);
-                setAuthHeader(data.token);
-                setRefreshToken(data.refreshToken);
-                return;
-            })
-            .catch((error) => {
-                setAuthHeader(null);
-                console.log(error);
-            });
-    } catch (error) {
-        console.error('Error making request after token refresh:', error);
-        console.log(error);
-    }
-};
+// const refreshToken = async (): Promise<void> => {
+//     const refreshToken = getRefreshToken();
+//     try {
+//         // Make the request again with the updated token
+//         await axios({
+//             method: 'POST',
+//             url: '/api/v1/auth/refresh-token',
+//             data: {
+//                 token: refreshToken,
+//             },
+//         })
+//             .then((response) => {
+//                 const data = response.data;
+//                 console.log('refresh token', data);
+//                 setAuthHeader(data.token);
+//                 setRefreshToken(data.refreshToken);
+//                 return;
+//             })
+//             .catch((error) => {
+//                 setAuthHeader(null);
+//                 console.log(error);
+//             });
+//     } catch (error) {
+//         console.error('Error making request after token refresh:', error);
+//         console.log(error);
+//     }
+// };

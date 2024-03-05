@@ -35,7 +35,7 @@ function CreatePost() {
                             setActiveNextStep(content.length > 16);
                         }}
                         apiKey={apiKey}
-                        onInit={(evt, editor) => (editorRef.current = editor)}
+                        onInit={(editor) => (editorRef.current = editor)}
                         init={{
                             height: `calc(${window.innerHeight + 'px'} - 13rem) `,
                             plugins:

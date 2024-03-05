@@ -42,7 +42,7 @@ type Inputs = {
 function Register() {
     const loading = useLoading();
     const history = useNavigate();
-    const { register, handleSubmit, formState, watch } = useForm<Inputs>();
+    const { register, handleSubmit, watch } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         if (validateEmail(data.email)) {

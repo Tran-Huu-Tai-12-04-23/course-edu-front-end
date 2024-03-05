@@ -1,4 +1,4 @@
-import { Link, Popover, PopoverContent, PopoverTrigger, User } from '@nextui-org/react';
+import { Popover, PopoverContent, PopoverTrigger, User } from '@nextui-org/react';
 import helper from '../helper';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';

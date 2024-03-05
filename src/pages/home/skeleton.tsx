@@ -1,4 +1,4 @@
-import { Button, Skeleton as NextUISkeleton } from '@nextui-org/react';
+import { Skeleton as NextUISkeleton } from '@nextui-org/react';
 import CourseItemSkeleton from '../../components/CourseItemSkeleton';
 
 function Skeleton() {
