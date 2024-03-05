@@ -8,9 +8,6 @@ import { path } from '../../enum/path';
 import React, { useState } from 'react';
 import LoginWithEmail from './_login_email';
 import { useGoogleLogin } from '@react-oauth/google';
-import { IUser } from '../../model/User.model';
-import { IResponse } from '../../model/Common.model';
-import { IToken } from '../../model/Token.model';
 import { useLoading } from '../../context/loadingContext';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -85,6 +82,7 @@ function Login() {
                 <BreadcrumbItem>Trang chủ</BreadcrumbItem>
                 <BreadcrumbItem>Đăng nhập</BreadcrumbItem>
             </Breadcrumbs>
+
             <div className="flex flex-col gap-4 p-10 mt-5 rounded-lg border-solid border-second border-[1px] ">
                 {typeLogin === -1 && (
                     <>
@@ -123,7 +121,7 @@ function Login() {
                         </div>
                     </>
                 )}
-                {typeLogin === keyOptionLogin.EMAIL && <LoginWithEmail onBack={() => setTypeLogin(-1)} />}
+                {typeLogin === keyOptionLogin.EMAIL && <LoginWithEmail onBack={() => setTypeLogin(-1)} />}F
             </div>
         </div>
     );

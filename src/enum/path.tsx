@@ -17,5 +17,10 @@ export const path = {
         LOGIN: '/login',
         REGISTER: '/register',
     },
-    ADMIN: '/admin',
+    ADMIN: {
+        DASHBOARD: '/admin',
+        COURSE: '/admin/course',
+        POST: '/admin/post',
+        USER: '/admin/user',
+    },
 } as const;

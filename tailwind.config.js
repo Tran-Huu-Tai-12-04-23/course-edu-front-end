@@ -15,7 +15,7 @@ export default {
             },
             backgroundColor: {
                 'dark-primary': '#1e1e2e',
-                'dark-sidebar': '#020220',
+                'dark-sidebar': '#111c44',
             },
             colors: {
                 primary: '#fd2658',

@@ -8,6 +8,9 @@ import SummaryCourse from '../pages/course/Summary';
 import Learning from '../pages/course/learning';
 import CreatePost from '../pages/post/create';
 import ViewPost from '../pages/post/view';
+import CourseManagement from '../pages/admin/course';
+import PostManagement from '../pages/admin/post';
+import UserManagement from '../pages/admin/user';
 
 export type routeProps = {
     path: string;
@@ -43,8 +46,23 @@ export const publicRoutes: routeProps[] = [
 ];
 export const protectedRoutes: routeProps[] = [
     {
-        path: path.ADMIN,
+        path: path.ADMIN.DASHBOARD,
         component: <Dashboard />,
+        type: typeRoute.PROTECTED_ROUTE,
+    },
+    {
+        path: path.ADMIN.COURSE,
+        component: <CourseManagement />,
+        type: typeRoute.PROTECTED_ROUTE,
+    },
+    {
+        path: path.ADMIN.POST,
+        component: <PostManagement />,
+        type: typeRoute.PROTECTED_ROUTE,
+    },
+    {
+        path: path.ADMIN.USER,
+        component: <UserManagement />,
         type: typeRoute.PROTECTED_ROUTE,
     },
 ];
