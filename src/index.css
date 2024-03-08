@@ -47,3 +47,10 @@ iframe {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     @apply bg-primary;
 }
+
+.ql-container.ql-snow {
+    @apply rounded-b-lg border-none;
+}
+.ql-toolbar.ql-snow {
+    @apply rounded-t-lg border-none;
+}

@@ -63,11 +63,7 @@ function Home() {
         const getCourse = async () => {
             loading.startLoading();
             const data = await fetchData();
-
-            setTimeout(() => {
-                loading.stopLoading();
-            }, 2000);
-
+            loading.stopLoading();
             if (data === null) return;
             setHomeData(data);
         };

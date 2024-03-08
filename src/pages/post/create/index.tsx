@@ -1,61 +1,81 @@
-import { Button } from '@nextui-org/react';
-import { Editor } from '@tinymce/tinymce-react';
-import { useRef, useState } from 'react';
-import EnterInformationPost from './EnterInformationPost';
+import { Button, Input, Image, BreadcrumbItem, Breadcrumbs, Textarea } from '@nextui-org/react';
+import { MdOutlineSubtitles } from 'react-icons/md';
+import { MdTitle } from 'react-icons/md';
+import UploadFile from '../../../components/UploadFile';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import Editor from './Editor';
+import { useNavigate } from 'react-router-dom';
+import { path } from '../../../enum/path';
 
-enum EStep {
-    ADD_TEX = 0,
-    ADD_INFORMATION_POST = 1,
-    COMMIT = 2,
-}
 function CreatePost() {
-    const editorRef = useRef<any>(null);
-    const [step, setStep] = useState<EStep>(EStep.ADD_TEX);
-    const [activeNextStep, setActiveNextStep] = useState<boolean>(false);
-
-    const apiKey = 'u19givup3s32uss2aouvvjegtlvmvujgs6803eyavmcf6dpn';
-
-    const handleNextButtonClick = () => {
-        if (editorRef.current) {
-            const content = editorRef.current.getContent();
-            console.log('Content:', content);
-            setStep((prev) => (prev === EStep.ADD_TEX ? EStep.ADD_INFORMATION_POST : EStep.COMMIT));
-        }
-    };
-
-    console.log(step);
-
+    const history = useNavigate();
+    const [thumbnail, setThumbnail] = useState<string>('');
     return (
-        <div className="">
-            {step === EStep.ADD_TEX && (
-                <>
-                    <Editor
-                        onEditorChange={(content) => {
-                            console.log('Content:', content);
-                            setActiveNextStep(content.length > 16);
-                        }}
-                        apiKey={apiKey}
-                        onInit={(editor) => (editorRef.current = editor)}
-                        init={{
-                            height: `calc(${window.innerHeight + 'px'} - 13rem) `,
-                            plugins:
-                                'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
-                            toolbar:
-                                'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                        }}
+        <motion.div
+            initial={{ transform: 'translateY(200px)' }}
+            animate={{ transform: 'translateY(0)' }}
+            className="w-full h-full overflow-auto fixed pb-20 top-0 bottom-0 right-0 left-0 dark:bg-black bg-white z-[100000000]"
+        >
+            <Breadcrumbs className="p-10">
+                <BreadcrumbItem onClick={() => history(path.HOME)}>Trang chủ</BreadcrumbItem>
+                <BreadcrumbItem>Bài viết</BreadcrumbItem>
+                <BreadcrumbItem>Thêm bài viết</BreadcrumbItem>
+            </Breadcrumbs>
+
+            <div className="w-full items-center pb-12 flex justify-center gap-24">
+                <div className="w-[30rem]">
+                    <Button variant="light" className="mt-5 mb-5">
+                        Xem trước
+                    </Button>
+                    {!thumbnail && (
+                        <UploadFile
+                            onFinished={(res: string) => {
+                                setThumbnail(res);
+                            }}
+                        />
+                    )}
+                    {thumbnail && (
+                        <Image alt={thumbnail} className="h-[12rem] min-w-[24rem] w-full bg-contain" src={thumbnail} />
+                    )}
+                </div>
+                <div className="p-10 w-[30rem] flex flex-col gap-4">
+                    <Input
+                        startContent={<MdOutlineSubtitles className="text-xl" />}
+                        type="text"
+                        className="w-full"
+                        label="Nhập tiêu đề của bài post (Bắt buộc)"
+                        labelPlacement={'outside'}
+                        placeholder=""
                     />
-                    <div className="w-full flex justify-end items-center mt-5 pr-10">
-                        {!activeNextStep && (
-                            <h5 className="text-red-600 text-md pr-5 mt-5">Nhập tối thiểu 10 ký tự....</h5>
-                        )}
-                        <Button isDisabled={!activeNextStep} color="primary" onClick={handleNextButtonClick}>
-                            Tiếp theo
-                        </Button>
-                    </div>
-                </>
-            )}
-            {step === EStep.ADD_INFORMATION_POST && <EnterInformationPost />}
-        </div>
+
+                    <Textarea
+                        startContent={<MdTitle className="text-xl" />}
+                        label="Nhập mô tả của bài post"
+                        placeholder="Enter your description"
+                        labelPlacement={'outside'}
+                        className="w-full"
+                    />
+                </div>
+            </div>
+            <div className="max-w-4xl m-auto mt-5 select-none">
+                <Editor />
+            </div>
+
+            <motion.div
+                initial={{ transform: 'translateY(400px)', opacity: 0 }}
+                animate={{ transform: 'translateY(0)', opacity: 1 }}
+                transition={{
+                    delay: 0.5,
+                }}
+                className="w-full flex flex-col gap-5 justify-center items-center"
+            >
+                <h5>(Lưu ý : Bài viết của bạn sẽ được quản trị viên duyệt trước khi được đăng lên...)</h5>
+                <Button color="success" className="text-white dark:text-black">
+                    Xác nhận đăng
+                </Button>
+            </motion.div>
+        </motion.div>
     );
 }
 

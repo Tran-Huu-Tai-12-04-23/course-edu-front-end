@@ -121,7 +121,7 @@ function Login() {
                         </div>
                     </>
                 )}
-                {typeLogin === keyOptionLogin.EMAIL && <LoginWithEmail onBack={() => setTypeLogin(-1)} />}F
+                {typeLogin === keyOptionLogin.EMAIL && <LoginWithEmail onBack={() => setTypeLogin(-1)} />}
             </div>
         </div>
     );
