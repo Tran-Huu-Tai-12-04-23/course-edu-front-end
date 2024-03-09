@@ -2,14 +2,25 @@ import React from 'react';
 import { Card, CardBody, Image, Button, User } from '@nextui-org/react';
 import { BsBookmark } from 'react-icons/bs';
 import { BsFillBookmarkFill } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
+import { path } from '../enum/path';
 
 export default function BlogItem() {
+    const history = useNavigate();
     const [liked, setLiked] = React.useState(false);
     const topics = ['UX/UI design', 'Study English', 'SEO website', 'Other...'];
 
     return (
-        <Card isBlurred className="border-none bg-background/60 dark:bg-default-100/50 w-full" shadow="sm">
-            <CardBody>
+        <Card
+            isBlurred
+            className="cursor-pointer border-none bg-background/60 dark:bg-default-100/50 w-full"
+            shadow="sm"
+        >
+            <CardBody
+                onClick={() => {
+                    history(path.POST.DETAIL + '/id');
+                }}
+            >
                 <div className="w-full">
                     <div className="w-full flex justify-between items-center">
                         <User

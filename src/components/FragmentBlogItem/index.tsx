@@ -2,22 +2,168 @@ import { motion } from 'framer-motion';
 import { FragmentBlogItemType, TypeFragmentBlogItem, fragmentBlogItemLabel } from './FragmentBlogItem.type';
 import { BsArrowsMove } from 'react-icons/bs';
 import { RiCloseCircleLine } from 'react-icons/ri';
+import { Input, Textarea } from '@nextui-org/react';
+import FragmentImgFileItem from './FragmentImgFileItem';
+import ReactQuill from 'react-quill';
 
 type FragmentBlogItemProps = {
     type: FragmentBlogItemType;
     onRemove: (id: string) => void;
     data: TypeFragmentBlogItem;
+    onChangeData: (data: { content?: string; link?: string; alt?: string; urlImg?: string }) => void;
 };
 
 const getLabel = (type: FragmentBlogItemType): string => {
     return fragmentBlogItemLabel.find((fra) => fra.key === type)?.label ?? '';
 };
 
-const getComponentItem = (type: FragmentBlogItemType): React.ReactNode => {
-    return fragmentBlogItemLabel.find((fra) => fra.key === type)?.component;
-};
-
 function FragmentBlogItem(props: FragmentBlogItemProps) {
+    const getComponentItem = (type: FragmentBlogItemType): React.ReactNode => {
+        switch (type) {
+            case FragmentBlogItemType.HEADING: {
+                return (
+                    <Input
+                        onChange={(e) =>
+                            props.onChangeData({
+                                content: e.target.value,
+                            })
+                        }
+                        labelPlacement={'outside'}
+                        className="text-3xl"
+                        type="text"
+                        label=""
+                        placeholder="Nhập tiêu đề của bài viết..."
+                    />
+                );
+            }
+            case FragmentBlogItemType.IMAGE: {
+                return (
+                    <FragmentImgFileItem
+                        onChangeData={(data: { link?: string; alt?: string; urlImg?: string }) =>
+                            props.onChangeData({
+                                ...data,
+                            })
+                        }
+                    />
+                );
+            }
+            case FragmentBlogItemType.TEXT_SIMPLE: {
+                return (
+                    <Textarea
+                        onChange={(e) =>
+                            props.onChangeData({
+                                content: e.target.value,
+                            })
+                        }
+                        labelPlacement={'outside'}
+                        disableAnimation
+                        classNames={{
+                            base: 'w-full h-max',
+                            input: 'resize-y min-h-[100px]',
+                        }}
+                        placeholder="Nhập nội dung tại đây..."
+                    />
+                );
+            }
+            case FragmentBlogItemType.TEXT_EDITOR: {
+                return (
+                    <ReactQuill
+                        onChange={(val) =>
+                            props.onChangeData({
+                                content: val,
+                            })
+                        }
+                        className="rounded-lg w-full bg-[#f4f4f5] dark:bg-[#27272a]"
+                        theme="snow"
+                    />
+                );
+            }
+
+            case FragmentBlogItemType.EMBED_YOUTUBE: {
+                return (
+                    <Input
+                        onChange={(e) =>
+                            props.onChangeData({
+                                link: e.target.value,
+                            })
+                        }
+                        labelPlacement={'outside'}
+                        className=""
+                        type="text"
+                        placeholder="Dán đường dẫn vào đây"
+                    />
+                );
+            }
+
+            case FragmentBlogItemType.EMBED_FACEBOOK: {
+                return (
+                    <Input
+                        onChange={(e) =>
+                            props.onChangeData({
+                                link: e.target.value,
+                            })
+                        }
+                        labelPlacement={'outside'}
+                        className=""
+                        type="text"
+                        placeholder="Dán đường dẫn vào đây"
+                    />
+                );
+            }
+
+            case FragmentBlogItemType.EMBED_TIKTOK: {
+                return (
+                    <Input
+                        onChange={(e) =>
+                            props.onChangeData({
+                                link: e.target.value,
+                            })
+                        }
+                        labelPlacement={'outside'}
+                        className=""
+                        type="text"
+                        placeholder="Dán đường dẫn vào đây"
+                    />
+                );
+            }
+
+            case FragmentBlogItemType.EMBED_INSTAGRAM: {
+                return (
+                    <Input
+                        onChange={(e) =>
+                            props.onChangeData({
+                                link: e.target.value,
+                            })
+                        }
+                        labelPlacement={'outside'}
+                        className=""
+                        type="text"
+                        placeholder="Dán đường dẫn vào đây"
+                    />
+                );
+            }
+
+            case FragmentBlogItemType.EMBED_GITHUB: {
+                return (
+                    <Input
+                        onChange={(e) =>
+                            props.onChangeData({
+                                link: e.target.value,
+                            })
+                        }
+                        labelPlacement={'outside'}
+                        className=""
+                        type="text"
+                        placeholder="Dán đường dẫn vào đây"
+                    />
+                );
+            }
+
+            default:
+                return null;
+        }
+    };
+
     return (
         <motion.div
             initial={{
@@ -44,7 +190,7 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
                         props.onRemove(props.data.id);
                     }}
                 />
-                <BsArrowsMove className="text-xl cursor-move hover:text-blue-600" />
+                <BsArrowsMove className="text-xl cursor-grab hover:text-blue-600" />
             </div>
         </motion.div>
     );

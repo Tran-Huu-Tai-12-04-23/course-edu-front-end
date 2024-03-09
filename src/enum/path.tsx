@@ -5,6 +5,7 @@ export const path = {
         CREATE: '/post/create',
         MANAGER: '/post/manager',
         VIEW: '/post/view',
+        DETAIL: '/post',
     },
     COURSE: {
         SUMMARY: '/course/summary',

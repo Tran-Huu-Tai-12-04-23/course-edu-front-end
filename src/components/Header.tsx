@@ -19,7 +19,7 @@ function Header() {
     const isAuthenticated = accessToken !== null;
 
     return (
-        <header className=" h-header border-b-[1px] border-solid dark:border-gray-900 backdrop-blur-2xl fixed z-[100000] left-0 top-0 right-0 flex justify-between items-center p-4">
+        <header className="select-none h-header border-b-[1px] border-solid dark:border-gray-900 backdrop-blur-2xl fixed z-[100000] left-0 top-0 right-0 flex justify-between items-center p-4">
             <div
                 onClick={() => history(path.HOME)}
                 className="cursor-pointer select-none flex justify-start items-center gap-10 w-1/3"

@@ -1,18 +1,15 @@
 import { Input, Textarea } from '@nextui-org/react';
 import FragmentImgFileItem from './FragmentImgFileItem';
-import FragmentSelectCategoryItem from './FragmentSelectCategoryItem';
 import ReactQuill from 'react-quill';
 import { FaHeading } from 'react-icons/fa';
 import { MdOutlineTextFields } from 'react-icons/md';
 import { CiTextAlignLeft } from 'react-icons/ci';
 import { FaRegImage } from 'react-icons/fa';
-import { BiSolidCategory } from 'react-icons/bi';
 import { FaYoutube, FaFacebook, FaInstagram, FaGithub, FaTiktok } from 'react-icons/fa';
 
 export enum FragmentBlogItemType {
-    HEADER,
+    HEADING,
     IMAGE,
-    CATEGORY,
     TEXT_SIMPLE,
     TEXT_EDITOR,
     EMBED_YOUTUBE,
@@ -24,10 +21,18 @@ export enum FragmentBlogItemType {
 
 export const fragmentBlogItemLabel = [
     {
-        key: FragmentBlogItemType.HEADER,
+        key: FragmentBlogItemType.HEADING,
         label: 'Tiêu đề',
         icon: <FaHeading className="text-xl" />,
-        component: <Input labelPlacement={'outside'} className="text-3xl" type="text" label="" />,
+        component: (
+            <Input
+                labelPlacement={'outside'}
+                className="text-3xl"
+                type="text"
+                label=""
+                placeholder="Nhập tiêu đề của bài viết..."
+            />
+        ),
     },
     {
         key: FragmentBlogItemType.IMAGE,
@@ -35,17 +40,12 @@ export const fragmentBlogItemLabel = [
         icon: <FaRegImage className="text-xl" />,
         component: <FragmentImgFileItem />,
     },
-    {
-        key: FragmentBlogItemType.CATEGORY,
-        label: 'Danh mục',
-        icon: <BiSolidCategory className="text-xl" />,
-        component: <FragmentSelectCategoryItem />,
-    },
+
     {
         key: FragmentBlogItemType.TEXT_SIMPLE,
         label: 'Văn bản đơn giản',
         icon: <MdOutlineTextFields className="text-xl" />,
-        component: <Textarea labelPlacement={'outside'} className="w-full" />,
+        component: <Textarea labelPlacement={'outside'} className="w-full" placeholder="Nhập nội dung tại đây..." />,
     },
     {
         key: FragmentBlogItemType.TEXT_EDITOR,
@@ -86,58 +86,67 @@ export const fragmentBlogItemLabel = [
 ];
 export interface IHeading {
     id: string;
-    content: string;
-    typeItem: FragmentBlogItemType;
+    content?: string;
+    index: number;
+    typeItem: FragmentBlogItemType.HEADING;
 }
-export interface ICategory {
-    id: string;
-    category: string[];
-    typeItem: FragmentBlogItemType;
-}
+
 export interface IText {
     id: string;
-    content: string;
-    typeItem: FragmentBlogItemType;
+    content?: string;
+    index: number;
+    typeItem: FragmentBlogItemType.TEXT_SIMPLE;
 }
+
 export interface ITextEditor {
     id: string;
-    content: string;
-    typeItem: FragmentBlogItemType;
+    content?: string;
+    index: number;
+    typeItem: FragmentBlogItemType.TEXT_EDITOR;
 }
 
 export interface IYoutubeEmbed {
     id: string;
-    link: string;
-    typeItem: FragmentBlogItemType;
+    content?: string;
+    index: number;
+    typeItem: FragmentBlogItemType.EMBED_YOUTUBE;
 }
 
 export interface IFacebookEmbed {
     id: string;
-    link: string;
-    typeItem: FragmentBlogItemType;
+    index: number;
+    content?: string;
+    typeItem: FragmentBlogItemType.EMBED_FACEBOOK;
 }
 
 export interface IGithubEmbed {
     id: string;
-    link: string;
-    typeItem: FragmentBlogItemType;
+    content?: string;
+    index: number;
+    typeItem: FragmentBlogItemType.EMBED_GITHUB;
 }
+
 export interface IInstagramEmbed {
     id: string;
-    link: string;
-    typeItem: FragmentBlogItemType;
+    index: number;
+    content?: string;
+    typeItem: FragmentBlogItemType.EMBED_INSTAGRAM;
 }
+
 export interface ITiktokEmbed {
     id: string;
-    link: string;
-    typeItem: FragmentBlogItemType;
+    index: number;
+    content?: string;
+    typeItem: FragmentBlogItemType.EMBED_TIKTOK;
 }
+
 export interface IImage {
     id: string;
+    index: number;
     alt?: string;
+    urlImg?: string;
     link?: string;
-    urlImage?: string;
-    typeItem: FragmentBlogItemType;
+    typeItem: FragmentBlogItemType.IMAGE;
 }
 
 export type TypeFragmentBlogItem =
@@ -149,5 +158,4 @@ export type TypeFragmentBlogItem =
     | IYoutubeEmbed
     | IInstagramEmbed
     | IGithubEmbed
-    | ITiktokEmbed
-    | ICategory;
+    | ITiktokEmbed;

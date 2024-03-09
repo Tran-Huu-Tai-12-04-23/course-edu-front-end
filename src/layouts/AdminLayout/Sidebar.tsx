@@ -25,6 +25,7 @@ function Sidebar() {
             subNav: [
                 {
                     name: 'Hello',
+                    path: '',
                 },
             ],
         },
@@ -35,7 +36,16 @@ function Sidebar() {
             path: path.ADMIN.POST,
             subNav: [
                 {
-                    name: 'Hello',
+                    name: 'Quản lý',
+                    path: '',
+                },
+                {
+                    name: 'Thêm bài viết',
+                    path: '/add/:id',
+                },
+                {
+                    name: 'Chỉnh sửa bài viết',
+                    path: '/edit/:id',
                 },
             ],
         },
@@ -46,13 +56,14 @@ function Sidebar() {
             path: path.ADMIN.USER,
             subNav: [
                 {
-                    name: 'Hello',
+                    name: 'Quản lý',
+                    path: '/manager',
                 },
             ],
         },
     ];
     return (
-        <div className="fixed z-[100000] dark:bg-dark-sidebar border-r-[1px] border-solid border-second shadow-xl bg-white backdrop-blur-3xl flex justify-start max-h-screen top-0 left-0 bottom-0 items-start flex-col">
+        <div className="select-none shadow-2xl fixed z-[100000] dark:bg-dark-sidebar border-r-[1px] border-solid border-second  bg-white backdrop-blur-3xl flex justify-start max-h-screen top-0 left-0 bottom-0 items-start flex-col">
             <div className="flex justify-center items-center w-full border-b-[1px] border-solid border-second pb-5 mb-5">
                 <Image className="scale-[200%] mt-5" isBlurred width={50} src={logo} alt="Course Edut" />
             </div>
@@ -61,18 +72,31 @@ function Sidebar() {
                     <AccordionItem
                         key={nav.key}
                         hideIndicator={!nav?.subNav}
-                        className={`hover:text-primary pl-4 pr-4  ${nav.path === pathname ? 'text-primary' : ''}`}
+                        className={`pl-4 pr-4  ${nav.path === pathname ? 'text-primary' : ''}`}
                         startContent={
                             <div
                                 onClick={() => history(nav.path)}
-                                className="flex justify-start items-center gap-4 w-[10rem]"
+                                className={`hover:text-primary pl-4 pr-4  flex justify-start items-center gap-4 w-[10rem] `}
                             >
                                 {nav.icon}
                                 <h5>{nav.name}</h5>
                             </div>
                         }
                     >
-                        {nav.subNav && nav.subNav.map((subNav, index) => <div key={index}>{subNav.name}</div>)}
+                        {nav.subNav &&
+                            nav.subNav.map((subNav, index) => (
+                                <div
+                                    onClick={() => history(pathname + subNav.path)}
+                                    className={`${
+                                        pathname.includes(nav.path + subNav.path)
+                                            ? 'text-primary '
+                                            : ' text-black  dark:text-white '
+                                    } pl-10 p-2 cursor-pointer hover:text-primary hover:dark:text-primary`}
+                                    key={index}
+                                >
+                                    {subNav.name}
+                                </div>
+                            ))}
                     </AccordionItem>
                 ))}
             </Accordion>

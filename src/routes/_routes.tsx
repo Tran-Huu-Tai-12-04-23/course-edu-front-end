@@ -11,6 +11,7 @@ import ViewPost from '../pages/post/view';
 import CourseManagement from '../pages/admin/course';
 import PostManagement from '../pages/admin/post';
 import UserManagement from '../pages/admin/user';
+import DetailPost from '../pages/post/detail';
 
 export type routeProps = {
     path: string;
@@ -41,6 +42,11 @@ export const publicRoutes: routeProps[] = [
     {
         path: path.AUTH.REGISTER,
         component: <Register />,
+        type: typeRoute.PUBLIC_ROUTE,
+    },
+    {
+        path: path.POST.DETAIL + '/:id',
+        component: <DetailPost />,
         type: typeRoute.PUBLIC_ROUTE,
     },
 ];

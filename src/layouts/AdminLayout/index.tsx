@@ -5,10 +5,11 @@ type AdminLayoutProps = {
 };
 function AdminLayout(props: AdminLayoutProps) {
     return (
-        <div className="max-w-screen flex justify-between m-auto min-h-screen select-none">
+        <div className="max-w-screen flex  justify-between m-auto min-h-screen select-none">
             <Sidebar />
-            <Header />
-            <div style={{}} className="w-full relative overflow-hidden">
+            <div className="min-w-[14rem]"></div>
+            <div style={{}} className="w-full relative overflow-hidden dark:bg-second-dark bg-light-primary p-10 pt-20">
+                <Header />
                 {props.children}
             </div>
         </div>

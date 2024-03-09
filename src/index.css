@@ -54,3 +54,17 @@ iframe {
 .ql-toolbar.ql-snow {
     @apply rounded-t-lg border-none;
 }
+.ql-toolbar.ql-snow .ql-picker-options {
+    @apply z-[100000] border-none dark:bg-[rgba(0,0,0,0.1)] backdrop-blur-3xl bg-[rgba(255,255,255,0.1)] dark:text-white rounded-xl;
+}
+
+.ql-toolbar.ql-snow .ql-picker-label {
+    @apply border-none;
+}
+.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+    @apply z-50 top-[-10rem];
+}
+.ql-snow .ql-picker-label::before,
+.ql-snow .ql-stroke {
+    @apply dark:stroke-white dark:text-white;
+}
