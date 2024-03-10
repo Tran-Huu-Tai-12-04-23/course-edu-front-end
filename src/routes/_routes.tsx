@@ -3,7 +3,7 @@ import { path } from '../enum/path';
 import Home from '../pages/home';
 import Login from '../pages/auth/login';
 import Register from '../pages/auth/register';
-import Dashboard from '../pages/admin';
+import Dashboard from '../pages/admin/dashboard';
 import SummaryCourse from '../pages/course/Summary';
 import Learning from '../pages/course/learning';
 import CreatePost from '../pages/post/create';
@@ -12,6 +12,7 @@ import CourseManagement from '../pages/admin/course';
 import PostManagement from '../pages/admin/post';
 import UserManagement from '../pages/admin/user';
 import DetailPost from '../pages/post/detail';
+import AddPost from '../pages/admin/post/add';
 
 export type routeProps = {
     path: string;
@@ -64,6 +65,11 @@ export const protectedRoutes: routeProps[] = [
     {
         path: path.ADMIN.POST,
         component: <PostManagement />,
+        type: typeRoute.PROTECTED_ROUTE,
+    },
+    {
+        path: path.ADMIN.POST + '/add',
+        component: <AddPost />,
         type: typeRoute.PROTECTED_ROUTE,
     },
     {

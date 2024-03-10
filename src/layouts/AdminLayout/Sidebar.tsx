@@ -1,4 +1,4 @@
-import { Image, Accordion, AccordionItem } from '@nextui-org/react';
+import { Image, Accordion, AccordionItem, Chip } from '@nextui-org/react';
 import logo from '../../assets/img/logo.png';
 import { GiOpenBook } from 'react-icons/gi';
 import { BiBookContent } from 'react-icons/bi';
@@ -41,7 +41,7 @@ function Sidebar() {
                 },
                 {
                     name: 'Thêm bài viết',
-                    path: '/add/:id',
+                    path: '/add',
                 },
                 {
                     name: 'Chỉnh sửa bài viết',
@@ -54,16 +54,10 @@ function Sidebar() {
             icon: <BsPersonFill className="text-xl" />,
             key: 4,
             path: path.ADMIN.USER,
-            subNav: [
-                {
-                    name: 'Quản lý',
-                    path: '/manager',
-                },
-            ],
         },
     ];
     return (
-        <div className="select-none shadow-2xl fixed z-[100000] dark:bg-dark-sidebar border-r-[1px] border-solid border-second  bg-white backdrop-blur-3xl flex justify-start max-h-screen top-0 left-0 bottom-0 items-start flex-col">
+        <div className="select-none shadow-3xl fixed z-[100000] dark:bg-dark-sidebar  bg-white backdrop-blur-3xl flex justify-start max-h-screen rounded-xl left-4 bottom-4 top-4 items-start flex-col">
             <div className="flex justify-center items-center w-full border-b-[1px] border-solid border-second pb-5 mb-5">
                 <Image className="scale-[200%] mt-5" isBlurred width={50} src={logo} alt="Course Edut" />
             </div>
@@ -72,15 +66,23 @@ function Sidebar() {
                     <AccordionItem
                         key={nav.key}
                         hideIndicator={!nav?.subNav}
-                        className={`pl-4 pr-4  ${nav.path === pathname ? 'text-primary' : ''}`}
+                        className={`pl-2 pr-8 ${nav.path === pathname ? 'text-primary' : ''}`}
                         startContent={
-                            <div
-                                onClick={() => history(nav.path)}
-                                className={`hover:text-primary pl-4 pr-4  flex justify-start items-center gap-4 w-[10rem] `}
+                            <Chip
+                                color="primary"
+                                variant={nav.path === pathname ? 'light' : 'light'}
+                                className={`rounded-lg  min-w-[8rem] `}
                             >
-                                {nav.icon}
-                                <h5>{nav.name}</h5>
-                            </div>
+                                <div
+                                    onClick={() => history(nav.path)}
+                                    className={`hover:text-primary ${
+                                        nav.path === pathname ? 'text-primary' : 'text-black dark:text-white'
+                                    } pl-4 pr-4  flex justify-start items-center gap-4 `}
+                                >
+                                    {nav.icon}
+                                    <h5>{nav.name}</h5>
+                                </div>
+                            </Chip>
                         }
                     >
                         {nav.subNav &&

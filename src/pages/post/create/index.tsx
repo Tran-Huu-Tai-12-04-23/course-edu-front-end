@@ -4,7 +4,7 @@ import { MdTitle } from 'react-icons/md';
 import UploadFile from '../../../components/UploadFile';
 import { useState } from 'react';
 import Editor from './Editor';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { path } from '../../../enum/path';
 import SelectCategoryBlog from '../../../components/SelectCategoryBlog';
 import { TypeFragmentBlogItem } from '../../../components/FragmentBlogItem/FragmentBlogItem.type';
@@ -13,6 +13,7 @@ import BlogView from '../../../components/BlogView';
 import { IoClose } from 'react-icons/io5';
 
 function CreatePost() {
+    const pathname = useLocation();
     const history = useNavigate();
     const [thumbnail, setThumbnail] = useState<string>('');
     const [title, setTitle] = useState<string>('');
@@ -21,7 +22,7 @@ function CreatePost() {
     const [items, setItems] = useState<TypeFragmentBlogItem[]>([]);
     const [isPreview, setIsPreview] = useState<boolean>(false);
     return (
-        <div className="w-full h-full overflow-auto  pb-20 top-0 bottom-0 right-0 left-0 dark:bg-black bg-white z-[100000000]">
+        <div className="w-full h-full overflow-auto  pb-20 top-0 bottom-0 right-0 left-0  z-[100000000]">
             {isPreview && (
                 <>
                     <motion.div
@@ -54,7 +55,17 @@ function CreatePost() {
                 </>
             )}
             <Breadcrumbs className="p-10">
-                <BreadcrumbItem onClick={() => history(path.HOME)}>Trang chủ</BreadcrumbItem>
+                <BreadcrumbItem
+                    onClick={() => {
+                        if (pathname.pathname.includes(path.ADMIN.POST)) {
+                            history(path.ADMIN.POST);
+                        } else {
+                            history(path.HOME);
+                        }
+                    }}
+                >
+                    {pathname.pathname.includes(path.ADMIN.POST) ? 'Quản trị ' : 'Trang chủ'}
+                </BreadcrumbItem>
                 <BreadcrumbItem>Bài viết</BreadcrumbItem>
                 <BreadcrumbItem>Thêm bài viết</BreadcrumbItem>
             </Breadcrumbs>

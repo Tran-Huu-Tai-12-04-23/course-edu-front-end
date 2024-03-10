@@ -8,7 +8,7 @@ import Search from '../../components/Search';
 function Header() {
     const { toggleTheme } = useTheme();
     return (
-        <div className="z-[100000] shadow-2xl absolute right-10 flex justify-end items-center top-5 gap-4 bg-light-sidebar  dark:bg-dark-sidebar backdrop-blur-3xl rounded-xl p-2 ">
+        <div className="z-[100000] select-none shadow-2xl absolute right-10 flex justify-end items-center top-5 gap-4 bg-light-sidebar  dark:bg-dark-sidebar backdrop-blur-3xl rounded-xl p-2 ">
             <Search className="rounded-full min-w-[30rem]" />
             <div className="w-[10rem]"></div>
             <GoBell className="text-xl hover:text-primary cursor-pointer" />

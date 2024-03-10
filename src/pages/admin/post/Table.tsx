@@ -76,11 +76,6 @@ export default function Table() {
             case 'actions':
                 return (
                     <div className="relative flex items-center gap-2">
-                        <Tooltip content="Chi tiết" color="foreground">
-                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <IoEyeOutline className="text-xl" />
-                            </span>
-                        </Tooltip>
                         <Tooltip content="Chỉnh sửa bài viết" color="secondary">
                             <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                                 <AiFillEdit className="text-xl" />

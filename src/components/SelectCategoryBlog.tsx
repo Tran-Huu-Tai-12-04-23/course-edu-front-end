@@ -40,7 +40,7 @@ function SelectCategoryBlog(props: SelectCategoryBlogProps) {
             placeholder="Chọn"
             selectionMode="multiple"
             label="Bài viết thuộc danh mục nào"
-            className="max-w-xs"
+            className="max-w-[14rem]"
             selectorIcon={<TbSelector className="text-xl" />}
         >
             {categories.map((category: ICategory) => (

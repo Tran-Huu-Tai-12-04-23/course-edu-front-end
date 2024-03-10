@@ -4,5 +4,5 @@ export type IUser = {
     firstName?: string;
     lastName?: string;
     avatar?: string;
-    // role: string;
+    role?: string;
 };
