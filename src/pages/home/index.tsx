@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 
 const fetchData = async (): Promise<IHomeResponse | null> => {
     try {
-        const response = await fetch('https://localhost:7005/api/home');
+        const response = await fetch('http://localhost:8081/api/home');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
