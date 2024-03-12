@@ -1,4 +1,4 @@
-import { TypeFragmentBlogItem } from '../components/FragmentBlogItem/FragmentBlogItem.type';
+import { TypeItemPost } from '../components/FragmentBlogItem/FragmentBlogItem.type';
 
 export type IPostItem = {
     id?: number;
@@ -6,12 +6,13 @@ export type IPostItem = {
     title: string;
     description: string;
     tags: string;
-    items: TypeFragmentBlogItem[];
+    items: TypeItemPost[];
     status?: boolean;
-    state: StatePost;
+    isPin?: boolean;
+    state: IStatePost;
 };
 
-export enum StatePost {
+export enum IStatusPost {
     PENDING,
     PUBLISHED,
     UNPUBLISHED,

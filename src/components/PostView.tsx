@@ -1,15 +1,15 @@
 import { Chip, Image, Link, User } from '@nextui-org/react';
-import { IBlogItem } from '../model/Blog.model';
+import { IPostItem } from '../model/Post.model';
 import { TbHistoryToggle } from 'react-icons/tb';
-import { FragmentBlogItemType, TypeFragmentBlogItem } from './FragmentBlogItem/FragmentBlogItem.type';
+import { FragmentBlogItemType, TypeItemPost } from './FragmentBlogItem/FragmentBlogItem.type';
 import RenderHTMLContent from './RenderHtmlContent';
 import YouTubeEmbed from './FragmentBlogItem/YoutubeEmbed';
 import FacebookEmbed from './FragmentBlogItem/FacebookEmbed';
 
-type BlogViewProps = {
-    data: IBlogItem;
+type PostViewProps = {
+    data: IPostItem;
 };
-const getContentBlog = (data: TypeFragmentBlogItem) => {
+const getContentBlog = (data: TypeItemPost) => {
     switch (data.typeItem) {
         case FragmentBlogItemType.HEADING: {
             return (
@@ -27,7 +27,7 @@ const getContentBlog = (data: TypeFragmentBlogItem) => {
         case FragmentBlogItemType.IMAGE: {
             return (
                 <Link key={data.id} href={data?.link ?? ''} className="w-full">
-                    <Image width={'100%'} alt={data.alt} src={data.urlImg} className="rounded-t-xl w-full" />;
+                    <Image width={'100%'} alt={data.alt} src={data.imgURL} className="rounded-t-xl w-full" />;
                 </Link>
             );
         }
@@ -41,7 +41,7 @@ const getContentBlog = (data: TypeFragmentBlogItem) => {
             return null;
     }
 };
-function BlogView(props: BlogViewProps) {
+function BlogView(props: PostViewProps) {
     const { data } = props;
 
     console.log(data);
@@ -76,7 +76,7 @@ function BlogView(props: BlogViewProps) {
                         </div>
 
                         <div className="flex justify-start truncate items-center gap-2">
-                            {data.tags.split(',').map((tag, index) => (
+                            {data.tags.split(',').map((tag: string, index: number) => (
                                 <Chip color="primary" variant="flat" key={index}>
                                     # {tag}
                                 </Chip>
@@ -88,7 +88,7 @@ function BlogView(props: BlogViewProps) {
                 <h1 className="text-4xl font-semibold">{data.title}</h1>
                 <p>{data.description}</p>
 
-                {data.items.map((item) => getContentBlog(item))}
+                {data.items.map((item: TypeItemPost) => getContentBlog(item))}
             </div>
         </div>
     );

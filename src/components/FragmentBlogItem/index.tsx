@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FragmentBlogItemType, TypeFragmentBlogItem, fragmentBlogItemLabel } from './FragmentBlogItem.type';
+import { FragmentBlogItemType, TypeItemPost, fragmentBlogItemLabel } from './FragmentBlogItem.type';
 import { BsArrowsMove } from 'react-icons/bs';
 import { RiCloseCircleLine } from 'react-icons/ri';
 import { Input, Textarea } from '@nextui-org/react';
@@ -9,8 +9,8 @@ import ReactQuill from 'react-quill';
 type FragmentBlogItemProps = {
     type: FragmentBlogItemType;
     onRemove: (id: string) => void;
-    data: TypeFragmentBlogItem;
-    onChangeData: (data: { content?: string; link?: string; alt?: string; urlImg?: string }) => void;
+    data: TypeItemPost;
+    onChangeData: (data: { content?: string; link?: string; alt?: string; imgURL?: string }) => void;
 };
 
 const getLabel = (type: FragmentBlogItemType): string => {

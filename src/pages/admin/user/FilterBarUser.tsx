@@ -1,14 +1,14 @@
 import { Button } from '@nextui-org/react';
 import Search from '../../../components/Search';
 import { GrPowerReset } from 'react-icons/gr';
-import SelectTypeOrder from '../SelectTypeOrder';
+import SelectOrderType from '../SelectOrderType';
 import SelectRole from './SelectRole';
 
 function FilterBarUser() {
     return (
         <div className="flex mt-10 justify-between items-end gap-10 rounded-xl shadow-xl bg-light-sidebar backdrop-blur-xl dark:bg-dark-sidebar w-full p-4">
             <div className="flex justify-start w-full  items-center gap-6">
-                <SelectTypeOrder
+                <SelectOrderType
                     label="Sắp xếp theo"
                     onResult={function (res: string): void {
                         throw new Error('Function not implemented.');

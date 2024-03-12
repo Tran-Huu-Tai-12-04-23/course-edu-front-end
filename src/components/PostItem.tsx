@@ -5,7 +5,7 @@ import { BsFillBookmarkFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../enum/path';
 
-export default function BlogItem() {
+export default function PostItem() {
     const history = useNavigate();
     const [liked, setLiked] = React.useState(false);
     const topics = ['UX/UI design', 'Study English', 'SEO website', 'Other...'];

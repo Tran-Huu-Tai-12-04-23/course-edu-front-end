@@ -1,18 +1,18 @@
 import { ICourse } from './Course.model';
 
-export type ITypeCourse = {
+export type ICategoryCourse = {
     id?: string;
-    typeName: string;
+    categoryName: string;
 };
 
 export type IHomeResponse = {
     courseRes: ICourseResponse[];
-    typeCourses: ITypeCourse[];
+    categoriesCourse: ICategoryCourse[];
     banners: IBanner[];
 };
 
 export type ICourseResponse = {
-    typeCourse: ITypeCourse;
+    categoryCourse: ICategoryCourse;
     courses: ICourse[];
 };
 

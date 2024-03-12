@@ -1,50 +1,55 @@
 import { Button } from '@nextui-org/react';
-import SelectCategoryBlog from '../../../components/SelectCategoryBlog';
 import Search from '../../../components/Search';
 import { GrPowerReset } from 'react-icons/gr';
-import SelectStatePost from './SeelctStatusPost';
 import { useEffect, useState } from 'react';
-import SelectOrderType from '../SelectOrderType';
+import { IFilterCourse } from '.';
 import { IoAdd } from 'react-icons/io5';
 import { useLocation, useNavigate } from 'react-router-dom';
+import SelectOrderType from '../SelectOrderType';
+import SelectCategoryCourse from './SelectCategoryCourse';
+import SelectStateCourse from './SeelctStatusCourse';
+import { IStatusCourse } from '../../../model/Course.model';
 
-type FilterBarPostProps = {
-    onChange: (value: { tags: string; state: string; searchKey: string; typeOrder: string }) => void;
+type FilterBarCourseProps = {
+    onChange: (value: IFilterCourse) => void;
 };
-function FilterBarPost(props: FilterBarPostProps) {
+function FilterBarCourse(props: FilterBarCourseProps) {
     const history = useNavigate();
     const { pathname } = useLocation();
-    const [tags, setTags] = useState<string>('');
-    const [state, setState] = useState<string>('');
+
+    const [state, setState] = useState<IStatusCourse | -1>(-1);
     const [key, setKey] = useState<string>('');
-    const [typeOrder, setTypeOrder] = useState<string>('');
+    const [orderType, setOrderType] = useState<string>('');
+    const [category, setCategory] = useState<string>('');
 
     useEffect(() => {
         let filter = {
-            tags,
+            orderType: orderType,
+            category,
             state,
-            searchKey: key,
-            typeOrder,
+            key,
         };
-        props.onChange(filter);
-    }, [tags, key, state]);
+        props.onChange({
+            ...filter,
+        });
+    }, [key, state, category, orderType]);
     return (
         <div className="flex mt-10 justify-between  flex-wrap items-end gap-6 rounded-xl shadow-xl bg-light-sidebar backdrop-blur-xl dark:bg-dark-sidebar w-full p-4">
             <div className="flex justify-start w-1/2 items-center gap-6">
-                <SelectCategoryBlog
+                <SelectCategoryCourse
                     onResult={function (res: string): void {
-                        setTags(res);
+                        setCategory(res);
                     }}
                 />
-                <SelectStatePost
-                    onResult={function (res: string): void {
+                <SelectStateCourse
+                    onResult={function (res: IStatusCourse): void {
                         setState(res);
                     }}
                 />
 
                 <SelectOrderType
                     onResult={function (res: string): void {
-                        setTypeOrder(res);
+                        setOrderType(res);
                     }}
                 />
             </div>
@@ -53,9 +58,16 @@ function FilterBarPost(props: FilterBarPostProps) {
                 <Search onChange={(val) => setKey(val)} placeholder="Tìm kiếm theo tiều đề, thể loại, ..." />
                 <Button
                     onClick={() => {
-                        setTags('');
+                        setCategory('');
                         setKey('');
-                        setState('');
+                        setState(-1);
+
+                        props.onChange({
+                            orderType: -1,
+                            category: '',
+                            state: -1,
+                            key: '',
+                        });
                     }}
                     startContent={<GrPowerReset className="text-xl" />}
                     variant="flat"
@@ -70,11 +82,11 @@ function FilterBarPost(props: FilterBarPostProps) {
                     startContent={<IoAdd className="text-xl" />}
                     color="primary"
                 >
-                    Thêm bài viết
+                    Thêm khóa học
                 </Button>
             </div>
         </div>
     );
 }
 
-export default FilterBarPost;
+export default FilterBarCourse;

@@ -1,5 +1,5 @@
 import { Button } from '@nextui-org/react';
-import BlogItem from '../../components/BlogItem';
+import BlogItem from '../../components/PostItem';
 
 function ViewPost() {
     const topics = ['UX/UI design', 'Study English', 'SEO website', 'Other...'];

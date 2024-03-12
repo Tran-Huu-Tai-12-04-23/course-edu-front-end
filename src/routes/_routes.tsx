@@ -13,6 +13,7 @@ import PostManagement from '../pages/admin/post';
 import UserManagement from '../pages/admin/user';
 import DetailPost from '../pages/post/detail';
 import AddPost from '../pages/admin/post/add';
+import AddCourse from '../pages/admin/course/add';
 
 export type routeProps = {
     path: string;
@@ -60,6 +61,11 @@ export const protectedRoutes: routeProps[] = [
     {
         path: path.ADMIN.COURSE,
         component: <CourseManagement />,
+        type: typeRoute.PROTECTED_ROUTE,
+    },
+    {
+        path: path.ADMIN.COURSE + '/add',
+        component: <AddCourse />,
         type: typeRoute.PROTECTED_ROUTE,
     },
     {

@@ -1,4 +1,4 @@
-import BlogView from '../../../components/BlogView';
+import BlogView from '../../../components/PostView';
 
 function DetailPost() {
     const data = {

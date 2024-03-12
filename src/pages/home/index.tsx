@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 
 const fetchData = async (): Promise<IHomeResponse | null> => {
     try {
-        const response = await fetch('http://localhost:8081/api/home');
+        const response = await fetch('https://localhost:7005/api/home');
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
@@ -83,7 +83,7 @@ function Home() {
                                 <div className="flex mt-5 justify-between w-full items-center  ">
                                     <div className="flex justify-start items-center gap-4">
                                         <h5 className="font-extrabold text-2xl">
-                                            {JSON.stringify(cour.typeCourse.typeName)}
+                                            {JSON.stringify(cour.categoryCourse.categoryName)}
                                         </h5>
                                     </div>
                                     <Link href="#" className="underline">

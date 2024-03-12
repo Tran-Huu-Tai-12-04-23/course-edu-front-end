@@ -7,3 +7,8 @@ export type ICourse = {
     adviseVideo: string;
     typeCourse: string;
 };
+
+export enum IStatusCourse {
+    COMING_SOON,
+    PUBLISHED,
+}

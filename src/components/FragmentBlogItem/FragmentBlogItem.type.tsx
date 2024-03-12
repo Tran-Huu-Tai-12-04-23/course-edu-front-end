@@ -144,12 +144,12 @@ export interface IImage {
     id: string;
     index: number;
     alt?: string;
-    urlImg?: string;
+    imgURL?: string;
     link?: string;
     typeItem: FragmentBlogItemType.IMAGE;
 }
 
-export type TypeFragmentBlogItem =
+export type TypeItemPost =
     | IHeading
     | IText
     | ITextEditor

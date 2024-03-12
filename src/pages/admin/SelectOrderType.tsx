@@ -3,32 +3,32 @@ import { TbSelector } from 'react-icons/tb';
 import { ImSortAlphaAsc, ImSortAlphaDesc } from 'react-icons/im';
 import { useState } from 'react';
 
-enum TypeOrder {
+export enum EOrderType {
     ASCENDING,
     DECREASING,
 }
 export type IOrder = {
     id: any;
     nameOrder: string;
-    value: TypeOrder;
+    value: EOrderType;
 };
 
-type SelectTypeOrderProps = {
+type SelectOrderTypeProps = {
     onResult: (res: string) => void;
     label?: string;
 };
 
-function SelectTypeOrder(props: SelectTypeOrderProps) {
+function SelectOrderType(props: SelectOrderTypeProps) {
     const categories: IOrder[] = [
         {
             id: 1,
             nameOrder: 'Tăng dần',
-            value: TypeOrder.ASCENDING,
+            value: EOrderType.ASCENDING,
         },
         {
             id: 2,
             nameOrder: 'Giảm dần',
-            value: TypeOrder.DECREASING,
+            value: EOrderType.DECREASING,
         },
     ];
     const [value, setValue] = useState<string>('');
@@ -39,7 +39,7 @@ function SelectTypeOrder(props: SelectTypeOrderProps) {
                 props.onResult(val.target.value);
             }}
             startContent={
-                value === TypeOrder.DECREASING.toString() ? (
+                value === EOrderType.DECREASING.toString() ? (
                     <ImSortAlphaDesc className="text-xl" />
                 ) : (
                     <ImSortAlphaAsc className="text-xl" />
@@ -48,7 +48,7 @@ function SelectTypeOrder(props: SelectTypeOrderProps) {
             labelPlacement="outside"
             disableSelectorIconRotation
             placeholder="Chọn"
-            label={props.label ? props.label : 'Sắp xếp bài viết theo'}
+            label={props.label ? props.label : 'Sắp xếp theo'}
             className="max-w-[14rem]"
             selectorIcon={<TbSelector className="text-xl" />}
         >
@@ -61,4 +61,4 @@ function SelectTypeOrder(props: SelectTypeOrderProps) {
     );
 }
 
-export default SelectTypeOrder;
+export default SelectOrderType;

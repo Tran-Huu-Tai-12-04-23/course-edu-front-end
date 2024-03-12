@@ -1,8 +1,5 @@
 import FragmentBlogItem from '../../../components/FragmentBlogItem';
-import {
-    fragmentBlogItemLabel,
-    TypeFragmentBlogItem,
-} from '../../../components/FragmentBlogItem/FragmentBlogItem.type';
+import { fragmentBlogItemLabel, TypeItemPost } from '../../../components/FragmentBlogItem/FragmentBlogItem.type';
 import { Button, ButtonGroup } from '@nextui-org/react';
 import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
@@ -10,12 +7,12 @@ import 'react-quill/dist/quill.snow.css';
 import { IoArrowUndo, IoArrowRedo } from 'react-icons/io5';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 type EditorProps = {
-    onResult: (result: TypeFragmentBlogItem[]) => void;
+    onResult: (result: TypeItemPost[]) => void;
 };
 function Editor(props: EditorProps) {
-    const [items, setItems] = useState<TypeFragmentBlogItem[]>([]);
-    const [itemsNextVersion, setItemNextVersion] = useState<TypeFragmentBlogItem[][]>([]);
-    const [itemsPrevVersion, setItemPrevVersion] = useState<TypeFragmentBlogItem[][]>([]);
+    const [items, setItems] = useState<TypeItemPost[]>([]);
+    const [itemsNextVersion, setItemNextVersion] = useState<TypeItemPost[][]>([]);
+    const [itemsPrevVersion, setItemPrevVersion] = useState<TypeItemPost[][]>([]);
 
     const handleUndo = () => {
         if (itemsPrevVersion.length === 0) {
@@ -48,7 +45,7 @@ function Editor(props: EditorProps) {
         const newItems = Array.from(items);
         const [reorderedItem] = newItems.splice(indexSource, 1);
         newItems.splice(indexDes, 0, reorderedItem);
-        const clonedItems = newItems.map((item: TypeFragmentBlogItem, index) => ({ ...item, index }));
+        const clonedItems = newItems.map((item: TypeItemPost, index) => ({ ...item, index }));
         setItems(clonedItems);
     }
 
@@ -61,7 +58,7 @@ function Editor(props: EditorProps) {
                 <Droppable droppableId="characters" direction="vertical">
                     {(provided) => (
                         <ul className="characters flex-col flex " {...provided.droppableProps} ref={provided.innerRef}>
-                            {items.map((item: TypeFragmentBlogItem, index) => (
+                            {items.map((item: TypeItemPost, index) => (
                                 <Draggable key={item.id} draggableId={item.id} index={index}>
                                     {(provided) => (
                                         <div
@@ -78,7 +75,7 @@ function Editor(props: EditorProps) {
                                                     content?: string;
                                                     link?: string;
                                                     alt?: string;
-                                                    urlImg?: string;
+                                                    imgURL?: string;
                                                 }) => {
                                                     setItems((prev) =>
                                                         prev.map((prevIt) =>

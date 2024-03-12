@@ -24,8 +24,16 @@ function Sidebar() {
             path: path.ADMIN.COURSE,
             subNav: [
                 {
-                    name: 'Hello',
+                    name: 'Quản lý',
                     path: '',
+                },
+                {
+                    name: 'Thêm',
+                    path: '/add',
+                },
+                {
+                    name: 'Danh mục',
+                    path: '/category-course',
                 },
             ],
         },
@@ -64,6 +72,7 @@ function Sidebar() {
             <Accordion className="m-0 p-0">
                 {navs.map((nav) => (
                     <AccordionItem
+                        textValue={'nav'}
                         key={nav.key}
                         hideIndicator={!nav?.subNav}
                         className={`pl-2 pr-8 ${nav.path === pathname ? 'text-primary' : ''}`}

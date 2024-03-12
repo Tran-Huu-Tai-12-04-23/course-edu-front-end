@@ -9,7 +9,7 @@ import { path } from '../../../enum/path';
 import SelectCategoryBlog from '../../../components/SelectCategoryBlog';
 import { TypeFragmentBlogItem } from '../../../components/FragmentBlogItem/FragmentBlogItem.type';
 import { motion } from 'framer-motion';
-import BlogView from '../../../components/BlogView';
+import BlogView from '../../../components/PostView';
 import { IoClose } from 'react-icons/io5';
 
 function CreatePost() {

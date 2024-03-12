@@ -1,34 +1,28 @@
 import { Select, SelectItem } from '@nextui-org/react';
 import { TbSelector } from 'react-icons/tb';
-import { StatePost } from '../../../model/Blog.model';
-import { MdPublishedWithChanges } from 'react-icons/md';
+import { MdCategory } from 'react-icons/md';
 
 export type ICategory = {
     id: any;
-    nameState: string;
-    value: StatePost;
+    nameCategory: string;
 };
 
-type SelectStatePostProps = {
+type SelectCategoryCourseProps = {
     onResult: (res: string) => void;
 };
-
-function SelectStatePost(props: SelectStatePostProps) {
+function SelectCategoryCourse(props: SelectCategoryCourseProps) {
     const categories: ICategory[] = [
         {
             id: 1,
-            nameState: 'Chờ duyệt',
-            value: StatePost.PENDING,
+            nameCategory: 'Tech nololgy',
         },
         {
             id: 2,
-            nameState: 'Đã xuất bản',
-            value: StatePost.PUBLISHED,
+            nameCategory: 'PHP',
         },
         {
             id: 3,
-            nameState: 'Bản nháp',
-            value: StatePost.UNPUBLISHED,
+            nameCategory: 'Self-study',
         },
     ];
     return (
@@ -36,21 +30,21 @@ function SelectStatePost(props: SelectStatePostProps) {
             onChange={(val) => {
                 props.onResult(val.target.value);
             }}
-            startContent={<MdPublishedWithChanges className="text-xl" />}
+            startContent={<MdCategory className="text-xl" />}
             labelPlacement="outside"
             disableSelectorIconRotation
             placeholder="Chọn"
-            label="Trạng thái của bài viết"
+            label="Khóa học thuộc danh mục nào"
             className="max-w-[14rem]"
             selectorIcon={<TbSelector className="text-xl" />}
         >
             {categories.map((category: ICategory) => (
-                <SelectItem key={category.id} value={category.value} variant="flat" color="secondary">
-                    {category.nameState}
+                <SelectItem key={category.id} value={category.id} variant="flat" color="secondary">
+                    {category.nameCategory}
                 </SelectItem>
             ))}
         </Select>
     );
 }
 
-export default SelectStatePost;
+export default SelectCategoryCourse;
