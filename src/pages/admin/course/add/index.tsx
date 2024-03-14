@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import StepOutlineProcess from './StepOutlineProcess';
 import AddSummaryInformation from './AddSummaryInformation';
+import AddDetailInformation from './AddDetailInformation';
 
 export enum EStep {
     ADD_SUMMARY_INFORMATION,
@@ -13,7 +14,7 @@ export enum EStep {
 }
 function AddCourse() {
     const history = useNavigate();
-    const [step, setStep] = useState<EStep>(EStep.ADD_SUMMARY_INFORMATION);
+    const [step, setStep] = useState<EStep>(EStep.ADD_DETAIL_GROUP_LESSON);
     return (
         <AdminLayout>
             <div className="w-full  p-4">
@@ -28,6 +29,7 @@ function AddCourse() {
                         {step === EStep.ADD_SUMMARY_INFORMATION && (
                             <AddSummaryInformation onNextStep={() => setStep(EStep.ADD_DETAIL_GROUP_LESSON)} />
                         )}
+                        {step === EStep.ADD_DETAIL_GROUP_LESSON && <AddDetailInformation />}
                     </div>
                 </div>
             </div>

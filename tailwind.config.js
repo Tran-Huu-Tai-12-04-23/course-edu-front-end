@@ -22,7 +22,7 @@ export default {
                 'second-light': '#f4f4f5',
             },
             colors: {
-                primary: '#fd2658',
+                primary: '#9455d3',
             },
             borderColor: {
                 second: 'rgba(0,0,0,0.1)',

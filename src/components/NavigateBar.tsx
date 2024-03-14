@@ -27,7 +27,7 @@ function NavigateBar() {
     ];
     return (
         <div className="bg-[rgba(24,24,27,0.1)] dark:bg-[rgba(255,255,255,0.1)] fixed bottom-4 select-none left-1/2 -translate-x-1/2 z-[100000] p-2 pl-4 pr-4 rounded-xl backdrop-blur-2xl max-w-[30rem] flex justify-center items-center gap-4">
-            <Button onClick={() => history(path.POST.CREATE)} isIconOnly color="danger" aria-label="Like">
+            <Button onClick={() => history(path.POST.CREATE)} isIconOnly color="primary" aria-label="Like">
                 <MdOutlineAdd className="text-2xl" />
             </Button>
 

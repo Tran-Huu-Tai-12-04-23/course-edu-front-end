@@ -55,7 +55,7 @@ function Editor(props: EditorProps) {
     return (
         <div className="w-full p-4 mb-10 flex flex-col gap-10">
             <DragDropContext onDragEnd={handleOnDragEnd}>
-                <Droppable droppableId="characters" direction="vertical">
+                <Droppable droppableId="post-item" direction="vertical">
                     {(provided) => (
                         <ul className="characters flex-col flex " {...provided.droppableProps} ref={provided.innerRef}>
                             {items.map((item: TypeItemPost, index) => (

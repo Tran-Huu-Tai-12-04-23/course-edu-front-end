@@ -10,17 +10,17 @@ const Steps = [
     {
         title: 'Thêm thông tin tóm tắt',
         value: 0,
-        icon: <MdAssignmentAdd className="text-xl" />,
+        icon: <MdAssignmentAdd className="text-xl text-[white] " />,
     },
     {
         title: 'Thêm chi tiết bài học',
         value: 1,
-        icon: <TbListDetails className="text-xl" />,
+        icon: <TbListDetails className="text-xl text-[white]" />,
     },
     {
         title: 'Xác nhân và khởi tạo',
         value: 2,
-        icon: <GiConfirmed className="text-xl" />,
+        icon: <GiConfirmed className="text-xl text-[white]" />,
     },
 ];
 function StepOutlineProcess(props: StepOutlineProcessProp) {
@@ -31,15 +31,15 @@ function StepOutlineProcess(props: StepOutlineProcessProp) {
                     key={stepItem.value}
                     className={`${index === Steps.length - 1 ? 'w-0 ' : 'w-1/3 after:border-4'} cursor-pointer ${
                         stepItem.value === props.step || stepItem.value == EStep.ADD_SUMMARY_INFORMATION
-                            ? 'after:border-green-600 '
+                            ? 'after:border-primary '
                             : 'after:border-second '
                     } flex items-center  after:content-[''] after:w-full after:h-1 after:border-b  after:inline-block`}
                 >
                     <span
                         className={`${
                             stepItem.value === props.step || stepItem.value == EStep.ADD_SUMMARY_INFORMATION
-                                ? 'bg-green-600'
-                                : 'bg-light-sidebar dark:bg-dark-sidebar '
+                                ? 'bg-primary'
+                                : ' bg-dark-sidebar '
                         } flex items-center justify-center w-10 h-10  rounded-full lg:h-12 lg:w-12 shrink-0`}
                     >
                         {stepItem.icon}
