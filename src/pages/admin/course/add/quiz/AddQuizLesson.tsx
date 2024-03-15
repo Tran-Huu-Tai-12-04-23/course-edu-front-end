@@ -3,6 +3,7 @@ import { MdAdd } from 'react-icons/md';
 import FormAddQuizLesson from './FormAddQuizLesson';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import { memo, useState, useMemo } from 'react';
+import { IoIosSave } from 'react-icons/io';
 
 const lessonExample = {
     content: 'Hello how are u ?',
@@ -91,15 +92,14 @@ function AddQuizLesson() {
                     </Droppable>
                 </DragDropContext>
             </div>
-
-            <Button
-                onClick={handleAddNewLesson}
-                startContent={<MdAdd />}
-                color="secondary"
-                className="mt-10 right-1/2 z-50 translate-x-1/2 mb-20 fixed -bottom-16 shadow-2xl"
-            >
-                Thêm câu hỏi
-            </Button>
+            <div className="flex justify-center gap-4 mt-10 items-center right-1/2 z-50 translate-x-1/2 mb-20 fixed -bottom-16 shadow-2xl">
+                <Button onClick={handleAddNewLesson} startContent={<MdAdd />} color="secondary" className="  ">
+                    Thêm câu hỏi
+                </Button>
+                <Button onClick={() => {}} startContent={<IoIosSave />} color="success" className="text-white">
+                    Lưu lại
+                </Button>
+            </div>
         </div>
     );
 }

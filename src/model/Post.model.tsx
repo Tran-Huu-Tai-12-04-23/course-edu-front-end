@@ -7,9 +7,8 @@ export type IPostItem = {
     description: string;
     tags: string;
     items: TypeItemPost[];
-    status?: boolean;
+    status?: IStatusPost;
     isPin?: boolean;
-    state: IStatePost;
 };
 
 export enum IStatusPost {

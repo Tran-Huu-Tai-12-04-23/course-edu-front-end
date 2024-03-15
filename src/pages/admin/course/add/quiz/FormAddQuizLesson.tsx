@@ -83,19 +83,18 @@ function FormAddQuizLesson(props: FormAddQuizLessonProps) {
                         {...provided.dragHandleProps}
                         className="relative  group w-full flex-col flex gap-2 p-4 rounded-lg bg-white dark:bg-black"
                     >
-                        <div className=" flex justify-between items-center mb-4 ">
-                            <h1 className="font-bold">{props.index + 1}. Nhập câu hỏi</h1>
-                            <Button
-                                variant="flat"
-                                color="danger"
-                                onClick={() => {
-                                    props.onRemove(props.data.id);
-                                }}
-                                isIconOnly
-                                startContent={<FaTrash />}
-                                className="absolute hidden group-hover:flex top-2 right-2"
-                            />
-                        </div>
+                        <Button
+                            variant="flat"
+                            color="danger"
+                            onClick={() => {
+                                props.onRemove(props.data.id);
+                            }}
+                            isIconOnly
+                            startContent={<FaTrash />}
+                            className="absolute hidden group-hover:flex top-2 right-2"
+                        />
+                        <h1 className="font-bold">{props.index + 1}.</h1>
+
                         <ReactQuill
                             value={content}
                             onChange={(val) => setContent(val)}

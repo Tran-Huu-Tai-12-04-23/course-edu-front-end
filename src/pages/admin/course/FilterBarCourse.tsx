@@ -35,7 +35,7 @@ function FilterBarCourse(props: FilterBarCourseProps) {
     }, [key, state, category, orderType]);
     return (
         <div className="flex mt-10 justify-between  flex-wrap items-end gap-6 rounded-xl shadow-xl bg-light-sidebar backdrop-blur-xl dark:bg-dark-sidebar w-full p-4">
-            <div className="flex justify-start w-1/2 items-center gap-6">
+            <div className="flex justify-start items-center gap-6 min-w-[40rem]">
                 <SelectCategoryCourse
                     onResult={function (res: string): void {
                         setCategory(res);
@@ -54,7 +54,7 @@ function FilterBarCourse(props: FilterBarCourseProps) {
                 />
             </div>
 
-            <div className="w-max flex justify-start items-center gap-6">
+            <div className=" flex justify-start items-center gap-6">
                 <Search onChange={(val) => setKey(val)} placeholder="Tìm kiếm theo tiều đề, thể loại, ..." />
                 <Button
                     onClick={() => {

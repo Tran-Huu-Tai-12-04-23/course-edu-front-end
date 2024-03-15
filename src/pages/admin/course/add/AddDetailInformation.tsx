@@ -27,7 +27,7 @@ const GroupLessonDataExample = [
     },
 ];
 
-export type GroupLessonType = (typeof GroupLessonDataExample)[0];
+export type TypeGroupLesson = (typeof GroupLessonDataExample)[0];
 function AddDetailInformation() {
     const [isOpenModalAddGroupLesson, setIsOpenModalAddGroupLesson] = useState<boolean>(false);
     const [groupLessons, setGroupLessons] = useState<typeof GroupLessonDataExample>(GroupLessonDataExample);
@@ -51,7 +51,57 @@ function AddDetailInformation() {
         setGroupLessons((prev) => prev.filter((p) => p.id !== id));
     };
     function handleOnDragEnd(result: any): void {
-        console.log(result);
+        if (!result.destination) return;
+        if (result.type === 'COLUMN') {
+            const indexDes = result.destination.index;
+            const indexSource = result.source.index;
+            console.log(indexDes);
+            console.log(indexSource);
+            const newItems = Array.from(groupLessons);
+            const [reorderedItem] = newItems.splice(indexSource, 1);
+            newItems.splice(indexDes, 0, reorderedItem);
+            const clonedItems = newItems.map((item: TypeGroupLesson, index) => ({ ...item, index }));
+            setGroupLessons(clonedItems);
+        } else if (result.type === 'DEFAULT') {
+            console.log(result);
+            const indexDes = result.destination.index;
+            const idDes = +result.destination.droppableId.split('-')[2];
+            const indexSource = result.source.index;
+            const idSource = +result.source.droppableId.split('-')[2];
+            console.log({
+                indexDes,
+                idDes,
+                indexSource,
+                idSource,
+            });
+            const colDes = groupLessons.find((gr) => gr.id === idDes);
+            if (!colDes) {
+                console.log('Khong tim thay dich den');
+                return;
+            }
+
+            const colSource = groupLessons.find((gr) => gr.id === idSource);
+            if (!colSource) {
+                console.log('Khong tim thay nguon');
+                return;
+            }
+
+            console.log(colSource);
+            console.log(colDes);
+            const targetLesson =
+                colSource.lessons.slice(indexSource, 1).length > 0
+                    ? { ...colSource.lessons.slice(indexSource, 1)[0] }
+                    : null;
+
+            console.log(targetLesson);
+            colSource.lessons.splice(indexSource, 1);
+            if (!targetLesson) {
+                console.log('Vi tri cua lesson nguon khong hop le');
+                return;
+            }
+
+            colDes.lessons.splice(indexDes, 1, targetLesson);
+        }
     }
 
     console.log(groupLessons);
@@ -79,7 +129,7 @@ function AddDetailInformation() {
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                             >
-                                {groupLessons.map((item: GroupLessonType, index) => (
+                                {groupLessons.map((item: TypeGroupLesson, index) => (
                                     <GroupLesson
                                         key={index}
                                         index={index}

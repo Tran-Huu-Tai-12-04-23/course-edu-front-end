@@ -5,6 +5,8 @@ import { TiVideo } from 'react-icons/ti';
 import { BsPostcardFill } from 'react-icons/bs';
 import AddQuizLesson from './quiz/AddQuizLesson';
 import { memo, useState } from 'react';
+import FormAddVideo from './video/FormAddVideo';
+import FormAddPost from './post/FormAddPost';
 
 type ModalAddLessonProps = {
     isOpen: boolean;
@@ -52,16 +54,20 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                                         <span>Video bài giảng</span>
                                     </div>
                                 }
-                            />
+                            >
+                                <FormAddVideo />
+                            </Tab>
                             <Tab
-                                key="póst"
+                                key="post"
                                 title={
                                     <div className="flex items-center space-x-2">
                                         <BsPostcardFill />
                                         <span>Bài viết hướng dẫn</span>
                                     </div>
                                 }
-                            />
+                            >
+                                <FormAddPost />
+                            </Tab>
                         </Tabs>
                     </ScrollShadow>
                 </div>

@@ -7,19 +7,23 @@ import Editor from './Editor';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { path } from '../../../enum/path';
 import SelectCategoryBlog from '../../../components/SelectCategoryBlog';
-import { TypeFragmentBlogItem } from '../../../components/FragmentBlogItem/FragmentBlogItem.type';
 import { motion } from 'framer-motion';
 import BlogView from '../../../components/PostView';
 import { IoClose } from 'react-icons/io5';
+import { TypeItemPost } from '../../../components/FragmentBlogItem/FragmentBlogItem.type';
+import { IStatusPost } from '../../../model/Post.model';
 
-function CreatePost() {
+type CreatePostProps = {
+    mode: string;
+};
+function CreatePost(props: CreatePostProps) {
     const pathname = useLocation();
     const history = useNavigate();
     const [thumbnail, setThumbnail] = useState<string>('');
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [tags, setTags] = useState<string>('');
-    const [items, setItems] = useState<TypeFragmentBlogItem[]>([]);
+    const [items, setItems] = useState<TypeItemPost[]>([]);
     const [isPreview, setIsPreview] = useState<boolean>(false);
     return (
         <div className="w-full h-full overflow-auto  pb-20 top-0 bottom-0 right-0 left-0  z-[100000000]">
@@ -43,6 +47,7 @@ function CreatePost() {
                                 title,
                                 description,
                                 items,
+                                status: IStatusPost.PENDING,
                             }}
                         />
                     </motion.div>
@@ -108,7 +113,7 @@ function CreatePost() {
                 </div>
             </div>
             <div className="max-w-4xl m-auto mt-5 select-none">
-                <Editor onResult={(res: TypeFragmentBlogItem[]) => setItems(res)} />
+                <Editor onResult={(res: TypeItemPost[]) => setItems(res)} />
             </div>
 
             <div className="w-full flex flex-col gap-5 justify-center items-center">

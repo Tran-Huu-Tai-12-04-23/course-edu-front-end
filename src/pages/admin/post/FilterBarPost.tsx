@@ -30,7 +30,7 @@ function FilterBarPost(props: FilterBarPostProps) {
     }, [tags, key, state]);
     return (
         <div className="flex mt-10 justify-between  flex-wrap items-end gap-6 rounded-xl shadow-xl bg-light-sidebar backdrop-blur-xl dark:bg-dark-sidebar w-full p-4">
-            <div className="flex justify-start w-1/2 items-center gap-6">
+            <div className="flex justify-start min-w-[40rem] items-center gap-6">
                 <SelectCategoryBlog
                     onResult={function (res: string): void {
                         setTags(res);

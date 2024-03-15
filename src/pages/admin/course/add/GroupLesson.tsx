@@ -3,7 +3,7 @@ import { IoMdAdd } from 'react-icons/io';
 import { FaTrash } from 'react-icons/fa';
 import { useState } from 'react';
 import Lesson from './Lesson';
-import { GroupLessonType } from './AddDetailInformation';
+import { TypeGroupLesson } from './AddDetailInformation';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import { MdModeEditOutline } from 'react-icons/md';
 import { motion } from 'framer-motion';
@@ -11,7 +11,7 @@ import ModalAddLesson from './ModalAddLesson';
 
 type GroupLessonProps = {
     onRemove: (id: any) => void;
-    data: GroupLessonType;
+    data: TypeGroupLesson;
     index: number;
 };
 
