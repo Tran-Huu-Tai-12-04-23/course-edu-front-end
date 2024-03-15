@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import FilterBarCourse from './FilterBarCourse';
 import Table from './Table';
-import { IStateCourse } from '../../../model/Course.model';
+import { IStatusCourse } from '../../../model/Course.model';
 
 export type IFilterCourse = {
     category: string;
-    state: IStateCourse | -1;
+    state: IStatusCourse | -1;
     orderType: string | -1;
     key: string;
 };

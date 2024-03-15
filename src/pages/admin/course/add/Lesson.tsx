@@ -1,18 +1,18 @@
 import { Button } from '@nextui-org/react';
 import { FaTrash } from 'react-icons/fa';
 import { MdEdit } from 'react-icons/md';
-import { TypeLesson } from './GroupLesson';
 import { Draggable } from '@hello-pangea/dnd';
 import { memo } from 'react';
+import RenderHTMLContent from '../../../../components/RenderHtmlContent';
 
 type LessonProps = {
-    data: TypeLesson;
+    data: any;
     index: number;
 };
 function Lesson(props: LessonProps) {
     return (
         <Draggable key={props.data.id} draggableId={'lesson-' + props.data.id.toString()} index={props.index}>
-            {(provided, snapshot) => {
+            {(provided) => {
                 return (
                     <div
                         ref={provided.innerRef}
@@ -23,7 +23,7 @@ function Lesson(props: LessonProps) {
                         <h1 className="">
                             {props.index + 1}. {props.data.title}
                         </h1>
-                        <div className="hidden justify-end group-hover:flex items-center gap-4">
+                        <div className="hidden justify-end grozup-hover:flex items-center gap-4">
                             <Button isIconOnly variant="flat" startContent={<MdEdit />} size="sm" />
                             <Button isIconOnly startContent={<FaTrash className="text-red-600 " />} size="sm" />
                         </div>

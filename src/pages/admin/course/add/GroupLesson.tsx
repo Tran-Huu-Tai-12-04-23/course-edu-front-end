@@ -26,9 +26,7 @@ export type TypeLesson = typeof lesson;
 function GroupLesson(props: GroupLessonProps) {
     const [isOpenConfirmRemove, setIsOpenConfirmRemove] = useState<boolean>(false);
     const [isHovered, setIsHovered] = useState(false);
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
-    console.log(isOpenConfirmRemove);
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
     return (
         <>
@@ -132,7 +130,7 @@ function GroupLesson(props: GroupLessonProps) {
                     </div>
                 )}
             </Draggable>
-            <ModalAddLesson isOpen={isOpen} onOpenChange={onOpenChange} />
+            <ModalAddLesson isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose} />
         </>
     );
 }

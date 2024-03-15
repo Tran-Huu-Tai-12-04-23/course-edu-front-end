@@ -1,7 +1,7 @@
 import { Button, Input, Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react';
 import { IoMdAdd } from 'react-icons/io';
 import GroupLesson from './GroupLesson';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 
 const GroupLessonDataExample = [
@@ -136,4 +136,4 @@ function AddDetailInformation() {
     );
 }
 
-export default AddDetailInformation;
+export default memo(AddDetailInformation);
