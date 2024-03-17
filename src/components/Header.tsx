@@ -8,16 +8,14 @@ import { PiSunLight } from 'react-icons/pi';
 import { useTheme } from '../context/themeContext';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../enum/path';
-import helper from '../helper';
+import { useAuth } from '../context/authContext';
 // import { PiCloudMoonThin } from 'react-icons/pi';
 
 function Header() {
-    const accessToken = helper.getToken();
-
     const history = useNavigate();
     const { toggleTheme } = useTheme();
-    const isAuthenticated = accessToken !== null;
 
+    const { isAuthenticated } = useAuth();
     return (
         <header className="select-none h-header border-b-[1px] border-solid dark:border-gray-900 backdrop-blur-2xl fixed z-[100000] left-0 top-0 right-0 flex justify-between items-center p-4">
             <div

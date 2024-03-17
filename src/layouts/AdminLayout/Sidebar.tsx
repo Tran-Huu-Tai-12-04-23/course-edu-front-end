@@ -33,7 +33,7 @@ function Sidebar() {
                 },
                 {
                     name: 'Danh mục',
-                    path: '/category-course',
+                    path: '/category',
                 },
             ],
         },
@@ -65,7 +65,7 @@ function Sidebar() {
         },
     ];
     return (
-        <div className="select-none shadow-3xl fixed z-[100000] dark:bg-dark-sidebar  bg-white backdrop-blur-3xl flex justify-start max-h-screen rounded-xl left-4 bottom-4 top-4 items-start flex-col">
+        <div className="select-none shadow-3xl fixed z-auto dark:bg-dark-sidebar  bg-white backdrop-blur-3xl flex justify-start max-h-screen rounded-xl left-4 bottom-4 top-4 items-start flex-col">
             <div className="flex justify-center items-center w-full border-b-[1px] border-solid border-second pb-5 mb-5">
                 <Image className="scale-[200%] mt-5" isBlurred width={50} src={logo} alt="Course Edut" />
             </div>

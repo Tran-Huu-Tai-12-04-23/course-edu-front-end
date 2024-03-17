@@ -8,7 +8,7 @@ import ReactQuill from 'react-quill';
 
 type FragmentBlogItemProps = {
     type: FragmentBlogItemType;
-    onRemove: (id: string) => void;
+    onRemove: (id: number) => void;
     data: TypeItemPost;
     onChangeData: (data: { content?: string; link?: string; alt?: string; imgURL?: string }) => void;
 };
@@ -26,6 +26,9 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
                         onChange={(e) =>
                             props.onChangeData({
                                 content: e.target.value,
+                                alt: '',
+                                imgURL: '',
+                                link: '',
                             })
                         }
                         labelPlacement={'outside'}
@@ -39,9 +42,10 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
             case FragmentBlogItemType.IMAGE: {
                 return (
                     <FragmentImgFileItem
-                        onChangeData={(data: { link?: string; alt?: string; urlImg?: string }) =>
+                        onChangeData={(data: { link?: string; alt?: string; urlImg?: string; content?: string }) =>
                             props.onChangeData({
                                 ...data,
+                                content: '',
                             })
                         }
                     />
@@ -53,6 +57,9 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
                         onChange={(e) =>
                             props.onChangeData({
                                 content: e.target.value,
+                                alt: '',
+                                imgURL: '',
+                                link: '',
                             })
                         }
                         labelPlacement={'outside'}
@@ -71,6 +78,9 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
                         onChange={(val) =>
                             props.onChangeData({
                                 content: val,
+                                alt: '',
+                                imgURL: '',
+                                link: '',
                             })
                         }
                         className="rounded-lg w-full bg-[#f4f4f5] dark:bg-[#27272a]"
@@ -85,6 +95,9 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
                         onChange={(e) =>
                             props.onChangeData({
                                 link: e.target.value,
+                                alt: '',
+                                imgURL: '',
+                                content: '',
                             })
                         }
                         labelPlacement={'outside'}
@@ -101,54 +114,9 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
                         onChange={(e) =>
                             props.onChangeData({
                                 link: e.target.value,
-                            })
-                        }
-                        labelPlacement={'outside'}
-                        className=""
-                        type="text"
-                        placeholder="Dán đường dẫn vào đây"
-                    />
-                );
-            }
-
-            case FragmentBlogItemType.EMBED_TIKTOK: {
-                return (
-                    <Input
-                        onChange={(e) =>
-                            props.onChangeData({
-                                link: e.target.value,
-                            })
-                        }
-                        labelPlacement={'outside'}
-                        className=""
-                        type="text"
-                        placeholder="Dán đường dẫn vào đây"
-                    />
-                );
-            }
-
-            case FragmentBlogItemType.EMBED_INSTAGRAM: {
-                return (
-                    <Input
-                        onChange={(e) =>
-                            props.onChangeData({
-                                link: e.target.value,
-                            })
-                        }
-                        labelPlacement={'outside'}
-                        className=""
-                        type="text"
-                        placeholder="Dán đường dẫn vào đây"
-                    />
-                );
-            }
-
-            case FragmentBlogItemType.EMBED_GITHUB: {
-                return (
-                    <Input
-                        onChange={(e) =>
-                            props.onChangeData({
-                                link: e.target.value,
+                                alt: '',
+                                imgURL: '',
+                                content: '',
                             })
                         }
                         labelPlacement={'outside'}
@@ -187,7 +155,7 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
                 <RiCloseCircleLine
                     className="text-xl hover:text-primary cursor-pointer"
                     onClick={() => {
-                        props.onRemove(props.data.id);
+                        props.data?.id && props.onRemove(props.data.id);
                     }}
                 />
                 <BsArrowsMove className="text-xl cursor-grab hover:text-blue-600" />

@@ -11,7 +11,7 @@ function MainLayout(props: MainLayoutProps) {
         <div className="max-w-screen min-h-screen select-none">
             <Header />
             <div className="flex pt-header gap-2 justify-start items-start w-full overflow-hidden pb-32">
-                <div className="w-full">{props.children}</div>
+                <div className="w-full max-w-screen-2xl m-auto">{props.children}</div>
             </div>
             <NavigateBar />
 

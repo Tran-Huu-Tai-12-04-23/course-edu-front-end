@@ -101,7 +101,7 @@ function GroupLesson(props: GroupLessonProps) {
                                                 </Button>
                                                 <Button
                                                     size="sm"
-                                                    color="primary"
+                                                    color="danger"
                                                     onClick={() => props.onRemove(props.data.id)}
                                                 >
                                                     Chắc chắn

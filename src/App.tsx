@@ -6,9 +6,10 @@ import { useEffect } from 'react';
 import { useTheme } from './context/themeContext';
 import LearningLayout from './layouts/LearningLayout';
 import { Toaster } from 'react-hot-toast';
+import { useAuth } from './context/authContext';
 
 export default function App() {
-    const isAuthenticated = true;
+    const { isAuthenticated } = useAuth();
     // const isAllowed = typeRole.ADMIN === typeRole.ADMIN && isAuthenticated;
     const { theme } = useTheme();
 
@@ -70,17 +71,7 @@ export default function App() {
 
                 {/* Protected Routes */}
                 {protectedRoutes.map((route, index) => (
-                    <Route
-                        key={index}
-                        path={route.path}
-                        element={
-                            isAuthenticated && typeRole.ADMIN === typeRole.ADMIN ? (
-                                route.component
-                            ) : (
-                                <Navigate to={path.HOME} />
-                            )
-                        }
-                    />
+                    <Route key={index} path={route.path} element={route.component} />
                 ))}
             </Routes>
         </>

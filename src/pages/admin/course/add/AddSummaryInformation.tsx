@@ -1,30 +1,82 @@
 import { useState } from 'react';
-import { Button, Input, Textarea } from '@nextui-org/react';
+import { Button, Chip, Input, Textarea } from '@nextui-org/react';
 import UploadFile from '../../../../components/UploadFile';
 import { MdOutlineSubtitles, MdTitle } from 'react-icons/md';
 import { FaHeading } from 'react-icons/fa';
 import { GrFormNextLink } from 'react-icons/gr';
 import SelectCategoryCourse from '../SelectCategoryCourse';
-import { EStep } from '.';
+import { ICourse } from '../../../../model/Course.model';
 
 type AddSummaryInformationProps = {
     onNextStep: () => void;
 };
+
+const createNewCourse = async (newCourse: any): Promise<ICourse | null> => {
+    try {
+        const response = await fetch('https://localhost:7005/api/course', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newCourse),
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const responseData: ICourse | null = await response.json();
+        return responseData;
+    } catch (error) {
+        console.error('Error during registration:', error);
+        return null;
+    }
+};
+
 function AddSummaryInformation(props: AddSummaryInformationProps) {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [subTitle, setSubtitle] = useState<string>('');
+    const [thumbnail, setThumbnail] = useState<string>('');
+    const [category, setCategory] = useState<number>(0);
+    const [price, setPrice] = useState<number>(0);
+    const [requireSkill, setRequireSkill] = useState<string>('');
+    const [target, setTarget] = useState<string>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const handleAddNewCourse = async () => {
+        const newCourse = {
+            title,
+            description,
+            subTitle,
+            thumbnail,
+            price,
+            adviseVideo: '',
+            categoryId: category,
+            requireSkill,
+            target,
+        };
+
+        setIsLoading(true);
+        const res: ICourse | null = await createNewCourse(newCourse);
+        setIsLoading(false);
+
+        if (res) {
+            // props.onNextStep();
+            console.log(res);
+        }
+    };
     return (
         <div className="w-full h-full">
             <h1 className="font-bold text-xl">Điền thông tin cơ bản của khóa học</h1>
 
             <div className="mt-10 flex justify-between items-center gap-10">
-                <UploadFile
-                    onFinished={function (res: string): void {
-                        throw new Error('Function not implemented.');
-                    }}
-                    value={''}
-                />
+                <div className="w-1/2">
+                    <UploadFile
+                        onFinished={function (res: string): void {
+                            setThumbnail(res);
+                        }}
+                        value={thumbnail}
+                    />
+                </div>
 
                 <div className="w-full flex flex-col gap-6">
                     <Input
@@ -37,7 +89,6 @@ function AddSummaryInformation(props: AddSummaryInformationProps) {
                         labelPlacement={'outside'}
                         placeholder=""
                     />
-
                     <Input
                         value={subTitle}
                         onChange={(e) => setSubtitle(e.target.value)}
@@ -56,18 +107,71 @@ function AddSummaryInformation(props: AddSummaryInformationProps) {
                         className="w-full"
                     />
 
-                    <SelectCategoryCourse
-                        onResult={function (res: string): void {
-                            throw new Error('Function not implemented.');
+                    <Input
+                        onChange={(e) => {
+                            setRequireSkill(e.target.value);
                         }}
+                        label="Các kỹ năng cần thiết "
+                        placeholder="Mỗi yêu cầu cách nhau dấu ,"
+                        labelPlacement="outside"
                     />
+                    {requireSkill && (
+                        <div className="flex justify-start gap-4 items-start flex-wrap ga-4">
+                            {requireSkill.split(',').map((i, index) => (
+                                <Chip variant="flat" key={index} color="secondary">
+                                    # {i}
+                                </Chip>
+                            ))}
+                        </div>
+                    )}
+
+                    <Input
+                        onChange={(e) => {
+                            setTarget(e.target.value);
+                        }}
+                        label="Đạt được những gì sau khóa học này "
+                        placeholder="..."
+                        labelPlacement="outside"
+                    />
+
+                    {target && (
+                        <div className="flex justify-start gap-4 items-start flex-wrap ga-4">
+                            {target.split(',').map((i, index) => (
+                                <Chip variant="flat" key={index} color="success">
+                                    #{i}
+                                </Chip>
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="flex justify-start items-center gap-4 ">
+                        <Input
+                            onChange={(e) => setPrice(+e.target.value)}
+                            type="number"
+                            className="w-fit"
+                            label="Giá công khai của khóa học"
+                            placeholder="0.00"
+                            labelPlacement="outside"
+                            startContent={
+                                <div className="pointer-events-none flex items-center">
+                                    <span className="text-default-400 text-small">VND</span>
+                                </div>
+                            }
+                        />
+                        <SelectCategoryCourse
+                            onResult={function (res: number): void {
+                                setCategory(res);
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
             <div className="flex justify-end items-center">
                 <Button
-                    onClick={() => props.onNextStep()}
+                    onClick={handleAddNewCourse}
                     startContent={<GrFormNextLink className="text-xl" />}
                     color="success"
+                    isLoading={isLoading}
                     className="text-white"
                 >
                     Tiếp theo

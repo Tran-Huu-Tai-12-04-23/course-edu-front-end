@@ -14,10 +14,10 @@ export enum EStep {
 }
 function AddCourse() {
     const history = useNavigate();
-    const [step, setStep] = useState<EStep>(EStep.ADD_DETAIL_GROUP_LESSON);
+    const [step, setStep] = useState<EStep>(EStep.ADD_SUMMARY_INFORMATION);
     return (
         <AdminLayout>
-            <div className="w-full  p-4">
+            <div className="w-full p-4">
                 <Breadcrumbs>
                     <BreadcrumbItem onClick={() => history(path.ADMIN.COURSE)}>Quản trị</BreadcrumbItem>
                     <BreadcrumbItem>Quản lý</BreadcrumbItem>

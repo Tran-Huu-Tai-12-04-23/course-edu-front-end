@@ -11,6 +11,7 @@ import { IResponse } from '../../model/Common.model';
 import { IUser } from '../../model/User.model';
 import { IToken } from '../../model/Token.model';
 import helper from '../../helper';
+import { useAuth } from '../../context/authContext';
 
 type LoginWithEmailProps = {
     onBack: () => void;
@@ -45,6 +46,7 @@ const loginFetch = async (userData: { email: string; password: string }): Promis
 function LoginWithEmail(props: LoginWithEmailProps) {
     const loading = useLoading();
     const history = useNavigate();
+    const { login } = useAuth();
 
     const { register, handleSubmit } = useForm<Inputs>();
 
@@ -65,6 +67,7 @@ function LoginWithEmail(props: LoginWithEmailProps) {
         if (response.status === 200) {
             toast.success(response.message);
             response.data && helper.login(response.data);
+            login(response.meta);
             history(path.HOME);
         } else {
             toast.error(response.message);

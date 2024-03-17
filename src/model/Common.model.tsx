@@ -1,8 +1,10 @@
 import { ICourse } from './Course.model';
 
 export type ICategoryCourse = {
-    id?: string;
+    id?: string | number;
     categoryName: string;
+    isLock?: boolean;
+    isAdd?: boolean;
 };
 
 export type IHomeResponse = {

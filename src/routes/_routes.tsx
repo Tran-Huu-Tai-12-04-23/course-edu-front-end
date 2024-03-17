@@ -14,6 +14,8 @@ import UserManagement from '../pages/admin/user';
 import DetailPost from '../pages/post/detail';
 import AddPost from '../pages/admin/post/add';
 import AddCourse from '../pages/admin/course/add';
+import UserManagerPost from '../pages/user/manager-post';
+import ManagerCategory from '../pages/admin/course/manager-category';
 
 export type routeProps = {
     path: string;
@@ -69,6 +71,11 @@ export const protectedRoutes: routeProps[] = [
         type: typeRoute.PROTECTED_ROUTE,
     },
     {
+        path: path.ADMIN.MANAGER_COURSE_CATEGORY,
+        component: <ManagerCategory />,
+        type: typeRoute.PROTECTED_ROUTE,
+    },
+    {
         path: path.ADMIN.POST,
         component: <PostManagement />,
         type: typeRoute.PROTECTED_ROUTE,
@@ -98,6 +105,11 @@ export const privateRoutes: routeProps[] = [
     {
         path: path.POST.VIEW,
         component: <ViewPost />,
+        type: typeRoute.PRIVATE_ROUTE,
+    },
+    {
+        path: path.USER.MANAGER_POST,
+        component: <UserManagerPost />,
         type: typeRoute.PRIVATE_ROUTE,
     },
 ];

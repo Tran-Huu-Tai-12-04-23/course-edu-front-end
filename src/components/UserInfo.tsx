@@ -1,8 +1,9 @@
 import { Popover, PopoverContent, PopoverTrigger, User } from '@nextui-org/react';
-import helper from '../helper';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../enum/path';
+import { useAuth } from '../context/authContext';
+import { useEffect, useState } from 'react';
 type UserActionItem = {
     name: string;
     path: string;
@@ -10,7 +11,9 @@ type UserActionItem = {
 };
 
 function UserInfo() {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const history = useNavigate();
+    const { logout } = useAuth();
     const userAction: UserActionItem[][] = [
         [
             {
@@ -22,10 +25,16 @@ function UserInfo() {
             {
                 name: 'Viết blog',
                 path: '',
+                action: () => {
+                    history(path.POST.CREATE);
+                },
             },
             {
                 name: 'Bài viết của tôi',
-                path: '',
+                path: path.USER.MANAGER_POST,
+                action: () => {
+                    history(path.USER.MANAGER_POST);
+                },
             },
         ],
         [
@@ -43,15 +52,27 @@ function UserInfo() {
                 name: 'Đăng xuất ',
                 path: '',
                 action: () => {
-                    helper.logout();
+                    logout();
                     toast.success('Đăng xuất thành công!');
                     history(path.AUTH.LOGIN);
                 },
             },
         ],
     ];
+
+    useEffect(() => {
+        const handleCloseModal = () => {
+            setIsOpen(false);
+        };
+
+        window.addEventListener('click', handleCloseModal);
+
+        return () => {
+            window.removeEventListener('click', handleCloseModal);
+        };
+    }, []);
     return (
-        <Popover placement={'bottom-end'}>
+        <Popover placement={'bottom-end'} isOpen={isOpen}>
             <PopoverTrigger>
                 <User
                     className="select-none  cursor-pointer hover:text-primary"
@@ -60,6 +81,7 @@ function UserInfo() {
                     avatarProps={{
                         src: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
                     }}
+                    onClick={() => setIsOpen(true)}
                 />
             </PopoverTrigger>
             <PopoverContent className=" light:text-black border-none w-[15rem] p-4 rounded-lg">

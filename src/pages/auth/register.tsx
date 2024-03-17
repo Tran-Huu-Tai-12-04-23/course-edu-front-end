@@ -10,6 +10,8 @@ import { IResponse } from '../../model/Common.model';
 import { IUser } from '../../model/User.model';
 import { useLoading } from '../../context/loadingContext';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/authContext';
+import { useEffect } from 'react';
 
 const registerFetch = async (userData: { email: string; password: string }): Promise<IResponse<IUser, IUser>> => {
     try {
@@ -42,6 +44,7 @@ type Inputs = {
 function Register() {
     const loading = useLoading();
     const history = useNavigate();
+    const { isAuthenticated } = useAuth();
     const { register, handleSubmit, watch } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -83,6 +86,12 @@ function Register() {
         }
         return true;
     };
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            history(path.HOME);
+        }
+    }, [isAuthenticated]);
 
     return (
         <div className="max-w-2xl m-auto mt-5 select-none">

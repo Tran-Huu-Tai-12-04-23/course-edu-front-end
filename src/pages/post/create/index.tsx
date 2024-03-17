@@ -11,12 +11,29 @@ import { motion } from 'framer-motion';
 import BlogView from '../../../components/PostView';
 import { IoClose } from 'react-icons/io5';
 import { TypeItemPost } from '../../../components/FragmentBlogItem/FragmentBlogItem.type';
-import { IStatusPost } from '../../../model/Post.model';
+import { IPostItem, IPostRequest, IStatusPost } from '../../../model/Post.model';
+import { useAuth } from '../../../context/authContext';
 
-type CreatePostProps = {
-    mode: string;
+const createNewPost = async (newPost: IPostRequest): Promise<IPostItem | null> => {
+    try {
+        const response = await fetch('https://localhost:7005/api/post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newPost),
+        });
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const responseData: IPostItem = await response.json();
+        return responseData;
+    } catch (error) {
+        console.error('Error during registration:', error);
+        return null;
+    }
 };
-function CreatePost(props: CreatePostProps) {
+function CreatePost() {
     const pathname = useLocation();
     const history = useNavigate();
     const [thumbnail, setThumbnail] = useState<string>('');
@@ -25,6 +42,32 @@ function CreatePost(props: CreatePostProps) {
     const [tags, setTags] = useState<string>('');
     const [items, setItems] = useState<TypeItemPost[]>([]);
     const [isPreview, setIsPreview] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { user } = useAuth();
+
+    const handleAddNewPost = async () => {
+        if (user?.id) {
+            const newPostRequest: IPostRequest = {
+                thumbnail,
+                title,
+                description,
+                tags,
+                items: items.map((it) => {
+                    delete it.id;
+                    return it;
+                }),
+                userId: user?.id,
+            };
+
+            setIsLoading(true);
+            const post: IPostItem | null = await createNewPost(newPostRequest);
+            setIsLoading(false);
+            if (post) {
+                history(path.POST.CREATE);
+            }
+        }
+    };
+
     return (
         <div className="w-full h-full overflow-auto  pb-20 top-0 bottom-0 right-0 left-0  z-[100000000]">
             {isPreview && (
@@ -118,7 +161,7 @@ function CreatePost(props: CreatePostProps) {
 
             <div className="w-full flex flex-col gap-5 justify-center items-center">
                 <h5>(Lưu ý : Bài viết của bạn sẽ được quản trị viên duyệt trước khi được đăng lên...)</h5>
-                <Button color="success" className="text-white ">
+                <Button color="success" className="text-white " onClick={handleAddNewPost} isLoading={isLoading}>
                     Xác nhận đăng
                 </Button>
             </div>

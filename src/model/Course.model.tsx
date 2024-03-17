@@ -2,7 +2,8 @@ export type ICourse = {
     id?: number;
     title: string;
     description: string;
-    thumbnails: string;
+    subTitle: string;
+    thumbnail: string;
     price: number;
     adviseVideo: string;
     typeCourse: string;

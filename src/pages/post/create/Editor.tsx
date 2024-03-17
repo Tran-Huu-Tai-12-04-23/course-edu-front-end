@@ -59,7 +59,7 @@ function Editor(props: EditorProps) {
                     {(provided) => (
                         <ul className="characters flex-col flex " {...provided.droppableProps} ref={provided.innerRef}>
                             {items.map((item: TypeItemPost, index) => (
-                                <Draggable key={item.id} draggableId={item.id} index={index}>
+                                <Draggable key={item.id} draggableId={item?.id?.toString() ?? ''} index={index}>
                                     {(provided) => (
                                         <div
                                             ref={provided.innerRef}
@@ -115,6 +115,10 @@ function Editor(props: EditorProps) {
                                                 id: uuidv4(),
                                                 index: prev.length,
                                                 typeItem: label.key,
+                                                content: '',
+                                                alt: '',
+                                                imgURL: '',
+                                                link: '',
                                             },
                                         ];
                                     });

@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { IToken } from '../model/Token.model';
 import { AES, enc } from 'crypto-js';
+import { IUser } from '../model/User.model';
 // const key = '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';
 export interface JwtPayload {
     credential: string;

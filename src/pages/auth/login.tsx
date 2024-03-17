@@ -5,7 +5,7 @@ import { TiSocialFacebook } from 'react-icons/ti';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { path } from '../../enum/path';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import LoginWithEmail from './_login_email';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useLoading } from '../../context/loadingContext';
@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import helper from '../../helper';
 import { fetchLoginWithGoogle, fetchUserInfoGoogle } from '../../services/auth.service';
+import { useAuth } from '../../context/authContext';
 
 enum keyOptionLogin {
     EMAIL = 'email',
@@ -31,6 +32,7 @@ type IOptionLogin = {
 function Login() {
     const loading = useLoading();
     const history = useNavigate();
+    const { login, isAuthenticated } = useAuth();
     const [typeLogin, setTypeLogin] = useState<keyOptionLogin | -1>(-1);
     const loginWithGoogle = useGoogleLogin({
         onSuccess: async (codeResponse) => {
@@ -44,6 +46,7 @@ function Login() {
             if (response.status === 200) {
                 toast.success(response.message);
                 response.data && helper.login(response.data);
+                login(response.meta);
                 history(path.HOME);
             } else {
                 toast.error(response.message);
@@ -75,6 +78,12 @@ function Login() {
             key: keyOptionLogin.GITHUB,
         },
     ];
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            history(path.HOME);
+        }
+    }, [isAuthenticated]);
 
     return (
         <div className="max-w-2xl m-auto mt-5 select-none">

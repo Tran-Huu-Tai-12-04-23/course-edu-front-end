@@ -5,18 +5,15 @@ import { FaHeading } from 'react-icons/fa';
 import { MdOutlineTextFields } from 'react-icons/md';
 import { CiTextAlignLeft } from 'react-icons/ci';
 import { FaRegImage } from 'react-icons/fa';
-import { FaYoutube, FaFacebook, FaInstagram, FaGithub, FaTiktok } from 'react-icons/fa';
+import { FaYoutube, FaFacebook } from 'react-icons/fa';
 
 export enum FragmentBlogItemType {
     HEADING,
     IMAGE,
     TEXT_SIMPLE,
     TEXT_EDITOR,
-    EMBED_YOUTUBE,
     EMBED_FACEBOOK,
-    EMBED_TIKTOK,
-    EMBED_INSTAGRAM,
-    EMBED_GITHUB,
+    EMBED_YOUTUBE,
 }
 
 export const fragmentBlogItemLabel = [
@@ -65,97 +62,65 @@ export const fragmentBlogItemLabel = [
         component: <Input labelPlacement={'outside'} className="" type="text" placeholder="Dán đường dẫn vào đây" />,
         icon: <FaFacebook className="text-xl" />,
     },
-    {
-        key: FragmentBlogItemType.EMBED_TIKTOK,
-        label: 'Nhúng TikTok',
-        component: <Input labelPlacement={'outside'} className="" type="text" placeholder="Dán đường dẫn vào đây" />,
-        icon: <FaTiktok className="text-xl" />,
-    },
-    {
-        key: FragmentBlogItemType.EMBED_INSTAGRAM,
-        label: 'Nhúng Instagram',
-        icon: <FaInstagram className="text-xl" />,
-        component: <Input labelPlacement={'outside'} className="" type="text" placeholder="Dán đường dẫn vào đây" />,
-    },
-    {
-        key: FragmentBlogItemType.EMBED_GITHUB,
-        label: 'Nhúng GitHub',
-        icon: <FaGithub className="text-xl" />,
-        component: <Input labelPlacement={'outside'} className="" type="text" placeholder="Dán đường dẫn vào đây" />,
-    },
 ];
 export interface IHeading {
-    id: string;
+    id?: number | string;
     content?: string;
     index: number;
+    alt?: string;
+    imgURL?: string;
+    link?: string;
     typeItem: FragmentBlogItemType.HEADING;
 }
 
 export interface IText {
-    id: string;
+    id?: number | string;
     content?: string;
     index: number;
+    alt?: string;
+    imgURL?: string;
+    link?: string;
     typeItem: FragmentBlogItemType.TEXT_SIMPLE;
 }
 
 export interface ITextEditor {
-    id: string;
+    id?: number | string;
     content?: string;
     index: number;
+    alt?: string;
+    imgURL?: string;
+    link?: string;
     typeItem: FragmentBlogItemType.TEXT_EDITOR;
 }
 
 export interface IYoutubeEmbed {
-    id: string;
+    id?: number | string;
     content?: string;
     index: number;
+    alt?: string;
+    imgURL?: string;
+    link?: string;
     typeItem: FragmentBlogItemType.EMBED_YOUTUBE;
 }
 
 export interface IFacebookEmbed {
-    id: string;
+    id?: number | string;
     index: number;
     content?: string;
+    alt?: string;
+    imgURL?: string;
+    link?: string;
     typeItem: FragmentBlogItemType.EMBED_FACEBOOK;
 }
 
-export interface IGithubEmbed {
-    id: string;
-    content?: string;
-    index: number;
-    typeItem: FragmentBlogItemType.EMBED_GITHUB;
-}
-
-export interface IInstagramEmbed {
-    id: string;
-    index: number;
-    content?: string;
-    typeItem: FragmentBlogItemType.EMBED_INSTAGRAM;
-}
-
-export interface ITiktokEmbed {
-    id: string;
-    index: number;
-    content?: string;
-    typeItem: FragmentBlogItemType.EMBED_TIKTOK;
-}
-
 export interface IImage {
-    id: string;
+    id?: number | string;
     index: number;
+    content?: string;
     alt?: string;
     imgURL?: string;
     link?: string;
     typeItem: FragmentBlogItemType.IMAGE;
 }
 
-export type TypeItemPost =
-    | IHeading
-    | IText
-    | ITextEditor
-    | IImage
-    | IFacebookEmbed
-    | IYoutubeEmbed
-    | IInstagramEmbed
-    | IGithubEmbed
-    | ITiktokEmbed;
+export type TypeItemPost = IHeading | IText | ITextEditor | IImage | IFacebookEmbed | IYoutubeEmbed;
