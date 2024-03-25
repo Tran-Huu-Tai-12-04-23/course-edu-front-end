@@ -11,9 +11,11 @@ export type ICourse = {
     typeCourse: string;
     categoryCourse: ICategoryCourse;
     status: IStatusCourse;
+    items?: [];
 };
 
 export enum IStatusCourse {
-    COMING_SOON,
-    PUBLISHED,
+    Published,
+    UnPublished,
+    ComingSoon,
 }

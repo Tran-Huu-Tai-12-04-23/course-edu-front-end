@@ -9,28 +9,28 @@ export type ICategory = {
     value: IStatusCourse;
 };
 
-type SelectStateCourseProps = {
+type SelectStatusCourseProps = {
     onResult: (res: IStatusCourse) => void;
 };
 
-function SelectStateCourse(props: SelectStateCourseProps) {
+function SelectStatusCourse(props: SelectStatusCourseProps) {
     const categories: ICategory[] = [
         {
             id: 1,
             nameState: 'Chờ ra mắt',
-            value: IStatusCourse.COMING_SOON,
+            value: IStatusCourse.ComingSoon,
         },
         {
             id: 2,
             nameState: 'Đã xuất bản',
-            value: IStatusCourse.PUBLISHED,
+            value: IStatusCourse.Published,
         },
     ];
     return (
         <Select
             onChange={(val: React.ChangeEvent<HTMLSelectElement>) => {
                 const { value } = val.target;
-                props.onResult(value);
+                props.onResult(+value);
             }}
             startContent={<MdPublishedWithChanges className="text-xl" />}
             labelPlacement="outside"
@@ -49,4 +49,4 @@ function SelectStateCourse(props: SelectStateCourseProps) {
     );
 }
 
-export default SelectStateCourse;
+export default SelectStatusCourse;

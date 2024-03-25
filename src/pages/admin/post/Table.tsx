@@ -8,12 +8,11 @@ import {
     TableCell,
     Image,
     Chip,
-    Tooltip,
-    Pagination,
+    Spinner,
 } from '@nextui-org/react';
 import { AiFillEdit } from 'react-icons/ai';
 import { IoMdTrash } from 'react-icons/io';
-import { IPostItem } from '../../../model/Post.model';
+import { IPostItem, IStatusPost } from '../../../model/Post.model';
 
 const columns = [
     { name: 'Tiêu đề', uid: 'title' },
@@ -24,35 +23,13 @@ const columns = [
     { name: '', uid: 'actions' },
 ];
 
-const posts = [
-    {
-        id: 1,
-        thumbnail: 'https://files.fullstack.edu.vn/f8-prod/courses/21/63e1bcbaed1dd.png',
-        title: 'Blog Post 1',
-        description: 'Description for Blog Post 1',
-        tags: 'tech, PHP',
-        items: [],
-        status: true,
-    },
-    {
-        id: 2,
-        thumbnail: 'https://files.fullstack.edu.vn/f8-prod/courses/21/63e1bcbaed1dd.png',
-        title: 'Blog Post 2',
-        description: 'Description for Blog Post 1',
-        tags: 'tech, PHP',
-        items: [],
-        status: false,
-    },
-];
-
-type Post = (typeof posts)[0];
-
 type TableProps = {
     data: IPostItem[];
+    isLoading?: boolean;
 };
+
 export default function Table(props: TableProps) {
     const renderCell = React.useCallback((post: IPostItem, columnKey: any) => {
-        const cellValue = post[columnKey as keyof Post];
         switch (columnKey) {
             case 'title':
                 return <h5>{post.title}</h5>;
@@ -60,8 +37,13 @@ export default function Table(props: TableProps) {
                 return <Image width={200} alt={post.title} src={post.thumbnail} />;
             case 'status':
                 return (
-                    <Chip className="capitalize" color={post.status ? 'success' : 'danger'} size="sm" variant="flat">
-                        {post.status ? 'Đã xuất bản' : 'Chưa xuất bản'}
+                    <Chip
+                        className="capitalize"
+                        color={post.status === IStatusPost.Published ? 'success' : 'danger'}
+                        size="sm"
+                        variant="flat"
+                    >
+                        {post.status === IStatusPost.Published ? 'Đã xuất bản' : 'Chưa xuất bản'}
                     </Chip>
                 );
             case 'description':
@@ -69,30 +51,27 @@ export default function Table(props: TableProps) {
             case 'tags':
                 return (
                     <div className="flex justify-start items-center gap-2 ">
-                        {post.tags.split(',').map((tag) => (
-                            <Chip variant="flat" color="secondary" key={tag}>
-                                #{tag.toUpperCase()}
-                            </Chip>
-                        ))}
+                        {post.tags &&
+                            post.tags.split(',').map((tag) => (
+                                <Chip variant="flat" color="secondary" key={tag}>
+                                    #{tag.toUpperCase()}
+                                </Chip>
+                            ))}
                     </div>
                 );
             case 'actions':
                 return (
                     <div className="relative flex items-center gap-2">
-                        <Tooltip content="Chỉnh sửa bài viết" color="secondary">
-                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <AiFillEdit className="text-xl" />
-                            </span>
-                        </Tooltip>
-                        <Tooltip color="danger" content="Xóa bài viêt">
-                            <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                                <IoMdTrash className="text-xl" />
-                            </span>
-                        </Tooltip>
+                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                            <AiFillEdit className="text-xl" />
+                        </span>
+                        <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                            <IoMdTrash className="text-xl" />
+                        </span>
                     </div>
                 );
             default:
-                return cellValue;
+                return <h5></h5>;
         }
     }, []);
 
@@ -110,7 +89,12 @@ export default function Table(props: TableProps) {
                         </TableColumn>
                     )}
                 </TableHeader>
-                <TableBody items={props.data}>
+                <TableBody
+                    isLoading={props.isLoading}
+                    loadingContent={<Spinner label="Loading..." />}
+                    emptyContent={<h5>Không có kết quả nào</h5>}
+                    items={props.data}
+                >
                     {(item) => (
                         <TableRow className="hover:bg-[rgba(0,0,0,0.1)] cursor-pointer rounded-lg" key={item.id}>
                             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
@@ -118,9 +102,6 @@ export default function Table(props: TableProps) {
                     )}
                 </TableBody>
             </TableNextUI>
-            <div className="p-4 mt-5 rounded-xl  flex justify-end items-center ">
-                <Pagination total={10} initialPage={1} className="" />
-            </div>
         </>
     );
 }

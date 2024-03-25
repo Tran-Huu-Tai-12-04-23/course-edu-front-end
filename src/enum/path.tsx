@@ -21,9 +21,11 @@ export const path = {
     },
     ADMIN: {
         MANAGER_COURSE_CATEGORY: '/admin/course/category',
-        DASHBOARD: '/admin',
+        DASHBOARD: '/admin/dashboard',
         COURSE: '/admin/course',
+        ADD_COURSE: '/admin/course/add',
         POST: '/admin/post',
+        ADD_POST: '/admin/post/add',
         USER: '/admin/user',
     },
 

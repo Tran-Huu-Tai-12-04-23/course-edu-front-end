@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { FragmentBlogItemType, TypeItemPost, fragmentBlogItemLabel } from './FragmentBlogItem.type';
 import { BsArrowsMove } from 'react-icons/bs';
 import { RiCloseCircleLine } from 'react-icons/ri';
@@ -133,20 +132,7 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
     };
 
     return (
-        <motion.div
-            initial={{
-                opacity: 0,
-                transform: 'translateY(200px)',
-            }}
-            animate={{
-                opacity: 1,
-                transform: 'translateY(0px)',
-            }}
-            transition={{
-                duration: 0.5,
-            }}
-            className="flex w-full justify-between items-start gap-10"
-        >
+        <div className="flex w-full justify-between items-start gap-10">
             <div className="flex flex-shrink-0 w-[86%] justify-start items-start">
                 <h5 className="min-w-[13rem]">{getLabel(props.type)} : </h5>
                 {getComponentItem(props.type)}
@@ -160,7 +146,7 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
                 />
                 <BsArrowsMove className="text-xl cursor-grab hover:text-blue-600" />
             </div>
-        </motion.div>
+        </div>
     );
 }
 

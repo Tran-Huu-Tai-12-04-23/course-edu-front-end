@@ -8,8 +8,8 @@ import {
     TableCell,
     Image,
     Chip,
-    Tooltip,
-    Pagination,
+    Card,
+    Spinner,
 } from '@nextui-org/react';
 import { AiFillEdit } from 'react-icons/ai';
 import { IoMdTrash } from 'react-icons/io';
@@ -24,23 +24,9 @@ const columns = [
     { name: 'actions', uid: 'actions' },
 ];
 
-const course = [
-    {
-        id: 1,
-        title: 'Course 1',
-        description: 'Description 1',
-        price: 109.99,
-        subtitle: 'F8 duqc nhåc tdi d moi ndi, d dåu c6 cd håi viéc låm cho ghé IT...',
-        thumbnail: 'https://files.fullstack.edu.vn/f8-prod/courses/21/63e1bcbaed1dd.png',
-        status: IStatusCourse.COMING_SOON,
-        category: {
-            nameCategory: 'BACKEND',
-        },
-    },
-];
-
 type TableProps = {
     data: ICourse[];
+    isLoading?: boolean;
 };
 export default function Table(props: TableProps) {
     const renderCell = React.useCallback((course: ICourse, columnKey: any) => {
@@ -53,36 +39,36 @@ export default function Table(props: TableProps) {
                 return (
                     <Chip
                         className="capitalize"
-                        color={course.status === IStatusCourse.COMING_SOON ? 'danger' : 'success'}
+                        color={course.status === IStatusCourse.ComingSoon ? 'danger' : 'success'}
                         size="sm"
                         variant="flat"
                     >
-                        {course.status === IStatusCourse.COMING_SOON ? 'Chuẩn bị ra mắt' : 'Đã ra mắt'}
+                        {course.status === IStatusCourse.ComingSoon ? 'Chuẩn bị ra mắt' : 'Đã ra mắt'}
                     </Chip>
                 );
             case 'description':
-                return <h5 className="w-10rem truncate">{course.description}</h5>;
+                return <h5 className="w-[10rem] truncate">{course.description}</h5>;
             case 'category':
-                return (
+                return course?.categoryCourse ? (
                     <div className="flex justify-start items-center gap-2 ">
                         <Chip variant="flat" color="secondary">
                             #{course?.categoryCourse?.categoryName.toUpperCase() ?? ''}
                         </Chip>
                     </div>
+                ) : (
+                    <Chip variant="flat" color="secondary">
+                        Chưa cập nhật
+                    </Chip>
                 );
             case 'actions':
                 return (
                     <div className="relative flex items-center gap-2">
-                        <Tooltip content="Chỉnh sửa khóa học" color="secondary">
-                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                <AiFillEdit className="text-xl" />
-                            </span>
-                        </Tooltip>
-                        <Tooltip color="danger" content="Xóa khóa học">
-                            <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                                <IoMdTrash className="text-xl" />
-                            </span>
-                        </Tooltip>
+                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                            <AiFillEdit className="text-xl" />
+                        </span>
+                        <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                            <IoMdTrash className="text-xl" />
+                        </span>
                     </div>
                 );
             default:
@@ -92,7 +78,7 @@ export default function Table(props: TableProps) {
 
     return (
         <>
-            <TableNextUI aria-label="Example table with custom cells">
+            <TableNextUI aria-label="Example table with custom cells" className="bg-transparent shadow-none">
                 <TableHeader columns={columns}>
                     {(column) => (
                         <TableColumn
@@ -104,7 +90,13 @@ export default function Table(props: TableProps) {
                         </TableColumn>
                     )}
                 </TableHeader>
-                <TableBody items={props.data}>
+                <TableBody
+                    isLoading={props.isLoading}
+                    loadingContent={<Spinner label="Loading..." />}
+                    emptyContent={<h5>Không có kết quả nào</h5>}
+                    className="bg-transparent shadow-none"
+                    items={props.data}
+                >
                     {(item) => (
                         <TableRow className="hover:bg-[rgba(0,0,0,0.1)] cursor-pointer rounded-lg" key={item.id}>
                             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
@@ -112,9 +104,6 @@ export default function Table(props: TableProps) {
                     )}
                 </TableBody>
             </TableNextUI>
-            <div className="p-4 mt-5 rounded-xl  flex justify-end items-center ">
-                <Pagination total={10} initialPage={1} className="" />
-            </div>
         </>
     );
 }

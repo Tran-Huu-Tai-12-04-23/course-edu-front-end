@@ -6,7 +6,6 @@ import Lesson from './Lesson';
 import { TypeGroupLesson } from './AddDetailInformation';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import { MdModeEditOutline } from 'react-icons/md';
-import { motion } from 'framer-motion';
 import ModalAddLesson from './ModalAddLesson';
 
 type GroupLessonProps = {
@@ -43,11 +42,7 @@ function GroupLesson(props: GroupLessonProps) {
                             snapshot.isDragging ? 'bg-[rgb(64,150,255,0.4)]' : 'bg-second-light dark:bg-second-dark'
                         } group cursor-pointer p-2 rounded-lg  border-[1px] border-second border-solid w-full`}
                     >
-                        <motion.div
-                            onHoverStart={() => setIsHovered(true)}
-                            onHoverEnd={() => setIsHovered(false)}
-                            className="border-b-[1px] pb-4 flex justify-between items-center gap-4 border-dashed border-second w-full"
-                        >
+                        <div className="border-b-[1px] pb-4 flex justify-between items-center gap-4 border-dashed border-second w-full">
                             <h1 className="h-8">
                                 {props.index + 1}. {props.data.title}
                             </h1>
@@ -111,7 +106,7 @@ function GroupLesson(props: GroupLessonProps) {
                                     </PopoverContent>
                                 </Popover>
                             </div>
-                        </motion.div>
+                        </div>
 
                         <Droppable droppableId={'lesson-group-' + props.data.id} direction="vertical">
                             {(provided) => (

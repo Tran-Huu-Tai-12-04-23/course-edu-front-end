@@ -7,7 +7,6 @@ import Editor from './Editor';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { path } from '../../../enum/path';
 import SelectCategoryBlog from '../../../components/SelectCategoryBlog';
-import { motion } from 'framer-motion';
 import BlogView from '../../../components/PostView';
 import { IoClose } from 'react-icons/io5';
 import { TypeItemPost } from '../../../components/FragmentBlogItem/FragmentBlogItem.type';
@@ -73,17 +72,7 @@ function CreatePost() {
         <div className="w-full h-full overflow-auto  pb-20 top-0 bottom-0 right-0 left-0  z-[100000000]">
             {isPreview && (
                 <>
-                    <motion.div
-                        initial={{
-                            transform: 'translateY(200px)',
-                            opacity: 0,
-                        }}
-                        animate={{
-                            transform: 'translateY(0)',
-                            opacity: 1,
-                        }}
-                        className="overflow-auto bg-[rgba(255,255,255,0.1)] dark:bg-[rgba(0,0,0,0.1)] backdrop-blur-3xl z-[10000000] fixed top-0 left-0 right-0 bottom-0"
-                    >
+                    <div className="overflow-auto bg-[rgba(255,255,255,0.1)] dark:bg-[rgba(0,0,0,0.1)] backdrop-blur-3xl z-[10000000] fixed top-0 left-0 right-0 bottom-0">
                         <BlogView
                             data={{
                                 thumbnail,
@@ -94,7 +83,7 @@ function CreatePost() {
                                 status: IStatusPost.PENDING,
                             }}
                         />
-                    </motion.div>
+                    </div>
                     <Button
                         className="fixed top-10 right-1/2 translate-x-1/2 z-[10000000]"
                         onClick={() => setIsPreview(false)}

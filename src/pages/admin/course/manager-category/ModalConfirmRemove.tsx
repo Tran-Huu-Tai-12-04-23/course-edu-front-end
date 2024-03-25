@@ -35,11 +35,11 @@ export default function ModalConfirmRemove(props: ModalConfirmRemoveProps) {
         const isRes = await removeCategoryById(props.id);
 
         if (isRes) {
-            toast.success('Xóa danh mục khóa học thành công!');
+            toast.success('Xóa thành công!');
             props.onRemove && props.onRemove(props.id);
             onClose();
         } else {
-            toast.error('Xóa danh mục khóa học không thành công!');
+            toast.error('Xóa không thành công!');
         }
         setIsLoading(false);
     };
@@ -55,7 +55,7 @@ export default function ModalConfirmRemove(props: ModalConfirmRemoveProps) {
                             <ModalBody>
                                 <div className="p-2 rounded-lg flex flex-col gap-4 justify-center items-center bg-[rgba(0,0,0,0.1) backdrop-blur-2xl ">
                                     <h1 className="mb-2 text-2xl font-bold">Xác nhận xóa</h1>
-                                    <h5>Bạn có chắc chắn muốn xóa bài viết này</h5>
+                                    <h5>Bạn có chắc chắn muốn xóa dòng này</h5>
 
                                     <div className="mt-2 w-full flex justify-center items-center gap-4">
                                         <Button size="sm" onClick={onClose}>

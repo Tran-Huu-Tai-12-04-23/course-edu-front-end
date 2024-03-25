@@ -10,7 +10,8 @@ export type ICategory = {
 };
 
 type SelectCategoryCourseProps = {
-    onResult: (res: number) => void;
+    onResult: (res: any) => void;
+    value?: any;
 };
 
 const getAllCategoryCourse = async (): Promise<ICategoryCourse[] | null> => {
@@ -33,25 +34,22 @@ const getAllCategoryCourse = async (): Promise<ICategoryCourse[] | null> => {
 };
 
 function SelectCategoryCourse(props: SelectCategoryCourseProps) {
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [categories, setCategories] = useState<ICategoryCourse[]>([]);
 
     useEffect(() => {
         const getData = async () => {
-            setIsLoading(true);
             const res = await getAllCategoryCourse();
-            setIsLoading(false);
-
             if (res) {
                 setCategories([...res]);
             }
         };
         getData();
     }, []);
+
     return (
         <Select
             onChange={(val) => {
-                props.onResult(+val.target.value);
+                props.onResult(+val.target.value === 0 ? null : +val.target.value);
             }}
             startContent={<MdCategory className="text-xl" />}
             labelPlacement="outside"
@@ -62,7 +60,7 @@ function SelectCategoryCourse(props: SelectCategoryCourseProps) {
             selectorIcon={<TbSelector className="text-xl" />}
         >
             {categories.map((category: ICategoryCourse, index: number) => (
-                <SelectItem key={index} value={category.id} variant="flat" color="secondary">
+                <SelectItem key={category?.id ?? index} value={category.id} variant="flat" color="secondary">
                     {category.categoryName}
                 </SelectItem>
             ))}

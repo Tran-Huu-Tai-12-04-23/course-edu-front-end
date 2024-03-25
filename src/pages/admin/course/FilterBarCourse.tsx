@@ -5,9 +5,8 @@ import { useEffect, useState } from 'react';
 import { IFilterCourse } from '.';
 import { IoAdd } from 'react-icons/io5';
 import { useLocation, useNavigate } from 'react-router-dom';
-import SelectOrderType from '../SelectOrderType';
 import SelectCategoryCourse from './SelectCategoryCourse';
-import SelectStateCourse from './SeelctStatusCourse';
+import SelectStatusCourse from './SelectStatusCourse';
 import { IStatusCourse } from '../../../model/Course.model';
 
 type FilterBarCourseProps = {
@@ -17,56 +16,53 @@ function FilterBarCourse(props: FilterBarCourseProps) {
     const history = useNavigate();
     const { pathname } = useLocation();
 
-    const [state, setState] = useState<IStatusCourse | -1>(-1);
-    const [key, setKey] = useState<string>('');
-    const [orderType, setOrderType] = useState<string>('');
-    const [category, setCategory] = useState<string>('');
+    const [status, setStatus] = useState<IStatusCourse | string | null>(null);
+    const [query, setQuery] = useState<string | null>(null);
+    const [orderType, setOrderType] = useState<string | null>(null);
+    const [categoryId, setCategoryId] = useState<string | null>(null);
 
     useEffect(() => {
         let filter = {
-            orderType: orderType,
-            category,
-            state,
-            key,
+            categoryId,
+            status,
+            query,
         };
-        props.onChange({
-            ...filter,
-        });
-    }, [key, state, category, orderType]);
+        props.onChange(filter);
+    }, [query, status, categoryId, orderType]);
     return (
         <div className="flex mt-10 justify-between  flex-wrap items-end gap-6 rounded-xl shadow-xl bg-light-sidebar backdrop-blur-xl dark:bg-dark-sidebar w-full p-4">
             <div className="flex justify-start items-center gap-6 min-w-[40rem]">
                 <SelectCategoryCourse
-                    onResult={function (res: string): void {
-                        setCategory(res);
+                    value={categoryId}
+                    onResult={function (res: any): void {
+                        setCategoryId(res);
                     }}
                 />
-                <SelectStateCourse
+                <SelectStatusCourse
                     onResult={function (res: IStatusCourse): void {
-                        setState(res);
+                        setStatus(res);
                     }}
                 />
 
-                <SelectOrderType
+                {/* <SelectOrderType
                     onResult={function (res: string): void {
                         setOrderType(res);
                     }}
-                />
+                /> */}
             </div>
 
             <div className=" flex justify-start items-center gap-6">
-                <Search onChange={(val) => setKey(val)} placeholder="Tìm kiếm theo tiều đề, thể loại, ..." />
+                <Search onChange={(val) => setQuery(val)} placeholder="Tìm kiếm theo tiều đề, thể loại, ..." />
                 <Button
                     onClick={() => {
-                        setCategory('');
-                        setKey('');
-                        setState(-1);
+                        setCategoryId(null);
+                        setQuery(null);
+                        setStatus(null);
 
                         props.onChange({
-                            orderType: -1,
-                            category: '',
-                            state: -1,
-                            key: '',
+                            categoryId: '',
+                            status: null,
+                            query: null,
                         });
                     }}
                     startContent={<GrPowerReset className="text-xl" />}

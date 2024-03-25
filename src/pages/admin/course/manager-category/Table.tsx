@@ -38,7 +38,7 @@ const getAllCategoryCourse = async (): Promise<ICategoryCourse[] | null> => {
         const responseData: ICategoryCourse[] = await response.json();
         return responseData;
     } catch (error) {
-        console.error('Error during registration:', error);
+        console.error('Error during fetching:', error);
         return null;
     }
 };
@@ -61,7 +61,7 @@ const editCategoryCourseById = async (
         const responseData: ICategoryCourse | null = await response.json();
         return responseData;
     } catch (error) {
-        console.error('Error during registration:', error);
+        console.error('Error during updating:', error);
         return null;
     }
 };
@@ -115,20 +115,17 @@ export default function Table() {
                     <div className="relative flex items-center gap-2">
                         {categoryCourse.id && (
                             <>
-                                <Tooltip content="Chỉnh sửa danh mục này" color="secondary">
-                                    <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                        <AiFillEdit className="text-xl" />
-                                    </span>
-                                </Tooltip>
+                                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                                    <AiFillEdit className="text-xl" />
+                                </span>
+
                                 <ModalConfirmRemove
                                     id={+categoryCourse.id}
                                     onRemove={(id) => setCategories((prev) => prev.filter((p) => p.id !== id))}
                                 >
-                                    <Tooltip color="danger" content="Xóa danh mục này">
-                                        <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                                            <IoMdTrash className="text-xl" />
-                                        </span>
-                                    </Tooltip>
+                                    <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                                        <IoMdTrash className="text-xl" />
+                                    </span>
                                 </ModalConfirmRemove>
                             </>
                         )}
@@ -148,6 +145,7 @@ export default function Table() {
             if (res) {
                 setCategories(res);
             } else {
+                // Handle error
             }
         };
         getData();
@@ -156,6 +154,7 @@ export default function Table() {
     return (
         <>
             <TableNextUI
+                aria-label="Category Courses Table"
                 bottomContent={<ModalAddNewCategory onAdd={(res) => setCategories((prev) => [...prev, res])} />}
             >
                 <TableHeader columns={columns}>

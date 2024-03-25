@@ -18,17 +18,17 @@ function SelectStatePost(props: SelectStatePostProps) {
         {
             id: 1,
             nameState: 'Chờ duyệt',
-            value: IStatusPost.PENDING,
+            value: IStatusPost.Pending,
         },
         {
             id: 2,
             nameState: 'Đã xuất bản',
-            value: IStatusPost.PUBLISHED,
+            value: IStatusPost.Published,
         },
         {
             id: 3,
             nameState: 'Bản nháp',
-            value: IStatusPost.UNPUBLISHED,
+            value: IStatusPost.UnPublished,
         },
     ];
     return (
@@ -45,7 +45,7 @@ function SelectStatePost(props: SelectStatePostProps) {
             selectorIcon={<TbSelector className="text-xl" />}
         >
             {categories.map((category: ICategory) => (
-                <SelectItem key={category.id} value={category.value} variant="flat" color="secondary">
+                <SelectItem key={category.value} value={category.value} variant="flat" color="secondary">
                     {category.nameState}
                 </SelectItem>
             ))}

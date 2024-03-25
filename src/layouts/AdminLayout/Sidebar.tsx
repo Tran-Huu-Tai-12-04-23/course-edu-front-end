@@ -5,11 +5,12 @@ import { BiBookContent } from 'react-icons/bi';
 import { BsPersonFill } from 'react-icons/bs';
 import { MdSpaceDashboard } from 'react-icons/md';
 import { path } from '../../enum/path';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { useRouter } from '../../hook';
 
 function Sidebar() {
     const { pathname } = useLocation();
-    const history = useNavigate();
+    const router = useRouter();
     const navs = [
         {
             name: 'Dashboard',
@@ -29,11 +30,11 @@ function Sidebar() {
                 },
                 {
                     name: 'Thêm',
-                    path: '/add',
+                    path: path.ADMIN.ADD_COURSE,
                 },
                 {
                     name: 'Danh mục',
-                    path: '/category',
+                    path: path.ADMIN.MANAGER_COURSE_CATEGORY,
                 },
             ],
         },
@@ -49,7 +50,7 @@ function Sidebar() {
                 },
                 {
                     name: 'Thêm bài viết',
-                    path: '/add',
+                    path: path.ADMIN.ADD_POST,
                 },
                 {
                     name: 'Chỉnh sửa bài viết',
@@ -83,13 +84,13 @@ function Sidebar() {
                                 className={`rounded-lg  min-w-[8rem] `}
                             >
                                 <div
-                                    onClick={() => history(nav.path)}
+                                    onClick={() => router.replace(nav.path)}
                                     className={`hover:text-primary ${
-                                        nav.path === pathname ? 'text-primary' : 'text-black dark:text-white'
+                                        pathname.includes(nav.path) ? 'text-primary' : 'text-black dark:text-white'
                                     } pl-4 pr-4  flex justify-start items-center gap-4 `}
                                 >
                                     {nav.icon}
-                                    <h5>{nav.name}</h5>
+                                    <h6>{nav.name}</h6>
                                 </div>
                             </Chip>
                         }
@@ -97,11 +98,9 @@ function Sidebar() {
                         {nav.subNav &&
                             nav.subNav.map((subNav, index) => (
                                 <div
-                                    onClick={() => history(pathname + subNav.path)}
+                                    onClick={() => router.replace(subNav.path)}
                                     className={`${
-                                        pathname.includes(nav.path + subNav.path)
-                                            ? 'text-primary '
-                                            : ' text-black  dark:text-white '
+                                        pathname === subNav.path ? 'text-primary ' : ' text-black  dark:text-white '
                                     } pl-10 p-2 cursor-pointer hover:text-primary hover:dark:text-primary`}
                                     key={index}
                                 >

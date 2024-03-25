@@ -26,7 +26,7 @@ export type IPostRequest = {
 };
 
 export enum IStatusPost {
-    PENDING,
-    PUBLISHED,
-    UNPUBLISHED,
+    Pending,
+    Published,
+    UnPublished,
 }
