@@ -1,9 +1,9 @@
 import { Popover, PopoverContent, PopoverTrigger, User } from '@nextui-org/react';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import { path } from '../enum/path';
 import { useAuth } from '../context/authContext';
 import { useEffect, useState } from 'react';
+import { useRouter } from '../hook';
 type UserActionItem = {
     name: string;
     path: string;
@@ -12,13 +12,16 @@ type UserActionItem = {
 
 function UserInfo() {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const history = useNavigate();
-    const { logout } = useAuth();
+    const router = useRouter();
+    const { logout, user } = useAuth();
     const userAction: UserActionItem[][] = [
         [
             {
                 name: 'Trang cá nhân',
                 path: '',
+                action: () => {
+                    router.replace(path.USER.PROFILE);
+                },
             },
         ],
         [
@@ -26,14 +29,14 @@ function UserInfo() {
                 name: 'Viết blog',
                 path: '',
                 action: () => {
-                    history(path.POST.CREATE);
+                    router.replace(path.POST.CREATE);
                 },
             },
             {
                 name: 'Bài viết của tôi',
                 path: path.USER.MANAGER_POST,
                 action: () => {
-                    history(path.USER.MANAGER_POST);
+                    router.replace(path.USER.MANAGER_POST);
                 },
             },
         ],
@@ -46,7 +49,10 @@ function UserInfo() {
         [
             {
                 name: 'Cài đặt',
-                path: '',
+                path: path.USER.SETTING,
+                action: () => {
+                    router.replace(path.USER.SETTING);
+                },
             },
             {
                 name: 'Đăng xuất ',
@@ -54,7 +60,7 @@ function UserInfo() {
                 action: () => {
                     logout();
                     toast.success('Đăng xuất thành công!');
-                    history(path.AUTH.LOGIN);
+                    router.replace(path.AUTH.LOGIN);
                 },
             },
         ],
@@ -79,19 +85,19 @@ function UserInfo() {
                     name=""
                     description=""
                     avatarProps={{
-                        src: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
+                        src: user?.avatar,
                     }}
                     onClick={() => setIsOpen(true)}
                 />
             </PopoverTrigger>
-            <PopoverContent className=" light:text-black border-none w-[15rem] p-4 rounded-lg">
+            <PopoverContent className=" light:text-black border-none w-[20rem] p-4 rounded-lg">
                 <div className="flex  flex-col w-full justify-center items-start">
                     <User
                         className="select-none mb-4 cursor-pointer  hover:text-primary"
-                        name="Huu tai tran"
-                        description="@huutaitran"
+                        name={user?.email}
+                        description={'@' + user?.firstName + user?.lastName}
                         avatarProps={{
-                            src: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
+                            src: user?.avatar,
                         }}
                     />
                     <div className="w-full border-b-[1px] border-solid border-second mb-2"></div>

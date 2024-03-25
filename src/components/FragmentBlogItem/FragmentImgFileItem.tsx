@@ -4,12 +4,12 @@ import { FaRegImages } from 'react-icons/fa6';
 import uploadImage from '../../services/Firebase';
 
 type FragmentImgFileItemProps = {
-    onChangeData?: (value: { link?: string; alt?: string; urlImg?: string }) => void;
+    onChangeData?: (value: { link?: string; alt?: string; imgURL?: string }) => void;
 };
 function FragmentImgFileItem(props: FragmentImgFileItemProps) {
     const imgRef = useRef<HTMLInputElement>(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [urlImg, setUrlImg] = useState<any>('');
+    const [imgURL, setImgUrl] = useState<any>('');
     const [alt, setAlt] = useState<string>('');
     const [link, setLink] = useState<string>('');
 
@@ -20,7 +20,7 @@ function FragmentImgFileItem(props: FragmentImgFileItemProps) {
             setIsLoading(true);
             try {
                 const url = await uploadImage(file);
-                setUrlImg(url);
+                setImgUrl(url);
             } catch (error) {
                 console.error('Error uploading image:', error);
             } finally {
@@ -32,11 +32,11 @@ function FragmentImgFileItem(props: FragmentImgFileItemProps) {
     useEffect(() => {
         props.onChangeData &&
             props.onChangeData({
-                urlImg,
+                imgURL,
                 link,
                 alt,
             });
-    }, [urlImg, link, alt]);
+    }, [imgURL, link, alt]);
     return (
         <div className="flex flex-col gap-4">
             <div className="flex justify-start items-center gap-10">
@@ -55,10 +55,10 @@ function FragmentImgFileItem(props: FragmentImgFileItemProps) {
                 >
                     Chọn ảnh
                 </Button>
-                {urlImg && <Image height={100} width={100} src={urlImg} />}
+                {imgURL && <Image height={100} width={100} src={imgURL} />}
             </div>
 
-            {urlImg && (
+            {imgURL && (
                 <div className="flex justify-start items-center gap-4 flex-shrink-0">
                     <Input
                         value={alt}

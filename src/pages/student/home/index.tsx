@@ -1,13 +1,13 @@
-import CourseItem from '../../components/CourseItem';
+import CourseItem from '../../../components/CourseItem';
 import { Link } from '@nextui-org/react';
 // import ListTag from '../components/ListTag';
-import BannerSlide from '../../components/BannerSlide';
+import BannerSlide from '../../../components/BannerSlide';
 import { useEffect, useState } from 'react';
-import { useLoading } from '../../context/loadingContext';
-import { IHomeResponse } from '../../model/Common.model';
+import { useLoading } from '../../../context/loadingContext';
+import { IHomeResponse } from '../../../model/Common.model';
 import Skeleton from './skeleton';
 import LoginTap from './login-tap';
-import { useAuth } from '../../context/authContext';
+import { useAuth } from '../../../context/authContext';
 
 const fetchData = async (): Promise<IHomeResponse | null> => {
     try {
@@ -40,6 +40,9 @@ function Home() {
         };
         getCourse();
     }, []);
+
+    console.log(homeData);
+
     return loading.isLoading ? (
         <Skeleton />
     ) : (
@@ -54,9 +57,7 @@ function Home() {
                             <div className="w-full" key={index}>
                                 <div className="flex mt-5 justify-between w-full items-center  ">
                                     <div className="flex justify-start items-center gap-4">
-                                        <h5 className="font-extrabold text-2xl">
-                                            {JSON.stringify(cour.categoryCourse.categoryName)}
-                                        </h5>
+                                        <h5 className="font-extrabold text-2xl">{cour.categoryCourse.categoryName}</h5>
                                     </div>
                                     <Link href="#" className="underline">
                                         Xem tất cả

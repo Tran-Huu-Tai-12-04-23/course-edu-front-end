@@ -80,7 +80,7 @@ function UploadFile(props: UploadFileProps) {
                     <Image alt={props.value} className="h-full bg-contain w-full" src={props.value} />
                     <Button
                         className="mt-2"
-                        startContent={<FaExchangeAlt className="text-xl" />}
+                        startContent={isLoading ? <></> : <FaExchangeAlt className="text-xl" />}
                         variant="flat"
                         onClick={() => {
                             if (inputFileRef.current) inputFileRef.current.click();

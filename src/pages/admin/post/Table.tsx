@@ -13,6 +13,7 @@ import {
 } from '@nextui-org/react';
 import { AiFillEdit } from 'react-icons/ai';
 import { IoMdTrash } from 'react-icons/io';
+import { IPostItem } from '../../../model/Post.model';
 
 const columns = [
     { name: 'Tiêu đề', uid: 'title' },
@@ -46,8 +47,11 @@ const posts = [
 
 type Post = (typeof posts)[0];
 
-export default function Table() {
-    const renderCell = React.useCallback((post: Post, columnKey: React.Key) => {
+type TableProps = {
+    data: IPostItem[];
+};
+export default function Table(props: TableProps) {
+    const renderCell = React.useCallback((post: IPostItem, columnKey: any) => {
         const cellValue = post[columnKey as keyof Post];
         switch (columnKey) {
             case 'title':
@@ -106,7 +110,7 @@ export default function Table() {
                         </TableColumn>
                     )}
                 </TableHeader>
-                <TableBody items={posts}>
+                <TableBody items={props.data}>
                     {(item) => (
                         <TableRow className="hover:bg-[rgba(0,0,0,0.1)] cursor-pointer rounded-lg" key={item.id}>
                             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}

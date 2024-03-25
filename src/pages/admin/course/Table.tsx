@@ -13,7 +13,7 @@ import {
 } from '@nextui-org/react';
 import { AiFillEdit } from 'react-icons/ai';
 import { IoMdTrash } from 'react-icons/io';
-import { IStatusCourse } from '../../../model/Course.model';
+import { ICourse, IStatusCourse } from '../../../model/Course.model';
 
 const columns = [
     { name: 'Tiêu đề', uid: 'title' },
@@ -21,7 +21,7 @@ const columns = [
     { name: 'Mô tả', uid: 'description' },
     { name: 'Trạng thái', uid: 'status' },
     { name: 'Danh mục', uid: 'category' },
-    { name: '', uid: 'actions' },
+    { name: 'actions', uid: 'actions' },
 ];
 
 const course = [
@@ -39,11 +39,11 @@ const course = [
     },
 ];
 
-type Course = (typeof course)[0];
-
-export default function Table() {
-    const renderCell = React.useCallback((course: Course, columnKey: React.Key) => {
-        const cellValue = course[columnKey as keyof Course];
+type TableProps = {
+    data: ICourse[];
+};
+export default function Table(props: TableProps) {
+    const renderCell = React.useCallback((course: ICourse, columnKey: any) => {
         switch (columnKey) {
             case 'title':
                 return <h5>{course.title}</h5>;
@@ -66,7 +66,7 @@ export default function Table() {
                 return (
                     <div className="flex justify-start items-center gap-2 ">
                         <Chip variant="flat" color="secondary">
-                            #{course.category.nameCategory.toUpperCase()}
+                            #{course?.categoryCourse?.categoryName.toUpperCase() ?? ''}
                         </Chip>
                     </div>
                 );
@@ -86,7 +86,7 @@ export default function Table() {
                     </div>
                 );
             default:
-                return cellValue;
+                return null;
         }
     }, []);
 
@@ -104,7 +104,7 @@ export default function Table() {
                         </TableColumn>
                     )}
                 </TableHeader>
-                <TableBody items={course}>
+                <TableBody items={props.data}>
                     {(item) => (
                         <TableRow className="hover:bg-[rgba(0,0,0,0.1)] cursor-pointer rounded-lg" key={item.id}>
                             {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}

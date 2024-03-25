@@ -42,7 +42,7 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
             case FragmentBlogItemType.IMAGE: {
                 return (
                     <FragmentImgFileItem
-                        onChangeData={(data: { link?: string; alt?: string; urlImg?: string; content?: string }) =>
+                        onChangeData={(data: { link?: string; alt?: string; imgURL?: string; content?: string }) =>
                             props.onChangeData({
                                 ...data,
                                 content: '',
@@ -155,7 +155,7 @@ function FragmentBlogItem(props: FragmentBlogItemProps) {
                 <RiCloseCircleLine
                     className="text-xl hover:text-primary cursor-pointer"
                     onClick={() => {
-                        props.data?.id && props.onRemove(props.data.id);
+                        props.data?.id && props.onRemove(+props.data.id);
                     }}
                 />
                 <BsArrowsMove className="text-xl cursor-grab hover:text-blue-600" />

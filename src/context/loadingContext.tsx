@@ -19,12 +19,12 @@ export const LoadingProvider: React.FC<LoadingContextProps> = ({ children }) => 
     const stopLoading = () => setLoading(false);
     return (
         <LoadingContext.Provider value={{ startLoading, stopLoading, isLoading }}>
-            {children}
             {isLoading && (
-                <div className="fixed bg-black/5 select-none dark:bg-white/5 top-0 bottom-0 left-0 right-0 z-[10000000] flex justify-center items-center">
+                <div className="fixed  select-none bg-black/5 dark:bg-white/5 top-0 bottom-0 left-0 right-0 z-[10000000] flex justify-center items-center">
                     <Spinner size="md" color="primary" />
                 </div>
             )}
+            {children}
         </LoadingContext.Provider>
     );
 };

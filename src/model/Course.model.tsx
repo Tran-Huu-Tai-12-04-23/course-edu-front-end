@@ -1,3 +1,5 @@
+import { ICategoryCourse } from './Common.model';
+
 export type ICourse = {
     id?: number;
     title: string;
@@ -7,6 +9,8 @@ export type ICourse = {
     price: number;
     adviseVideo: string;
     typeCourse: string;
+    categoryCourse: ICategoryCourse;
+    status: IStatusCourse;
 };
 
 export enum IStatusCourse {

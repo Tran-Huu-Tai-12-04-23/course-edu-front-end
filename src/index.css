@@ -21,7 +21,7 @@ iframe {
 }
 
 .scroll-custom::-webkit-scrollbar {
-    width: 2px;
+    width: 10px;
     background-color: transparent;
 }
 
@@ -38,7 +38,7 @@ iframe {
 }
 
 *::-webkit-scrollbar {
-    width: 2px;
+    width: 10px;
     background-color: transparent;
 }
 

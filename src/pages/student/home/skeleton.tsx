@@ -1,5 +1,5 @@
 import { Skeleton as NextUISkeleton } from '@nextui-org/react';
-import CourseItemSkeleton from '../../components/CourseItemSkeleton';
+import CourseItemSkeleton from '../../../components/CourseItemSkeleton';
 
 function Skeleton() {
     return (

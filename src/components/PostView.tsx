@@ -1,4 +1,4 @@
-import { Chip, Image, Link, User } from '@nextui-org/react';
+import { Card, Chip, Image, Link, User } from '@nextui-org/react';
 import { IPostItem } from '../model/Post.model';
 import { TbHistoryToggle } from 'react-icons/tb';
 import { FragmentBlogItemType, TypeItemPost } from './FragmentBlogItem/FragmentBlogItem.type';
@@ -27,7 +27,7 @@ const getContentBlog = (data: TypeItemPost) => {
         case FragmentBlogItemType.IMAGE: {
             return (
                 <Link key={data.id} href={data?.link ?? ''} className="w-full">
-                    <Image width={'100%'} alt={data.alt} src={data.imgURL} className="rounded-t-xl w-full" />;
+                    <Image width={'100%'} alt={data.alt} src={data.imgURL} className="rounded-t-xl w-full" />
                 </Link>
             );
         }
@@ -46,7 +46,7 @@ function BlogView(props: PostViewProps) {
 
     console.log(data);
     return (
-        <div className="dark:bg-second-dark rounded-xl bg-second-light  max-w-4xl m-auto mt-5 select-none over mb-10">
+        <Card className=" max-w-4xl m-auto mt-5 select-none over mb-10">
             <Image
                 width={'100%'}
                 alt={data.title}
@@ -88,9 +88,9 @@ function BlogView(props: PostViewProps) {
                 <h1 className="text-4xl font-semibold">{data.title}</h1>
                 <p>{data.description}</p>
 
-                {data.items.map((item: TypeItemPost) => getContentBlog(item))}
+                {data.items && data.items.map((item: TypeItemPost) => getContentBlog(item))}
             </div>
-        </div>
+        </Card>
     );
 }
 

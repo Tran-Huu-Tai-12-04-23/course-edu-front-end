@@ -11,7 +11,6 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { useLoading } from '../../context/loadingContext';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import helper from '../../helper';
 import { fetchLoginWithGoogle, fetchUserInfoGoogle } from '../../services/auth.service';
 import { useAuth } from '../../context/authContext';
 
@@ -37,7 +36,6 @@ function Login() {
     const loginWithGoogle = useGoogleLogin({
         onSuccess: async (codeResponse) => {
             const userInfo = await fetchUserInfoGoogle(codeResponse.access_token);
-            console.log(userInfo);
             if (!userInfo) return;
             loading.startLoading();
             const response = await fetchLoginWithGoogle(userInfo);
@@ -45,8 +43,7 @@ function Login() {
 
             if (response.status === 200) {
                 toast.success(response.message);
-                response.data && helper.login(response.data);
-                login(response.meta);
+                response.data && login(response.meta, response.data);
                 history(path.HOME);
             } else {
                 toast.error(response.message);

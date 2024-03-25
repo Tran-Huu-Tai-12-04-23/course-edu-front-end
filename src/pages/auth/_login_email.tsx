@@ -66,8 +66,7 @@ function LoginWithEmail(props: LoginWithEmailProps) {
 
         if (response.status === 200) {
             toast.success(response.message);
-            response.data && helper.login(response.data);
-            login(response.meta);
+            response.data && login(response.meta, response.data);
             history(path.HOME);
         } else {
             toast.error(response.message);

@@ -15,6 +15,7 @@ export interface JwtPayload {
 class Helper {
     keyTk = 'tk';
     key = 'your-secret-key';
+    userKey = 'user';
 
     isValidEmail(email: string): boolean {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -48,6 +49,7 @@ class Helper {
 
     logout() {
         Cookies.remove(this.keyTk);
+        Cookies.remove(this.userKey);
     }
 
     encrypt(data: object): string {
@@ -63,6 +65,19 @@ class Helper {
             console.error('Error during decryption:', error);
             return null;
         }
+    }
+
+    saveUserData(user: IUser) {
+        const userString = this.encrypt(user);
+        Cookies.set(this.userKey, userString);
+    }
+    getUserData() {
+        const myCookieValue = Cookies.get(this.userKey);
+        if (!myCookieValue) return null;
+        const strToken = this.decrypt(myCookieValue);
+        if (!strToken) return null;
+        const data: IUser = JSON.parse(strToken);
+        return data || null;
     }
 }
 

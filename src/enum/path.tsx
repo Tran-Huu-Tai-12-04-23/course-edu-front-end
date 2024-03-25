@@ -27,7 +27,12 @@ export const path = {
         USER: '/admin/user',
     },
 
+    USER_ADMIN_MANAGER: {},
+
+    /// student path
     USER: {
+        PROFILE: '/user/profile',
         MANAGER_POST: '/user/post',
+        SETTING: '/user/setting',
     },
 } as const;

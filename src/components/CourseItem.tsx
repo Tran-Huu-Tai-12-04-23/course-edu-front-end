@@ -1,7 +1,8 @@
-import { Card, Image, Button, CardFooter, CardHeader, CardBody } from '@nextui-org/react';
+import { Card, Image, Button, CardFooter, CardHeader, CardBody, Chip } from '@nextui-org/react';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../enum/path';
 import { ICourse } from '../model/Course.model';
+import CurrencyFormatter from './CurrencyFormatter';
 
 type CourseItemProps = {
     data: ICourse;
@@ -32,11 +33,18 @@ function CourseItem(props: CourseItemProps) {
                 <Image
                     alt={props.data.title}
                     className="h-[12rem] min-w-[24rem] w-full bg-contain"
-                    src={props.data.thumbnails}
+                    src={props.data.thumbnail}
                 />
             </CardBody>
             <CardFooter className="opacity-0 transition-all group-hover:opacity-100 justify-between before:bg-white/2 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-0 p-2 shadow-small  z-10">
-                <p className="font-semibold flex-shrink-0 mr-4 ml-4 text-white">{props.data.price} vnđ</p>
+                <p className="font-semibold flex-shrink-0 mr-4 ml-4 text-white">
+                    {props.data.price !== 0 && <CurrencyFormatter amount={props.data.price} />}
+                    {props.data.price === 0 && (
+                        <Chip color="success" variant="flat">
+                            Miến phí
+                        </Chip>
+                    )}
+                </p>
 
                 <Button className="text-tiny text-white w-full bg-primary" variant="flat" color="default" radius="lg">
                     Đăng ký học

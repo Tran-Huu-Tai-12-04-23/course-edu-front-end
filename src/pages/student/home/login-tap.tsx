@@ -1,11 +1,11 @@
 import { useGoogleOneTapLogin } from '@react-oauth/google';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { useLoading } from '../../context/loadingContext';
-import { path } from '../../enum/path';
-import helper from '../../helper';
-import { decodeUserInfoFromJWT, fetchLoginWithGoogle } from '../../services/auth.service';
-import { useAuth } from '../../context/authContext';
+import { useLoading } from '../../../context/loadingContext';
+import { path } from '../../../enum/path';
+import helper from '../../../helper';
+import { decodeUserInfoFromJWT, fetchLoginWithGoogle } from '../../../services/auth.service';
+import { useAuth } from '../../../context/authContext';
 
 function LoginTap() {
     const loading = useLoading();

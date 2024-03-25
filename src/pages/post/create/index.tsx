@@ -44,6 +44,7 @@ function CreatePost() {
     const [isPreview, setIsPreview] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { user } = useAuth();
+    console.log(items);
 
     const handleAddNewPost = async () => {
         if (user?.id) {

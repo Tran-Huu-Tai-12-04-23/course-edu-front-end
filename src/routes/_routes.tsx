@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { path } from '../enum/path';
-import Home from '../pages/home';
+import Home from '../pages/student/home';
 import Login from '../pages/auth/login';
 import Register from '../pages/auth/register';
 import Dashboard from '../pages/admin/dashboard';
@@ -16,17 +16,14 @@ import AddPost from '../pages/admin/post/add';
 import AddCourse from '../pages/admin/course/add';
 import UserManagerPost from '../pages/user/manager-post';
 import ManagerCategory from '../pages/admin/course/manager-category';
+import { ProfilePage, SettingPage } from '../pages/user';
 
 export type routeProps = {
     path: string;
     component: ReactNode;
     type: typeRoute;
 };
-export enum typeRole {
-    ADMIN = 'ADMIN',
-    USER = 'USER',
-    GUEST = 'GUEST',
-}
+
 export enum typeRoute {
     PRIVATE_ROUTE = 'private_route',
     PROTECTED_ROUTE = 'protected_route',
@@ -110,6 +107,16 @@ export const privateRoutes: routeProps[] = [
     {
         path: path.USER.MANAGER_POST,
         component: <UserManagerPost />,
+        type: typeRoute.PRIVATE_ROUTE,
+    },
+    {
+        path: path.USER.PROFILE,
+        component: <ProfilePage />,
+        type: typeRoute.PRIVATE_ROUTE,
+    },
+    {
+        path: path.USER.SETTING,
+        component: <SettingPage />,
         type: typeRoute.PRIVATE_ROUTE,
     },
 ];

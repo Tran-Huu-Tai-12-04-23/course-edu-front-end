@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { learningRoutes, privateRoutes, protectedRoutes, publicRoutes, typeRole } from './routes/_routes';
+import { learningRoutes, privateRoutes, protectedRoutes, publicRoutes } from './routes/_routes';
 import { path } from './enum/path';
 import MainLayout from './layouts/MainLayout';
 import { useEffect } from 'react';
@@ -7,9 +7,13 @@ import { useTheme } from './context/themeContext';
 import LearningLayout from './layouts/LearningLayout';
 import { Toaster } from 'react-hot-toast';
 import { useAuth } from './context/authContext';
-
+export enum Roles {
+    ADMIN = 'ADMIN',
+    STUDENT = 'STUDENT',
+}
 export default function App() {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, role } = useAuth();
+
     // const isAllowed = typeRole.ADMIN === typeRole.ADMIN && isAuthenticated;
     const { theme } = useTheme();
 
@@ -36,7 +40,17 @@ export default function App() {
             <Routes>
                 {/* Public Routes */}
                 {publicRoutes.map((route, index) => (
-                    <Route key={index} path={route.path} element={<MainLayout>{route.component}</MainLayout>} />
+                    <Route
+                        key={index}
+                        path={route.path}
+                        element={
+                            role === Roles.ADMIN ? (
+                                <Navigate to={path.ADMIN.DASHBOARD} />
+                            ) : (
+                                <MainLayout isAuthenticated={isAuthenticated}>{route.component}</MainLayout>
+                            )
+                        }
+                    />
                 ))}
 
                 {/* Private Routes */}
@@ -45,10 +59,12 @@ export default function App() {
                         key={index}
                         path={route.path}
                         element={
-                            isAuthenticated ? (
-                                <MainLayout>{route.component}</MainLayout>
+                            role === Roles.ADMIN ? (
+                                <Navigate to={path.ADMIN.DASHBOARD} />
                             ) : (
-                                <Navigate to={path.AUTH.LOGIN} />
+                                <MainLayout roles={[Roles.STUDENT]} isAuthenticated={isAuthenticated}>
+                                    {route.component}
+                                </MainLayout>
                             )
                         }
                     />
@@ -60,10 +76,12 @@ export default function App() {
                         key={index}
                         path={route.path}
                         element={
-                            isAuthenticated ? (
-                                <LearningLayout>{route.component}</LearningLayout>
+                            role === Roles.ADMIN ? (
+                                <Navigate to={path.ADMIN.DASHBOARD} />
                             ) : (
-                                <Navigate to={path.AUTH.LOGIN} />
+                                <LearningLayout roles={[Roles.STUDENT]} isAuthenticated={isAuthenticated}>
+                                    {route.component}
+                                </LearningLayout>
                             )
                         }
                     />
@@ -71,7 +89,11 @@ export default function App() {
 
                 {/* Protected Routes */}
                 {protectedRoutes.map((route, index) => (
-                    <Route key={index} path={route.path} element={route.component} />
+                    <Route
+                        key={index}
+                        path={route.path}
+                        element={role === Roles.ADMIN ? route.component : <Navigate to={path.AUTH.LOGIN} />}
+                    />
                 ))}
             </Routes>
         </>
