@@ -6,10 +6,9 @@ import { FaHeading } from 'react-icons/fa';
 import { GrFormNextLink } from 'react-icons/gr';
 import SelectCategoryCourse from '../SelectCategoryCourse';
 import { ICourse } from '../../../../model/Course.model';
-
-type AddSummaryInformationProps = {
-    onNextStep: () => void;
-};
+import SelectStatusCourse from '../SelectStatusCourse';
+import { useRouter } from '../../../../hook';
+import { path } from '../../../../enum/path';
 
 const createNewCourse = async (newCourse: any): Promise<ICourse | null> => {
     try {
@@ -31,7 +30,7 @@ const createNewCourse = async (newCourse: any): Promise<ICourse | null> => {
     }
 };
 
-function AddSummaryInformation(props: AddSummaryInformationProps) {
+function AddSummaryInformation() {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [subTitle, setSubtitle] = useState<string>('');
@@ -40,29 +39,30 @@ function AddSummaryInformation(props: AddSummaryInformationProps) {
     const [price, setPrice] = useState<number>(0);
     const [requireSkill, setRequireSkill] = useState<string>('');
     const [target, setTarget] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [status, setStatus] = useState<any>('');
+    const router = useRouter();
 
     const handleAddNewCourse = async () => {
-        const newCourse = {
-            title,
-            description,
-            subTitle,
-            thumbnail,
-            price,
-            adviseVideo: '',
-            categoryId: category,
-            requireSkill,
-            target,
-        };
+        // const newCourse = {
+        //     title,
+        //     description,
+        //     subTitle,
+        //     thumbnail,
+        //     price,
+        //     adviseVideo: '',
+        //     categoryCourse: {
+        //         id: category,
+        //     },
+        //     requireSkill,
+        //     target,
+        //     status,
+        // };
+        // const res: ICourse | null = await createNewCourse(newCourse);
+        // if (res) {
+        //     console.log(res);
+        // }
 
-        setIsLoading(true);
-        const res: ICourse | null = await createNewCourse(newCourse);
-        setIsLoading(false);
-
-        if (res) {
-            // props.onNextStep();
-            console.log(res);
-        }
+        router.replace(path.ADMIN.DETAIL_COURSE + '1');
     };
     return (
         <div className="w-full h-full">
@@ -148,7 +148,7 @@ function AddSummaryInformation(props: AddSummaryInformationProps) {
                         <Input
                             onChange={(e) => setPrice(+e.target.value)}
                             type="number"
-                            className="w-fit"
+                            className="w-[20rem]"
                             label="Giá công khai của khóa học"
                             placeholder="0.00"
                             labelPlacement="outside"
@@ -163,6 +163,12 @@ function AddSummaryInformation(props: AddSummaryInformationProps) {
                                 setCategory(res);
                             }}
                         />
+
+                        <SelectStatusCourse
+                            onResult={function (res: number): void {
+                                setStatus(res);
+                            }}
+                        />
                     </div>
                 </div>
             </div>
@@ -171,10 +177,9 @@ function AddSummaryInformation(props: AddSummaryInformationProps) {
                     onClick={handleAddNewCourse}
                     startContent={<GrFormNextLink className="text-xl" />}
                     color="success"
-                    isLoading={isLoading}
                     className="text-white"
                 >
-                    Tiếp theo
+                    Xác nhận
                 </Button>
             </div>
         </div>

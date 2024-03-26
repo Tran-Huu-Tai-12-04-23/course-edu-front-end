@@ -2,7 +2,7 @@ import { ICourse } from './Course.model';
 
 export type ICategoryCourse = {
     id?: string | number;
-    categoryName: string;
+    categoryName?: string;
     isLock?: boolean;
     isAdd?: boolean;
 };

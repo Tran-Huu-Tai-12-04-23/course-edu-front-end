@@ -79,6 +79,14 @@ class Helper {
         const data: IUser = JSON.parse(strToken);
         return data || null;
     }
+
+    /// get embeded link from link youtub
+    getVideoYTId(linkYT: string = 'https://www.youtube.com/watch?v=4DEK3cia8cI') {
+        const exampleFindLink = 'watch?v=';
+        const index = linkYT.indexOf(exampleFindLink);
+        const idVideo = linkYT.substring(index + exampleFindLink.length);
+        return idVideo;
+    }
 }
 
 export default new Helper();

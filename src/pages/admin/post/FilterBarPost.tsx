@@ -14,9 +14,9 @@ type FilterBarPostProps = {
 function FilterBarPost(props: FilterBarPostProps) {
     const history = useNavigate();
     const { pathname } = useLocation();
-    const [tags, setTags] = useState('');
-    const [status, setStatus] = useState('');
-    const [query, setQuery] = useState('');
+    const [tags, setTags] = useState<any>('');
+    const [status, setStatus] = useState<any>('');
+    const [query, setQuery] = useState<any>('');
 
     useEffect(() => {
         let filter = {
@@ -46,9 +46,9 @@ function FilterBarPost(props: FilterBarPostProps) {
                 <Search onChange={(val) => setQuery(val)} placeholder="Tìm kiếm theo tiều đề, thể loại, ..." />
                 <Button
                     onClick={() => {
-                        setTags('');
-                        setQuery('');
-                        setStatus('');
+                        setTags(null);
+                        setQuery(null);
+                        setStatus(null);
                     }}
                     startContent={<GrPowerReset className="text-xl" />}
                     variant="flat"

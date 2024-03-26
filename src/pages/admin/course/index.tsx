@@ -41,13 +41,14 @@ const getAllCourse = async (
     }
 };
 
-const getTotalCourse = async (): Promise<number> => {
+const countTotalCourse = async (queryData: ICourseQueryDto): Promise<number> => {
     try {
         const response = await fetch(Constant.BASE_URL_API + 'course/count', {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify(queryData),
         });
 
         if (!response.ok) {
@@ -96,18 +97,24 @@ function Course() {
         res && setData(res.data);
     };
 
+    const getTotalCourse = async () => {
+        const queryData: ICourseQueryDto = {
+            ...filterData,
+        };
+        const totalCourse = await countTotalCourse(queryData);
+        setPaginationData((prev) => {
+            return {
+                ...prev,
+                totalPages: Math.ceil(+totalCourse / paginationData.size),
+                isHasNextPage: totalCourse > paginationData.size,
+            };
+        });
+    };
+
     useEffect(() => {
         const initData = async () => {
             setIsLoading(true);
-            const totalCourse = await getTotalCourse();
-            setPaginationData((prev) => {
-                return {
-                    ...prev,
-                    totalPages: Math.ceil(+totalCourse / paginationData.size),
-                    isHasNextPage: totalCourse > paginationData.size,
-                };
-            });
-
+            await getTotalCourse();
             const queryData: IPaginationRequestDto<ICourseQueryDto> = {
                 where: {},
                 pageNumber: 1,
@@ -122,11 +129,10 @@ function Course() {
     }, []);
     useEffect(() => {
         const filterData = async () => {
+            await getTotalCourse();
             await handleChangePage(paginationData.currentPage);
         };
-
         setIsLoading(true);
-
         const queryTimeout = setTimeout(() => {
             filterData();
             setIsLoading(false);

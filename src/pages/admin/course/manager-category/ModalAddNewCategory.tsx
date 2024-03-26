@@ -55,6 +55,7 @@ export default function ModalAddNewCategory(props: ModalAddNewCategoryProps) {
         if (res) {
             toast.success('Thêm danh mục mới thành công!');
             props.onAdd && props.onAdd(res);
+            setCategoryName('');
             onClose();
         } else {
             toast.error('Thêm danh mục mới thất bại!');

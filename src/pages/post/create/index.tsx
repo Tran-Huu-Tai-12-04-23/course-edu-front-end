@@ -80,7 +80,7 @@ function CreatePost() {
                                 title,
                                 description,
                                 items,
-                                status: IStatusPost.PENDING,
+                                status: IStatusPost.Pending,
                             }}
                         />
                     </div>

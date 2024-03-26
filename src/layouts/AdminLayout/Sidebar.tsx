@@ -26,7 +26,7 @@ function Sidebar() {
             subNav: [
                 {
                     name: 'Quản lý',
-                    path: '',
+                    path: path.ADMIN.COURSE,
                 },
                 {
                     name: 'Thêm',
@@ -46,7 +46,7 @@ function Sidebar() {
             subNav: [
                 {
                     name: 'Quản lý',
-                    path: '',
+                    path: path.ADMIN.POST,
                 },
                 {
                     name: 'Thêm bài viết',

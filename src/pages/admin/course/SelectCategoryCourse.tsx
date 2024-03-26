@@ -56,7 +56,7 @@ function SelectCategoryCourse(props: SelectCategoryCourseProps) {
             disableSelectorIconRotation
             placeholder="Chọn"
             label="Khóa học thuộc danh mục nào"
-            className="max-w-[14rem]"
+            className="max-w-[20rem]"
             selectorIcon={<TbSelector className="text-xl" />}
         >
             {categories.map((category: ICategoryCourse, index: number) => (

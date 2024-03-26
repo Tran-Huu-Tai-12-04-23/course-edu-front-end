@@ -1,7 +1,7 @@
 import FragmentBlogItem from '../../../components/FragmentBlogItem';
 import { fragmentBlogItemLabel, TypeItemPost } from '../../../components/FragmentBlogItem/FragmentBlogItem.type';
 import { Button, ButtonGroup } from '@nextui-org/react';
-import { v4 as uuidv4 } from 'uuid';
+import uuid from 'react-uuid';
 import { useEffect, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 import { IoArrowUndo, IoArrowRedo } from 'react-icons/io5';
@@ -112,7 +112,7 @@ function Editor(props: EditorProps) {
                                         return [
                                             ...prev,
                                             {
-                                                id: uuidv4(),
+                                                id: uuid(),
                                                 index: prev.length,
                                                 typeItem: label.key,
                                                 content: '',

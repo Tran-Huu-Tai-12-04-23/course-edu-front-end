@@ -1,17 +1,21 @@
-import { Button, Popover, PopoverContent, PopoverTrigger, Tooltip, useDisclosure } from '@nextui-org/react';
+import { Button, Input, Popover, PopoverContent, PopoverTrigger, useDisclosure } from '@nextui-org/react';
 import { IoMdAdd } from 'react-icons/io';
 import { FaTrash } from 'react-icons/fa';
 import { useState } from 'react';
 import Lesson from './Lesson';
-import { TypeGroupLesson } from './AddDetailInformation';
 import { Draggable, Droppable } from '@hello-pangea/dnd';
 import { MdModeEditOutline } from 'react-icons/md';
 import ModalAddLesson from './ModalAddLesson';
+import { IoIosSave } from 'react-icons/io';
+import toast from 'react-hot-toast';
+import { IGroupLesson, ILesson, IPostLesson, IQuizLesson, IVideoLesson } from '../../../../../model/Course.model';
 
 type GroupLessonProps = {
     onRemove: (id: any) => void;
-    data: TypeGroupLesson;
+    data: IGroupLesson;
     index: number;
+    onChangeTitle: (text: string, id: any) => void;
+    onAddNewLesson: (res: ILesson) => void;
 };
 
 const lesson = {
@@ -24,8 +28,9 @@ export type TypeLesson = typeof lesson;
 
 function GroupLesson(props: GroupLessonProps) {
     const [isOpenConfirmRemove, setIsOpenConfirmRemove] = useState<boolean>(false);
-    const [isHovered, setIsHovered] = useState(false);
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+    const [isEdit, setIsEdit] = useState(false);
+    const [title, setTitle] = useState(props.data.title);
 
     return (
         <>
@@ -42,33 +47,57 @@ function GroupLesson(props: GroupLessonProps) {
                             snapshot.isDragging ? 'bg-[rgb(64,150,255,0.4)]' : 'bg-second-light dark:bg-second-dark'
                         } group cursor-pointer p-2 rounded-lg  border-[1px] border-second border-solid w-full`}
                     >
-                        <div className="border-b-[1px] pb-4 flex justify-between items-center gap-4 border-dashed border-second w-full">
-                            <h1 className="h-8">
-                                {props.index + 1}. {props.data.title}
-                            </h1>
-                            <div
-                                className={`${
-                                    isHovered ? '' : 'translate-x-[50%] opacity-0 '
-                                }  justify-end items-center gap-4 flex`}
-                            >
-                                <Tooltip content="Chỉnh sửa tên nhóm bài học">
+                        <div className="group border-b-[1px] pb-4 flex justify-between items-center gap-4 border-dashed border-second w-full">
+                            <Input
+                                startContent={<h5>{props.index + 1}.</h5>}
+                                type="email"
+                                variant="bordered"
+                                disabled={!isEdit}
+                                value={title}
+                                className="bg-transparent"
+                                label=""
+                                onChange={(e) => {
+                                    setTitle(e.target.value);
+                                }}
+                                defaultValue={props.data.title}
+                                labelPlacement="outside"
+                            />
+                            <div className={`group-hover:flex hidden justify-end items-center gap-4 `}>
+                                {!isEdit && (
+                                    <Button
+                                        size="sm"
+                                        className="bg-blue-600 "
+                                        isIconOnly
+                                        onClick={() => setIsEdit(true)}
+                                        startContent={<MdModeEditOutline className=" text-white" />}
+                                    />
+                                )}
+                                {isEdit && (
                                     <Button
                                         size="sm"
                                         className="bg-blue-600"
                                         isIconOnly
-                                        startContent={<MdModeEditOutline className=" text-white" />}
+                                        onClick={() => {
+                                            if (title.trim() === '') {
+                                                toast.error('Vui lòng không bỏ trống trường này!');
+                                                props.onChangeTitle(props.data.title, props.data.id);
+                                                return;
+                                            }
+                                            props.onChangeTitle(title, props.data.id);
+                                            setIsEdit(false);
+                                        }}
+                                        startContent={<IoIosSave className=" text-white" />}
                                     />
-                                </Tooltip>
-                                <Tooltip content="Thêm bài học">
-                                    <Button
-                                        onClick={onOpen}
-                                        size="sm"
-                                        color="secondary"
-                                        isIconOnly
-                                        startContent={<IoMdAdd />}
-                                    />
-                                </Tooltip>
-                                <Popover isOpen={isOpenConfirmRemove} placement="top-end" offset={20} showArrow>
+                                )}
+
+                                <Button
+                                    onClick={onOpen}
+                                    size="sm"
+                                    color="secondary"
+                                    isIconOnly
+                                    startContent={<IoMdAdd />}
+                                />
+                                <Popover isOpen={isOpenConfirmRemove} placement="bottom-end" offset={20} showArrow>
                                     <PopoverTrigger>
                                         <Button
                                             onClick={() => {
@@ -97,7 +126,10 @@ function GroupLesson(props: GroupLessonProps) {
                                                 <Button
                                                     size="sm"
                                                     color="danger"
-                                                    onClick={() => props.onRemove(props.data.id)}
+                                                    onClick={() => {
+                                                        props.onRemove(props.data.id);
+                                                        setIsOpenConfirmRemove(false);
+                                                    }}
                                                 >
                                                     Chắc chắn
                                                 </Button>
@@ -115,7 +147,7 @@ function GroupLesson(props: GroupLessonProps) {
                                     {...provided.droppableProps}
                                     ref={provided.innerRef}
                                 >
-                                    {props.data.lessons.map((item: TypeLesson, index) => (
+                                    {props.data.lessons.map((item: ILesson, index) => (
                                         <Lesson key={item.id} data={item} index={index} />
                                     ))}
                                     {provided.placeholder}
@@ -125,7 +157,14 @@ function GroupLesson(props: GroupLessonProps) {
                     </div>
                 )}
             </Draggable>
-            <ModalAddLesson isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose} />
+            <ModalAddLesson
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                onClose={onClose}
+                onResult={function (res: ILesson): void {
+                    // props.onAddNewLesson(res);
+                }}
+            />
         </>
     );
 }

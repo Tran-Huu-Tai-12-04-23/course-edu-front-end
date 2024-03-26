@@ -24,6 +24,7 @@ export const path = {
         DASHBOARD: '/admin/dashboard',
         COURSE: '/admin/course',
         ADD_COURSE: '/admin/course/add',
+        DETAIL_COURSE: '/admin/course/',
         POST: '/admin/post',
         ADD_POST: '/admin/post/add',
         USER: '/admin/user',

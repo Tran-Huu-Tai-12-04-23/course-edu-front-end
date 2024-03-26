@@ -35,13 +35,14 @@ const getPaginationPost = async (
     }
 };
 
-const getTotalPost = async (): Promise<number> => {
+const countTotalPost = async (queryData: IPostQueryDto): Promise<number> => {
     try {
         const response = await fetch(Constant.BASE_URL_API + 'post/count', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify(queryData),
         });
 
         if (!response.ok) {
@@ -89,18 +90,24 @@ function Post() {
         res && setData(res.data);
     };
 
+    const getTotalCourse = async () => {
+        const queryData: IPostQueryDto = {
+            ...filterData,
+        };
+        const totalCourse = await countTotalPost(queryData);
+        setPaginationData((prev) => {
+            return {
+                ...prev,
+                totalPages: Math.ceil(+totalCourse / paginationData.size),
+                isHasNextPage: totalCourse > paginationData.size,
+            };
+        });
+    };
+
     useEffect(() => {
         const initData = async () => {
             setIsLoading(true);
-            const totalPost = await getTotalPost();
-            setPaginationData((prev: any) => {
-                return {
-                    ...prev,
-                    totalPages: Math.ceil(+totalPost / paginationData.size),
-                    isHasNextPage: totalPost > paginationData.size,
-                };
-            });
-
+            await getTotalCourse();
             const queryData: IPaginationRequestDto<IPostQueryDto> = {
                 where: {},
                 pageNumber: 1,
@@ -116,6 +123,7 @@ function Post() {
 
     useEffect(() => {
         const filterData = async () => {
+            await getTotalCourse();
             await handleChangePage(paginationData.currentPage);
         };
         setIsLoading(true);
@@ -128,6 +136,7 @@ function Post() {
         };
     }, [filterData]);
 
+    console.log(filterData);
     return (
         <AdminLayout>
             <div className="w-full  p-4">

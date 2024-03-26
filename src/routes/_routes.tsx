@@ -17,6 +17,7 @@ import AddCourse from '../pages/admin/course/add';
 import UserManagerPost from '../pages/user/manager-post';
 import ManagerCategory from '../pages/admin/course/manager-category';
 import { ProfilePage, SettingPage } from '../pages/user';
+import AddCourseDetail from '../pages/admin/course/add/add-course-detail';
 
 export type routeProps = {
     path: string;
@@ -65,6 +66,11 @@ export const protectedRoutes: routeProps[] = [
     {
         path: path.ADMIN.COURSE + '/add',
         component: <AddCourse />,
+        type: typeRoute.PROTECTED_ROUTE,
+    },
+    {
+        path: path.ADMIN.DETAIL_COURSE + ':id',
+        component: <AddCourseDetail />,
         type: typeRoute.PROTECTED_ROUTE,
     },
     {
