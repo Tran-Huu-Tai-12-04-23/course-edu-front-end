@@ -1,6 +1,5 @@
 import { TypeItemPost } from '../components/FragmentBlogItem/FragmentBlogItem.type';
 import { ICategoryCourse } from './Common.model';
-import { IPostItem } from './Post.model';
 
 export type ICourse = {
     id?: number;
@@ -37,6 +36,7 @@ export type ILesson = {
     quiz?: IQuestion[];
     video?: IVideoLesson;
     post?: IPostLesson;
+    index: number;
 };
 
 export type IQuestion = {

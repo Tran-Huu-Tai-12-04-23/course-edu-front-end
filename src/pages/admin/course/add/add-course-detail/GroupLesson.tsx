@@ -8,7 +8,7 @@ import { MdModeEditOutline } from 'react-icons/md';
 import ModalAddLesson from './ModalAddLesson';
 import { IoIosSave } from 'react-icons/io';
 import toast from 'react-hot-toast';
-import { IGroupLesson, ILesson, IPostLesson, IQuizLesson, IVideoLesson } from '../../../../../model/Course.model';
+import { IGroupLesson, ILesson,  } from '../../../../../model/Course.model';
 
 type GroupLessonProps = {
     onRemove: (id: any) => void;

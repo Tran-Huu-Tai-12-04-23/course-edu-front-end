@@ -6,74 +6,89 @@ import { MdModeEditOutline } from 'react-icons/md';
 import { FaTrash } from 'react-icons/fa';
 import ModalConfirmRemove from './ModalConfirmRemove';
 import { MdDragIndicator } from 'react-icons/md';
+import { Draggable } from '@hello-pangea/dnd';
+import uuid from 'react-uuid';
 
 type GroupProps = {
     data: IGroupLesson;
+    onSelect: (res: IGroupLesson) => void;
 };
 function Group(props: GroupProps) {
     const [isEdit, setIsEdit] = useState(false);
     const [title, setTitle] = useState('');
     return (
-        <div className="p-4 group flex justify-between items-center gap-4 hover:bg-primary/10 cursor-pointer group">
-            {/* {item.index + 1}. {item.title} */}
-            <div className="flex justify-start items-center w-[70%]">
-                <MdDragIndicator className="text-xl hover:cursor-move" />
-                {isEdit && (
-                    <Input
-                        startContent={<h5>{props.data.index + 1}.</h5>}
-                        type="email"
-                        variant="underlined"
-                        disabled={!isEdit}
-                        value={title}
-                        className={`bg-transparent `}
-                        label=""
-                        onChange={(e) => {
-                            setTitle(e.target.value);
-                        }}
-                        defaultValue={props.data.title}
-                        labelPlacement="outside"
-                    />
-                )}
+        <Draggable
+            key={props.data.id}
+            draggableId={props.data.id ? props.data.id?.toString() : uuid()}
+            index={props.data.index}
+        >
+            {(provided) => (
+                <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    onClick={() => props.onSelect(props.data)}
+                    className="p-4 group w-full flex justify-between items-center gap-4 hover:bg-primary/10 cursor-pointer group"
+                >
+                    {/* {item.index + 1}. {item.title} */}
+                    <div className="flex justify-start items-center w-[70%]">
+                        <MdDragIndicator className="text-xl hover:cursor-move" />
+                        {isEdit && (
+                            <Input
+                                startContent={<h5>{props.data.index + 1}.</h5>}
+                                type="email"
+                                variant="underlined"
+                                disabled={!isEdit}
+                                value={title}
+                                className={`bg-transparent `}
+                                label=""
+                                onChange={(e) => {
+                                    setTitle(e.target.value);
+                                }}
+                                defaultValue={props.data.title}
+                                labelPlacement="outside"
+                            />
+                        )}
 
-                {!isEdit && (
-                    <h5 className="p-2 w-full truncate">
-                        {props.data.index + 1}.{props.data.title}
-                    </h5>
-                )}
-            </div>
-            <div className={`group-hover:flex hidden justify-end items-center gap-4 `}>
-                {!isEdit && (
-                    <Button
-                        size="sm"
-                        className="bg-blue-600 "
-                        isIconOnly
-                        onClick={() => setIsEdit(true)}
-                        startContent={<MdModeEditOutline className=" text-white" />}
-                    />
-                )}
-                {isEdit && (
-                    <Button
-                        size="sm"
-                        className="bg-blue-600"
-                        isIconOnly
-                        onClick={() => {
-                            // if (title.trim() === '') {
-                            //     toast.error('Vui lòng không bỏ trống trường này!');
-                            //     props.onChangeTitle(props.data.title, props.data.id);
-                            //     return;
-                            // }
-                            // props.onChangeTitle(title, props.data.id);
-                            setIsEdit(false);
-                        }}
-                        startContent={<IoIosSave className=" text-white" />}
-                    />
-                )}
-                <ModalConfirmRemove id={0}>
-                    <div className="p-2 rounded-lg bg-danger-400">
-                        <FaTrash />
+                        {!isEdit && (
+                            <h5 className="p-2 w-full truncate">
+                                {props.data.index + 1}.{props.data.title}
+                            </h5>
+                        )}
                     </div>
-                </ModalConfirmRemove>{' '}
-                {/* <Button
+                    <div className={`group-hover:flex hidden justify-end items-center gap-4 `}>
+                        {!isEdit && (
+                            <Button
+                                size="sm"
+                                className="bg-blue-600 "
+                                isIconOnly
+                                onClick={() => setIsEdit(true)}
+                                startContent={<MdModeEditOutline className=" text-white" />}
+                            />
+                        )}
+                        {isEdit && (
+                            <Button
+                                size="sm"
+                                className="bg-blue-600"
+                                isIconOnly
+                                onClick={() => {
+                                    // if (title.trim() === '') {
+                                    //     toast.error('Vui lòng không bỏ trống trường này!');
+                                    //     props.onChangeTitle(props.data.title, props.data.id);
+                                    //     return;
+                                    // }
+                                    // props.onChangeTitle(title, props.data.id);
+                                    setIsEdit(false);
+                                }}
+                                startContent={<IoIosSave className=" text-white" />}
+                            />
+                        )}
+                        <ModalConfirmRemove id={0}>
+                            <div className="p-2 rounded-lg bg-danger-400">
+                                <FaTrash />
+                            </div>
+                        </ModalConfirmRemove>{' '}
+                        {/* <Button
                                     onClick={onOpen}
                                     size="sm"
                                     color="secondary"
@@ -120,8 +135,10 @@ function Group(props: GroupProps) {
                                         </div>
                                     </PopoverContent>
                                 </Popover> */}
-            </div>
-        </div>
+                    </div>
+                </div>
+            )}
+        </Draggable>
     );
 }
 

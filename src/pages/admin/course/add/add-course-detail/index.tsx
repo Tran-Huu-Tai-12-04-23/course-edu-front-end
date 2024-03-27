@@ -1,18 +1,14 @@
-import { BreadcrumbItem, Breadcrumbs, Button, Input, Popover, PopoverContent, PopoverTrigger } from '@nextui-org/react';
-import { IoMdAdd } from 'react-icons/io';
-import GroupLesson from './GroupLesson';
+import { BreadcrumbItem, Breadcrumbs } from '@nextui-org/react';
 import { memo, useEffect, useState } from 'react';
-import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import toast from 'react-hot-toast';
 import uuid from 'react-uuid';
-import { IGroupLesson, ILesson, ITypeLesson } from '../../../../../model/Course.model';
-import { EStep } from '..';
+import { IGroupLesson, ITypeLesson } from '../../../../../model/Course.model';
 import { path } from '../../../../../enum/path';
 import AdminLayout from '../../../../../layouts/AdminLayout';
-import AddSummaryInformation from '../AddSummaryInformation';
 import { useRouter } from '../../../../../hook';
 import Sidebar from './SideBar';
-import ManagerGroupLesson from './ManaagerGroupLesson';
+import ManagerGroupLesson from './ManagerGroupLesson';
+import { IoIosArrowRoundBack } from 'react-icons/io';
 
 const GroupLessonDataExample = [
     {
@@ -142,99 +138,29 @@ function AddCourseDetail() {
                     <BreadcrumbItem>Quản lý</BreadcrumbItem>
                     <BreadcrumbItem>Chi tiết khóa học</BreadcrumbItem>
                 </Breadcrumbs>
-                <div className="w-full flex rounded-lg h-full bg-light-sidebar dark:bg-dark-sidebar mt-4">
+                <div className="w-full rounded-lg h-full bg-light-sidebar dark:bg-dark-sidebar mt-4">
                     {/* {step === EStep.ADD_SUMMARY_INFORMATION && <AddSummaryInformation />} */}
-                    <div className="border-r-[1px] border-solid border-gray-500/10">
-                        <Sidebar
-                            active={activeSidebar}
-                            onChangeSidebar={function (key: number): void {
-                                setActiveSidebar(key);
-                            }}
-                        />
+                    <div className="hover:bg-primary/10 cursor-pointer flex justify-start items-center gap-4 w-full pb-2 p-4 border-b-[1px] border-solid border-gray-500/10">
+                        <IoIosArrowRoundBack className="text-2xl" />
+                        <div>
+                            <h5 className="text-2xl font-extrabold">Khóa học PHP cơ bản</h5>
+                            <h5>..... mô tả</h5>
+                        </div>
                     </div>
+                    <div className="flex w-full">
+                        <div className="border-r-[1px] border-solid border-gray-500/10">
+                            <Sidebar
+                                active={activeSidebar}
+                                onChangeSidebar={function (key: number): void {
+                                    setActiveSidebar(key);
+                                }}
+                            />
+                        </div>
 
-                    {activeSidebar === 0 && <ManagerGroupLesson />}
+                        {activeSidebar === 0 && <ManagerGroupLesson />}
+                    </div>
                 </div>
             </div>
-            {/* <div>
-                <h5 className="text-xl font-bold mb-5">Tạo bài học cho khóa học</h5>
-                <div className="flex flex-wrap flex-col gap-4 justify-start items-start w-full"> */}
-            {/* <DragDropContext onDragEnd={handleOnDragEnd}>
-                    <Droppable droppableId="board" type="COLUMN">
-                        {(provided, snapshot) => (
-                            <div
-                                className={` flex w-full flex-wrap flex-col gap-4 justify-start items-start`}
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                            >
-                                {groupLessons.map((item: IGroupLesson, index) => (
-                                    <GroupLesson
-                                        key={index}
-                                        index={index}
-                                        data={item}
-                                        onRemove={handleRemoveGroupLesson}
-                                        onChangeTitle={function (text: string, id: any): void {
-                                            setGroupLessons((prev) =>
-                                                prev.map((i) => {
-                                                    if (i.id === id) {
-                                                        return { ...i, title: text };
-                                                    } else {
-                                                        return i;
-                                                    }
-                                                }),
-                                            );
-                                        }}
-                                        onAddNewLesson={function (res: ILesson): void {
-                                            throw new Error('Function not implemented.');
-                                        }}
-                                    />
-                                ))}
-                                {provided.placeholder}
-                            </div>
-                        )}
-                    </Droppable>
-                </DragDropContext> */}
-            {/* <Popover isOpen={isOpenModalAddGroupLesson} placement="top" showArrow={true}>
-                    <PopoverTrigger>
-                        <Button
-                            onClick={() => setIsOpenModalAddGroupLesson(true)}
-                            startContent={<IoMdAdd className="text-2xl" />}
-                            className="w-[30rem]"
-                        >
-                            Thêm nhóm khóa học
-                        </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="p-2 rounded-lg ">
-                        <div
-                            onClick={(e) => e.stopPropagation()}
-                            className="p-2 w-[30rem] rounded-lg bg-[rgba(0,0,0,0.1) backdrop-blur-2xl "
-                        >
-                            <Input
-                                onChange={(e) => setTitle(e.target.value)}
-                                value={title}
-                                placeholder="   "
-                                labelPlacement="outside"
-                                label="Tên nhóm bài học"
-                            />
-
-                            <div className="mt-5 w-full flex justify-end items-center gap-4">
-                                <Button
-                                    color="danger"
-                                    onClick={() => {
-                                        setIsOpenModalAddGroupLesson(false);
-                                    }}
-                                >
-                                    Hủy
-                                </Button>
-                                <Button className="text-white" color="success" onClick={handleAddGroupLesson}>
-                                    Thêm
-                                </Button>
-                            </div>
-                        </div>
-                    </PopoverContent>
-                </Popover> */}
-            {/* </div>
-            </div> */}
         </AdminLayout>
     );
 }

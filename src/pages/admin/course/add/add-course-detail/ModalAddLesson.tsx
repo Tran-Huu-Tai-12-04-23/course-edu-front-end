@@ -122,8 +122,10 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                                         props.onResult({
                                             id: uuid(),
                                             ...input,
+                                            index: -1,
                                             quiz: [...res],
                                         });
+                                        props.onClose();
                                     }}
                                 />
                             )}
@@ -133,8 +135,10 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                                         props.onResult({
                                             id: uuid(),
                                             ...input,
+                                            index: -1,
                                             video: { ...res },
                                         });
+                                        props.onClose();
                                     }}
                                 />
                             )}
@@ -144,8 +148,10 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                                         props.onResult({
                                             id: uuid(),
                                             ...input,
+                                            index: -1,
                                             post: { ...res },
                                         });
+                                        props.onClose();
                                     }}
                                 />
                             )}
