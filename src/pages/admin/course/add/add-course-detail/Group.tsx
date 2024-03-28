@@ -12,6 +12,7 @@ import uuid from 'react-uuid';
 type GroupProps = {
     data: IGroupLesson;
     onSelect: (res: IGroupLesson) => void;
+    onRemove: (id: string | number) => void;
 };
 function Group(props: GroupProps) {
     const [isEdit, setIsEdit] = useState(false);
@@ -83,7 +84,12 @@ function Group(props: GroupProps) {
                                 startContent={<IoIosSave className=" text-white" />}
                             />
                         )}
-                        <ModalConfirmRemove id={0}>
+                        <ModalConfirmRemove
+                            id={props.data.id ?? ''}
+                            onRemove={function (id: string | number): void {
+                                props.onRemove(id);
+                            }}
+                        >
                             <div className="p-2 rounded-lg bg-danger-400">
                                 <FaTrash />
                             </div>

@@ -9,6 +9,7 @@ import { ICourse } from '../../../../model/Course.model';
 import SelectStatusCourse from '../SelectStatusCourse';
 import { useRouter } from '../../../../hook';
 import { path } from '../../../../enum/path';
+import toast from 'react-hot-toast';
 
 const createNewCourse = async (newCourse: any): Promise<ICourse | null> => {
     try {
@@ -40,29 +41,54 @@ function AddSummaryInformation() {
     const [requireSkill, setRequireSkill] = useState<string>('');
     const [target, setTarget] = useState<string>('');
     const [status, setStatus] = useState<any>('');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
 
     const handleAddNewCourse = async () => {
-        // const newCourse = {
-        //     title,
-        //     description,
-        //     subTitle,
-        //     thumbnail,
-        //     price,
-        //     adviseVideo: '',
-        //     categoryCourse: {
-        //         id: category,
-        //     },
-        //     requireSkill,
-        //     target,
-        //     status,
-        // };
-        // const res: ICourse | null = await createNewCourse(newCourse);
-        // if (res) {
-        //     console.log(res);
-        // }
+        if (!title) {
+            toast.error('Vui lòng điền tiêu đề khóa học.');
+            return;
+        }
+        if (!description) {
+            toast.error('Vui lòng điền mô tả khóa học.');
+            return;
+        }
+        if (!subTitle) {
+            toast.error('Vui lòng điền tiêu đề phụ khóa học.');
+            return;
+        }
+        if (!thumbnail) {
+            toast.error('Vui lòng cung cấp hình ảnh minh họa cho khóa học.');
+            return;
+        }
+        if (!price) {
+            toast.error('Vui lòng cung cấp giá cho khóa học.');
+            return;
+        }
+        if (!status) {
+            toast.error('Vui lòng chọn trạng thái cho khóa học.');
+            return;
+        }
+        const newCourse = {
+            title,
+            description,
+            subTitle,
+            thumbnail,
+            price,
+            adviseVideo: '',
+            categoryId: category,
+            requireSkill,
+            target,
+            status,
+        };
+        setIsLoading(true);
+        const res: ICourse | null = await createNewCourse(newCourse);
+        setIsLoading(false);
 
-        router.replace(path.ADMIN.DETAIL_COURSE + '1');
+        if (res) {
+            console.log(res);
+            router.replace(path.ADMIN.DETAIL_COURSE + res.id);
+        }
     };
     return (
         <div className="w-full h-full">
@@ -177,6 +203,7 @@ function AddSummaryInformation() {
                     onClick={handleAddNewCourse}
                     startContent={<GrFormNextLink className="text-xl" />}
                     color="success"
+                    isLoading={isLoading}
                     className="text-white"
                 >
                     Xác nhận

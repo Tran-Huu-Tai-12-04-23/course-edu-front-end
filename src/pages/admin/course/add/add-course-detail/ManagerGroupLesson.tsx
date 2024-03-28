@@ -10,7 +10,6 @@ import Lesson from './Lesson';
 
 function ManagerGroupLesson() {
     const [isAddNewLesson, setIsAddNewLesson] = useState(false);
-    const [lessons, setLessons] = useState<ILesson[]>([]);
     const [groupLesson, setGroupLesson] = useState<IGroupLesson[]>([]);
     const [groupLessonSelected, setGroupLessonSelected] = useState<IGroupLesson | null>(null);
 
@@ -29,9 +28,38 @@ function ManagerGroupLesson() {
         setGroupLesson(clonedItems);
     }
 
+    function handleOnDragEndLesson(result: any): void {
+        console.log(result);
+        if (!result.destination) return;
+        const indexDes = result.destination.index;
+        const indexSource = result.source.index;
+        console.log(indexDes);
+        console.log(indexSource);
+        const newItems = Array.from(groupLessonSelected?.lessons ?? []);
+        const [reorderedItem] = newItems.splice(indexSource, 1);
+        newItems.splice(indexDes, 0, reorderedItem);
+        const clonedItems = newItems.map((item: ILesson, index) => ({ ...item, index }));
+        console.log(clonedItems);
+        setGroupLesson((prev) => {
+            return prev.map((it) => {
+                if (it.id === groupLessonSelected?.id) {
+                    const newGroupLesson = {
+                        ...it,
+                        lessons: clonedItems,
+                    };
+                    setGroupLessonSelected({ ...newGroupLesson });
+                    return {
+                        ...newGroupLesson,
+                    };
+                }
+                return it;
+            });
+        });
+    }
+
     return (
         <>
-            <div className="w-full flex ">
+            <div className="w-full min-h-[30rem] flex ">
                 <div className="border-r-[1px] border-solid border-gray-500/10">
                     <div className="max-w-[26rem] pb-2 p-4 border-b-[1px] border-solid border-gray-500/10">
                         <h5 className="text-2xl font-extrabold">Quản lý danh sách nhóm bài học</h5>
@@ -54,6 +82,12 @@ function ManagerGroupLesson() {
                                                 onSelect={(res) => setGroupLessonSelected(res)}
                                                 key={item.id}
                                                 data={item}
+                                                onRemove={function (id: string | number): void {
+                                                    setGroupLesson((prev) => prev.filter((i) => i.id !== id));
+                                                    if (groupLessonSelected && groupLessonSelected.id === id) {
+                                                        setGroupLessonSelected(null);
+                                                    }
+                                                }}
                                             />
                                         ))}
                                         {provided.placeholder}
@@ -97,7 +131,7 @@ function ManagerGroupLesson() {
                         </div>
 
                         <div className="w-full p-10">
-                            <DragDropContext onDragEnd={handleOnDragEnd}>
+                            <DragDropContext onDragEnd={handleOnDragEndLesson}>
                                 <Droppable droppableId="lesson-board" type="COLUMN">
                                     {(provided) => {
                                         return (
@@ -107,7 +141,29 @@ function ManagerGroupLesson() {
                                                 ref={provided.innerRef}
                                             >
                                                 {groupLessonSelected.lessons.map((le) => (
-                                                    <Lesson key={le.id} data={le} index={le.index} />
+                                                    <Lesson
+                                                        key={le.id}
+                                                        data={le}
+                                                        onRemove={(id) => {
+                                                            setGroupLesson((prev) => {
+                                                                return prev.map((item) => {
+                                                                    if (item.id === groupLessonSelected.id) {
+                                                                        const newGroupLesson = {
+                                                                            ...item,
+                                                                            lessons: item.lessons.filter(
+                                                                                (it) => it.id !== id,
+                                                                            ),
+                                                                        };
+                                                                        setGroupLessonSelected(newGroupLesson);
+                                                                        return {
+                                                                            ...newGroupLesson,
+                                                                        };
+                                                                    }
+                                                                    return item;
+                                                                });
+                                                            });
+                                                        }}
+                                                    />
                                                 ))}
                                                 {provided.placeholder}
                                             </div>

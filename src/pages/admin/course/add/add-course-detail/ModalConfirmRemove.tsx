@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure } from '@nextui-org/react';
-import toast from 'react-hot-toast';
+import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure } from '@nextui-org/react';
 type ModalConfirmRemoveProps = {
-    id: number | string;
-    onRemove?: (id: number) => void;
+    id: string | number;
+    onRemove: (id: number | string) => void;
     children: React.ReactNode;
 };
 
@@ -27,7 +26,7 @@ const removeCategoryById = async (id: number): Promise<boolean> => {
 };
 
 export default function ModalConfirmRemove(props: ModalConfirmRemoveProps) {
-    const { isOpen, onOpenChange, onOpen, onClose } = useDisclosure();
+    const { isOpen, onOpenChange, onOpen } = useDisclosure();
     const [isLoading, setIsLoading] = useState(false);
 
     const handleRemoveCategory = async () => {
@@ -42,6 +41,8 @@ export default function ModalConfirmRemove(props: ModalConfirmRemoveProps) {
         //     toast.error('Xóa không thành công!');
         // }
         setIsLoading(false);
+
+        props.onRemove(props.id);
     };
 
     return (

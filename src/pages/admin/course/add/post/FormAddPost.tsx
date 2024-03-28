@@ -2,7 +2,7 @@ import { Button } from '@nextui-org/react';
 import { IoIosSave } from 'react-icons/io';
 import { TypeItemPost } from '../../../../../components/FragmentBlogItem/FragmentBlogItem.type';
 import Editor from '../../../../post/create/Editor';
-import { IPostLesson } from '../../../../../model/Course.model';
+import { IPostLesson, ITypeLesson } from '../../../../../model/Course.model';
 import { useState } from 'react';
 import uuid from 'react-uuid';
 

@@ -7,7 +7,7 @@ import AddQuizLesson from '../quiz/AddQuizLesson';
 import { memo, useState } from 'react';
 import FormAddVideo from '../video/FormAddVideo';
 import FormAddPost from '../post/FormAddPost';
-import { ILesson, IQuestion, IVideoLesson } from '../../../../../model/Course.model';
+import { ILesson, IQuestion, ITypeLesson, IVideoLesson } from '../../../../../model/Course.model';
 import { FaHeading } from 'react-icons/fa6';
 import uuid from 'react-uuid';
 
@@ -124,6 +124,7 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                                             ...input,
                                             index: -1,
                                             quiz: [...res],
+                                            type: ITypeLesson.Quiz,
                                         });
                                         props.onClose();
                                     }}
@@ -137,6 +138,7 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                                             ...input,
                                             index: -1,
                                             video: { ...res },
+                                            type: ITypeLesson.Video,
                                         });
                                         props.onClose();
                                     }}
@@ -150,6 +152,7 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                                             ...input,
                                             index: -1,
                                             post: { ...res },
+                                            type: ITypeLesson.Post,
                                         });
                                         props.onClose();
                                     }}
