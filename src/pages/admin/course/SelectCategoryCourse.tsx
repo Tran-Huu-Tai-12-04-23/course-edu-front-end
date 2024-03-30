@@ -45,7 +45,7 @@ function SelectCategoryCourse(props: SelectCategoryCourseProps) {
         };
         getData();
     }, []);
-
+    console.log({ category: props.value });
     return (
         <Select
             onChange={(val) => {
@@ -58,6 +58,7 @@ function SelectCategoryCourse(props: SelectCategoryCourseProps) {
             label="Khóa học thuộc danh mục nào"
             className="max-w-[20rem]"
             selectorIcon={<TbSelector className="text-xl" />}
+            selectedKeys={[props.value.toString()]}
         >
             {categories.map((category: ICategoryCourse, index: number) => (
                 <SelectItem key={category?.id ?? index} value={category.id} variant="flat" color="secondary">

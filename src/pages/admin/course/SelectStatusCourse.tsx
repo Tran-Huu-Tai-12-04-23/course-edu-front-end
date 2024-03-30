@@ -6,11 +6,12 @@ import { IStatusCourse } from '../../../model/Course.model';
 export type ICategory = {
     id: any;
     nameState: string;
-    value: IStatusCourse;
+    value: number;
 };
 
 type SelectStatusCourseProps = {
     onResult: (res: IStatusCourse) => void;
+    value?: any;
 };
 
 function SelectStatusCourse(props: SelectStatusCourseProps) {
@@ -26,6 +27,7 @@ function SelectStatusCourse(props: SelectStatusCourseProps) {
             value: IStatusCourse.Published,
         },
     ];
+    console.log({ status: props.value });
     return (
         <Select
             onChange={(val: React.ChangeEvent<HTMLSelectElement>) => {
@@ -39,6 +41,8 @@ function SelectStatusCourse(props: SelectStatusCourseProps) {
             label="Trạng thái của khóa học"
             className="max-w-[14rem]"
             selectorIcon={<TbSelector className="text-xl" />}
+            value={props.value}
+            selectedKeys={[props.value?.toString()]}
         >
             {categories.map((category: ICategory) => (
                 <SelectItem key={category.id} value={category.value} variant="flat" color="secondary">
