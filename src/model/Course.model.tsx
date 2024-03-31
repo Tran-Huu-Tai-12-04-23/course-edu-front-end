@@ -13,7 +13,7 @@ export type ICourse = {
     status: IStatusCourse;
     requireSkill: string;
     target: string;
-    items?: [];
+    groupLessons?: IGroupLesson[];
 };
 
 export type IGroupLesson = {

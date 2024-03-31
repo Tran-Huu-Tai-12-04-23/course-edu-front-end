@@ -8,15 +8,52 @@ import ModalConfirmRemove from './ModalConfirmRemove';
 import { MdDragIndicator } from 'react-icons/md';
 import { Draggable } from '@hello-pangea/dnd';
 import uuid from 'react-uuid';
+import { removeGroupLessonById, updateGroupLessonById } from './service';
+import toast from 'react-hot-toast';
 
 type GroupProps = {
     data: IGroupLesson;
     onSelect: (res: IGroupLesson) => void;
     onRemove: (id: string | number) => void;
+    onUpdate: (id: string | number, res: IGroupLesson) => void;
 };
 function Group(props: GroupProps) {
     const [isEdit, setIsEdit] = useState(false);
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState(props.data.title);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleUpdateGroupLesson = async () => {
+        const newGroupLesson = {
+            ...props.data,
+            title: title,
+        };
+
+        if (!props.data.id) return;
+
+        if (!title) {
+            toast.error('Tên nhóm khóa học không được trống !');
+            return;
+        }
+        setIsLoading(true);
+        const res = await updateGroupLessonById(props.data.id, newGroupLesson);
+        setIsLoading(false);
+
+        if (res) {
+            props.onUpdate(props.data.id, res);
+            setIsEdit(false);
+        } else {
+            toast.error('Đã xảy ra lỗi, không thể chỉnh sửa tên');
+        }
+    };
+
+    const handleRemoveGroupLesson = async (id: string | number) => {
+        const res = await removeGroupLessonById(id);
+        if (res) {
+            props.onRemove(id);
+        } else {
+            toast.error('Không thể xóa nhóm bài học! đã xảy ra lỗi gì đó!');
+        }
+    };
     return (
         <Draggable
             key={props.data.id}
@@ -36,6 +73,14 @@ function Group(props: GroupProps) {
                         <MdDragIndicator className="text-xl hover:cursor-move" />
                         {isEdit && (
                             <Input
+                                size="md"
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        handleUpdateGroupLesson();
+                                    }
+                                }}
+                                onFocus={(e) => e.stopPropagation()}
                                 startContent={<h5>{props.data.index + 1}.</h5>}
                                 type="email"
                                 variant="underlined"
@@ -69,25 +114,20 @@ function Group(props: GroupProps) {
                         )}
                         {isEdit && (
                             <Button
+                                isLoading={isLoading}
                                 size="sm"
                                 className="bg-blue-600"
                                 isIconOnly
                                 onClick={() => {
-                                    // if (title.trim() === '') {
-                                    //     toast.error('Vui lòng không bỏ trống trường này!');
-                                    //     props.onChangeTitle(props.data.title, props.data.id);
-                                    //     return;
-                                    // }
-                                    // props.onChangeTitle(title, props.data.id);
-                                    setIsEdit(false);
+                                    handleUpdateGroupLesson();
                                 }}
                                 startContent={<IoIosSave className=" text-white" />}
                             />
                         )}
                         <ModalConfirmRemove
                             id={props.data.id ?? ''}
-                            onRemove={function (id: string | number): void {
-                                props.onRemove(id);
+                            onRemove={async function (id: string | number) {
+                                await handleRemoveGroupLesson(id);
                             }}
                         >
                             <div className="p-2 rounded-lg bg-danger-400">

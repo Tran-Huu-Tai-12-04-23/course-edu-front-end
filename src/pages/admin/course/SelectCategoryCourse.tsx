@@ -58,7 +58,7 @@ function SelectCategoryCourse(props: SelectCategoryCourseProps) {
             label="Khóa học thuộc danh mục nào"
             className="max-w-[20rem]"
             selectorIcon={<TbSelector className="text-xl" />}
-            selectedKeys={[props.value.toString()]}
+            selectedKeys={[props.value ? props.value.toString() : '']}
         >
             {categories.map((category: ICategoryCourse, index: number) => (
                 <SelectItem key={category?.id ?? index} value={category.id} variant="flat" color="secondary">

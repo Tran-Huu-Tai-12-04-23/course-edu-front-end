@@ -68,7 +68,7 @@ function AddCourseDetail() {
                                 />
                             </div>
 
-                            {activeSidebar === 0 && <ManagerGroupLesson />}
+                            {activeSidebar === 0 && course && <ManagerGroupLesson data={course} />}
                             {activeSidebar === 1 && course && (
                                 <SettingCourse
                                     data={course}

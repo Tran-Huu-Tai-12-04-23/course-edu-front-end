@@ -1,5 +1,5 @@
 import Group from './Group';
-import { IGroupLesson, ILesson } from '../../../../../model/Course.model';
+import { ICourse, IGroupLesson, ILesson } from '../../../../../model/Course.model';
 import { Button, Image } from '@nextui-org/react';
 import { IoAdd } from 'react-icons/io5';
 import { useState } from 'react';
@@ -7,10 +7,16 @@ import ModalAddLesson from './ModalAddLesson';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import ModalAddGroupLesson from './ModalAddGroupLesson';
 import Lesson from './Lesson';
+import { addNewGroupLesson, updateGroupLessonById } from './service';
+import toast from 'react-hot-toast';
 
-function ManagerGroupLesson() {
+type ManagerGroupLessonProps = {
+    data: ICourse;
+};
+function ManagerGroupLesson(props: ManagerGroupLessonProps) {
+    const { data } = props;
     const [isAddNewLesson, setIsAddNewLesson] = useState(false);
-    const [groupLesson, setGroupLesson] = useState<IGroupLesson[]>([]);
+    const [groupLesson, setGroupLesson] = useState<IGroupLesson[]>(data.groupLessons ?? []);
     const [groupLessonSelected, setGroupLessonSelected] = useState<IGroupLesson | null>(null);
 
     function handleOnDragEnd(result: any): void {
@@ -20,12 +26,16 @@ function ManagerGroupLesson() {
         const indexSource = result.source.index;
         console.log(indexDes);
         console.log(indexSource);
+        const movedLesson1 = groupLesson[indexSource];
+        const movedLesson2 = groupLesson[indexDes];
         const newItems = Array.from(groupLesson);
         const [reorderedItem] = newItems.splice(indexSource, 1);
         newItems.splice(indexDes, 0, reorderedItem);
         const clonedItems = newItems.map((item: IGroupLesson, index) => ({ ...item, index }));
         console.log(clonedItems);
         setGroupLesson(clonedItems);
+
+        updateGroupLessonsAPI(movedLesson1, movedLesson2);
     }
 
     function handleOnDragEndLesson(result: any): void {
@@ -47,7 +57,7 @@ function ManagerGroupLesson() {
                         ...it,
                         lessons: clonedItems,
                     };
-                    setGroupLessonSelected({ ...newGroupLesson });
+                    setGroupLessonSelected({ ...newGroupLesson, lessons: [] });
                     return {
                         ...newGroupLesson,
                     };
@@ -55,6 +65,45 @@ function ManagerGroupLesson() {
                 return it;
             });
         });
+    }
+
+    const handleAddNewGroupLesson = async (res: IGroupLesson) => {
+        const index = groupLesson.length > 0 ? groupLesson[groupLesson.length - 1].index + 1 : 0;
+        const newGroupLesson = {
+            ...res,
+            index,
+        };
+        const result = await addNewGroupLesson(data.id ?? '', newGroupLesson);
+
+        if (result) {
+            setGroupLesson((prev) => [...prev, { ...result }]);
+            setGroupLessonSelected({ ...result });
+        } else {
+            toast.error('Không thể thêm nhóm bài học ! Vui lòng kiểm tra lại dữ liệu nhập vào.');
+        }
+    };
+
+    async function updateGroupLessonsAPI(lesson1: IGroupLesson, lesson2: IGroupLesson) {
+        try {
+            // Use Promise.all to concurrently execute both API calls
+            var lesson2Index = lesson1.index;
+            await Promise.all([
+                updateGroupLessonById(lesson1.id ?? 0, {
+                    ...lesson1,
+                    index: lesson2.index,
+                }),
+                updateGroupLessonById(lesson2.id ?? 0, { ...lesson2, index: lesson2Index }),
+            ]);
+        } catch (error) {
+            console.error('Error updating group lessons:', error);
+        }
+    }
+
+    async function handleRemoveGroupLesson(groupLessonId: string) {
+        setGroupLesson((prev) => prev.filter((item) => item.id !== groupLessonId));
+        if (groupLessonSelected && groupLessonSelected.id === groupLessonId) {
+            setGroupLessonSelected(null);
+        }
     }
 
     return (
@@ -79,6 +128,14 @@ function ManagerGroupLesson() {
                                     >
                                         {groupLesson.map((item) => (
                                             <Group
+                                                onUpdate={(id: string | number, res: IGroupLesson) => {
+                                                    if (groupLessonSelected && groupLessonSelected.id === id) {
+                                                        setGroupLessonSelected(res);
+                                                    }
+                                                    setGroupLesson((prev) =>
+                                                        prev.map((item) => (item.id === id ? { ...res } : item)),
+                                                    );
+                                                }}
                                                 onSelect={(res) => setGroupLessonSelected(res)}
                                                 key={item.id}
                                                 data={item}
@@ -96,12 +153,7 @@ function ManagerGroupLesson() {
                             }}
                         </Droppable>
                     </DragDropContext>
-                    <ModalAddGroupLesson
-                        onAdd={function (res: IGroupLesson): void {
-                            const index = groupLesson.length > 0 ? groupLesson[groupLesson.length - 1].index + 1 : 0;
-                            setGroupLesson((prev) => [...prev, { ...res, index }]);
-                        }}
-                    >
+                    <ModalAddGroupLesson onAdd={handleAddNewGroupLesson}>
                         <div className="flex justify-center items-center p-4 hover:bg-primary/20 cursor-pointer bg-primary/10 w-full">
                             Thêm nhóm bài học
                         </div>
@@ -140,31 +192,32 @@ function ManagerGroupLesson() {
                                                 {...provided.droppableProps}
                                                 ref={provided.innerRef}
                                             >
-                                                {groupLessonSelected.lessons.map((le) => (
-                                                    <Lesson
-                                                        key={le.id}
-                                                        data={le}
-                                                        onRemove={(id) => {
-                                                            setGroupLesson((prev) => {
-                                                                return prev.map((item) => {
-                                                                    if (item.id === groupLessonSelected.id) {
-                                                                        const newGroupLesson = {
-                                                                            ...item,
-                                                                            lessons: item.lessons.filter(
-                                                                                (it) => it.id !== id,
-                                                                            ),
-                                                                        };
-                                                                        setGroupLessonSelected(newGroupLesson);
-                                                                        return {
-                                                                            ...newGroupLesson,
-                                                                        };
-                                                                    }
-                                                                    return item;
+                                                {groupLessonSelected.lessons &&
+                                                    groupLessonSelected.lessons.map((le) => (
+                                                        <Lesson
+                                                            key={le.id}
+                                                            data={le}
+                                                            onRemove={(id) => {
+                                                                setGroupLesson((prev) => {
+                                                                    return prev.map((item) => {
+                                                                        if (item.id === groupLessonSelected.id) {
+                                                                            const newGroupLesson = {
+                                                                                ...item,
+                                                                                lessons: item.lessons.filter(
+                                                                                    (it) => it.id !== id,
+                                                                                ),
+                                                                            };
+                                                                            setGroupLessonSelected(newGroupLesson);
+                                                                            return {
+                                                                                ...newGroupLesson,
+                                                                            };
+                                                                        }
+                                                                        return item;
+                                                                    });
                                                                 });
-                                                            });
-                                                        }}
-                                                    />
-                                                ))}
+                                                            }}
+                                                        />
+                                                    ))}
                                                 {provided.placeholder}
                                             </div>
                                         );
