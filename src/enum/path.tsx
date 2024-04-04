@@ -1,4 +1,5 @@
 export const path = {
+    NOT_FOUND: '/not-found',
     HOME: '/',
     POST: {
         INDEX: '/post',
@@ -18,16 +19,18 @@ export const path = {
     AUTH: {
         LOGIN: '/login',
         REGISTER: '/register',
+        VERIFY_ACCOUNT: '/verify-account',
+        RESET_PASSWORD: '/reset-password',
     },
     ADMIN: {
-        MANAGER_COURSE_CATEGORY: '/admin/course/category',
-        DASHBOARD: '/admin/dashboard',
-        COURSE: '/admin/course',
-        ADD_COURSE: '/admin/course/add',
-        DETAIL_COURSE: '/admin/course/',
-        POST: '/admin/post',
-        ADD_POST: '/admin/post/add',
-        USER: '/admin/user',
+        MANAGER_COURSE_CATEGORY: 'admin/course/category',
+        DASHBOARD: 'admin/dashboard',
+        COURSE: 'admin/course',
+        ADD_COURSE: 'admin/course/add',
+        DETAIL_COURSE: 'admin/course/',
+        POST: 'admin/post',
+        ADD_POST: 'admin/post/add',
+        USER: 'admin/user',
     },
 
     USER_ADMIN_MANAGER: {},

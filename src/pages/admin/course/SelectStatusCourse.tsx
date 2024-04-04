@@ -27,7 +27,6 @@ function SelectStatusCourse(props: SelectStatusCourseProps) {
             value: IStatusCourse.Published,
         },
     ];
-    console.log({ status: props.value });
     return (
         <Select
             onChange={(val: React.ChangeEvent<HTMLSelectElement>) => {
@@ -42,7 +41,7 @@ function SelectStatusCourse(props: SelectStatusCourseProps) {
             className="max-w-[14rem]"
             selectorIcon={<TbSelector className="text-xl" />}
             value={props.value}
-            selectedKeys={[props.value?.toString()]}
+            selectedKeys={props.value ? [props.value.toString()] : []}
         >
             {categories.map((category: ICategory) => (
                 <SelectItem key={category.id} value={category.value} variant="flat" color="secondary">

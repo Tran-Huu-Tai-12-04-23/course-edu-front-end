@@ -14,6 +14,8 @@ import {
 import { AiFillEdit } from 'react-icons/ai';
 import { IoMdTrash } from 'react-icons/io';
 import { ICourse, IStatusCourse } from '../../../model/Course.model';
+import { useRouter } from '../../../hook';
+import { path } from '../../../enum/path';
 
 const columns = [
     { name: 'Tiêu đề', uid: 'title' },
@@ -29,6 +31,7 @@ type TableProps = {
     isLoading?: boolean;
 };
 export default function Table(props: TableProps) {
+    const router = useRouter();
     const renderCell = React.useCallback((course: ICourse, columnKey: any) => {
         switch (columnKey) {
             case 'title':
@@ -52,7 +55,10 @@ export default function Table(props: TableProps) {
                 return course?.categoryCourse ? (
                     <div className="flex justify-start items-center gap-2 ">
                         <Chip variant="flat" color="secondary">
-                            #{course?.categoryCourse?.categoryName.toUpperCase() ?? ''}
+                            #
+                            {course?.categoryCourse?.categoryName
+                                ? course?.categoryCourse?.categoryName.toUpperCase()
+                                : ''}
                         </Chip>
                     </div>
                 ) : (
@@ -63,9 +69,6 @@ export default function Table(props: TableProps) {
             case 'actions':
                 return (
                     <div className="relative flex items-center gap-2">
-                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                            <AiFillEdit className="text-xl" />
-                        </span>
                         <span className="text-lg text-danger cursor-pointer active:opacity-50">
                             <IoMdTrash className="text-xl" />
                         </span>
@@ -99,7 +102,13 @@ export default function Table(props: TableProps) {
                 >
                     {(item) => (
                         <TableRow className="hover:bg-[rgba(0,0,0,0.1)] cursor-pointer rounded-lg" key={item.id}>
-                            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                            {(columnKey) => (
+                                <TableCell
+                                    onClick={() => router.push(path.ADMIN.COURSE + '/' + item.id?.toString() ?? '')}
+                                >
+                                    {renderCell(item, columnKey)}
+                                </TableCell>
+                            )}
                         </TableRow>
                     )}
                 </TableBody>

@@ -1,4 +1,3 @@
-import Header from '../components/Header';
 import NavigateBar from '../components/NavigateBar';
 import Footer from '../components/Footer';
 import { Roles } from '../App';

@@ -10,7 +10,6 @@ import toast from 'react-hot-toast';
 import { IResponse } from '../../model/Common.model';
 import { IUser } from '../../model/User.model';
 import { IToken } from '../../model/Token.model';
-import helper from '../../helper';
 import { useAuth } from '../../context/authContext';
 
 type LoginWithEmailProps = {

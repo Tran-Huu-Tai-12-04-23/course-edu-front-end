@@ -26,7 +26,7 @@ export default function App() {
             <Toaster
                 position="top-center"
                 containerStyle={{
-                    zIndex: 10000000,
+                    zIndex: 1000000000000,
                 }}
                 toastOptions={{
                     style: {

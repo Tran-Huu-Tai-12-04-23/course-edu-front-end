@@ -40,7 +40,7 @@ function CourseItem(props: CourseItemProps) {
                 <p className="font-semibold flex-shrink-0 mr-4 ml-4 text-white">
                     {props.data.price !== 0 && <CurrencyFormatter amount={props.data.price} />}
                     {props.data.price === 0 && (
-                        <Chip color="success" variant="flat">
+                        <Chip className="bg-orange-800/80 text-orange-500" variant="flat">
                             Miến phí
                         </Chip>
                     )}

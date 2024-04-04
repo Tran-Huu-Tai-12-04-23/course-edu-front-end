@@ -1,4 +1,4 @@
-import { Button, Chip, Input, ScrollShadow, Tab, Tabs, Textarea } from '@nextui-org/react';
+import { Button, Input, ScrollShadow, Tab, Tabs, Textarea } from '@nextui-org/react';
 import { IoMdClose } from 'react-icons/io';
 import { MdModeEditOutline, MdTitle } from 'react-icons/md';
 import { TiVideo } from 'react-icons/ti';
@@ -7,15 +7,17 @@ import AddQuizLesson from '../quiz/AddQuizLesson';
 import { memo, useState } from 'react';
 import FormAddVideo from '../video/FormAddVideo';
 import FormAddPost from '../post/FormAddPost';
-import { ILesson, IQuestion, ITypeLesson, IVideoLesson } from '../../../../../model/Course.model';
+import { IGroupLesson, ILesson, IQuestion, ITypeLesson, IVideoLesson } from '../../../../../model/Course.model';
 import { FaHeading } from 'react-icons/fa6';
-import uuid from 'react-uuid';
+import { addLesson } from './service';
 
 type ModalAddLessonProps = {
     isOpen: boolean;
     onOpenChange: () => void;
     onClose: () => void;
     onResult: (res: ILesson) => void;
+    data: IGroupLesson;
+    courseId: string | number;
 };
 type IInput = {
     title: string;
@@ -35,6 +37,35 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                 [key]: value,
             };
         });
+    };
+
+    const handleAddLesson = async (lesson: ILesson) => {
+        if (!lesson.title) {
+            alert('Vui lòng nhập tiêu đề cho khóa học!');
+            return;
+        } else if (!lesson.description) {
+            alert('Vui lòng nhập mô tả cho khóa học!');
+            return;
+        }
+        const lessons: ILesson[] = props.data.lessons ?? [];
+        const index = lessons.length <= 0 ? 0 : lessons[lessons.length - 1].index + 1;
+        const newLesson: ILesson = {
+            ...input,
+            ...lesson,
+            index,
+        };
+        if (!props.data.id) return;
+        const res = await addLesson(props.courseId, props.data.id, newLesson);
+        if (res) {
+            props.onResult(res);
+            props.onClose();
+            setInput({
+                description: '',
+                title: '',
+            });
+        } else {
+            alert('Không thể thêm bài học đã xảy ra lỗi gì đó !');
+        }
     };
     return (
         props.isOpen && (
@@ -64,7 +95,7 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                                 startContent={<FaHeading className="text-xl" />}
                                 type="text"
                                 className="w-full"
-                                label="Nhập tiêu đề của bài post (Bắt buộc)"
+                                label="Nhập tiêu đề của bai học"
                                 labelPlacement={'outside'}
                                 placeholder=""
                             />
@@ -73,7 +104,7 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                                 value={input.description}
                                 onChange={(e) => handleChangeInput('description', e.target.value)}
                                 startContent={<MdTitle className="text-xl" />}
-                                label="Nhập mô tả của bài post"
+                                label="Nhập mô tả của bài hoc"
                                 placeholder="..."
                                 labelPlacement={'outside'}
                                 className="w-full"
@@ -117,44 +148,47 @@ function ModalAddLesson(props: ModalAddLessonProps) {
                         <ScrollShadow size={10} className="w-full h-[70vh] p-4">
                             {selected === 'quiz' && (
                                 <AddQuizLesson
-                                    onResult={function (res: IQuestion[]): void {
-                                        props.onClose();
-                                        props.onResult({
-                                            id: uuid(),
+                                    onResult={async function (res: IQuestion[]) {
+                                        res.map((r) => delete r.id);
+                                        await handleAddLesson({
                                             ...input,
                                             index: -1,
                                             quiz: [...res],
                                             type: ITypeLesson.Quiz,
+                                            video: null,
+                                            post: null,
                                         });
-                                        props.onClose();
                                     }}
                                 />
                             )}
                             {selected === 'video' && (
                                 <FormAddVideo
-                                    onResult={function (res: IVideoLesson): void {
-                                        props.onResult({
-                                            id: uuid(),
+                                    onResult={async function (res: IVideoLesson) {
+                                        delete res.id;
+                                        await handleAddLesson({
                                             ...input,
                                             index: -1,
                                             video: { ...res },
                                             type: ITypeLesson.Video,
+                                            quiz: null,
+                                            post: null,
                                         });
-                                        props.onClose();
                                     }}
                                 />
                             )}
                             {selected === 'post' && (
                                 <FormAddPost
-                                    onResult={(res) => {
-                                        props.onResult({
-                                            id: uuid(),
+                                    onResult={async (res) => {
+                                        delete res.id;
+                                        res.items.map((r) => delete r.id);
+                                        await handleAddLesson({
                                             ...input,
                                             index: -1,
                                             post: { ...res },
                                             type: ITypeLesson.Post,
+                                            quiz: null,
+                                            video: null,
                                         });
-                                        props.onClose();
                                     }}
                                 />
                             )}

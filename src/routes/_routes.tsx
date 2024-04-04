@@ -18,6 +18,9 @@ import UserManagerPost from '../pages/user/manager-post';
 import ManagerCategory from '../pages/admin/course/manager-category';
 import { ProfilePage, SettingPage } from '../pages/user';
 import AddCourseDetail from '../pages/admin/course/add/add-course-detail';
+import TestPage from '../pages/test';
+import VerifyAccount from '../pages/auth/verify-account';
+import RecoveryPassword from '../pages/auth/recovery-password';
 
 export type routeProps = {
     path: string;
@@ -31,6 +34,21 @@ export enum typeRoute {
     PUBLIC_ROUTE = 'public_route',
 }
 export const publicRoutes: routeProps[] = [
+    {
+        path: '/test',
+        component: <TestPage />,
+        type: typeRoute.PUBLIC_ROUTE,
+    },
+    {
+        path: path.AUTH.VERIFY_ACCOUNT,
+        component: <VerifyAccount />,
+        type: typeRoute.PUBLIC_ROUTE,
+    },
+    {
+        path: path.AUTH.RESET_PASSWORD,
+        component: <RecoveryPassword />,
+        type: typeRoute.PUBLIC_ROUTE,
+    },
     {
         path: path.HOME,
         component: <Home />,

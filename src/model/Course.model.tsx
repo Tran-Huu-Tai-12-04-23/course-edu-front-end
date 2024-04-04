@@ -29,18 +29,18 @@ export enum ITypeLesson {
     Video,
 }
 export type ILesson = {
-    id?: number | string;
+    id?: number | string | null;
     type?: ITypeLesson | any;
     title: string;
     description?: string;
-    quiz?: IQuestion[];
-    video?: IVideoLesson;
-    post?: IPostLesson;
+    quiz?: IQuestion[] | null;
+    video?: IVideoLesson | null;
+    post?: IPostLesson | null;
     index: number;
 };
 
 export type IQuestion = {
-    id?: string | number;
+    id?: string | number | null;
     question: string;
     answers: string[];
     correctAnswerIndex: number;
@@ -50,12 +50,12 @@ export type IQuestion = {
 };
 
 export type IVideoLesson = {
-    id?: string | number;
+    id?: string | number | null;
     videoURL?: string;
     videoId?: string;
 };
 export type IPostLesson = {
-    id?: string | number;
+    id?: string | number | null;
     items: TypeItemPost[];
 };
 

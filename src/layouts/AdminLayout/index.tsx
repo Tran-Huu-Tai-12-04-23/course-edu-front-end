@@ -10,7 +10,10 @@ function AdminLayout(props: AdminLayoutProps) {
             <div className="min-w-[15rem] dark:bg-second-dark bg-light-primary"></div>
             <div className="w-full dark:bg-second-dark bg-light-primary">
                 <Header />
-                <div style={{}} className="w-full relative overflow-hidden dark:bg-second-dark bg-light-primary p-4s ">
+                <div
+                    style={{}}
+                    className=" p-10 w-full relative overflow-hidden dark:bg-second-dark bg-light-primary p-4s "
+                >
                     {props.children}
                 </div>
             </div>

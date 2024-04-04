@@ -12,13 +12,18 @@ import BlogView from '../../../../../components/PostView';
 import YouTubeEmbed from '../../../../../components/YouTubeEmbed';
 import helper from '../../../../../helper';
 import RenderHTMLContent from '../../../../../components/RenderHtmlContent';
+import { removeLessonById } from './service';
+import toast from 'react-hot-toast';
+import { useLoading } from '../../../../../context/loadingContext';
 
 type LessonProps = {
     data: ILesson;
     onRemove: (id: string | number) => void;
+    index: number;
 };
 function Lesson(props: LessonProps) {
     const [isExpanded, setIsExpanded] = useState(false);
+    const loading = useLoading();
     return (
         <Draggable
             key={props.data.id}
@@ -36,14 +41,22 @@ function Lesson(props: LessonProps) {
                         <div className="w-full border-gray-500/10 border-solid border-[1px] backdrop-blur-3xl bg-[#000]/10 rounded">
                             <div className="justify-between h-12 p-4 pt-10 pb-10 flex items-center">
                                 <h1 className="">
-                                    {props.data.index + 1}. {props.data.title}
+                                    {props.index + 1}. {props.data.title}
                                 </h1>
                                 <div className="hidden justify-end group-hover:flex items-center gap-4">
                                     <Button isIconOnly variant="flat" startContent={<MdEdit />} size="sm" />
                                     <ModalConfirmRemove
                                         id={props.data.id ?? ''}
-                                        onRemove={function (id: string | number): void {
-                                            props.onRemove(id);
+                                        onRemove={async function (id: string | number) {
+                                            loading.startLoading();
+                                            const res = await removeLessonById(id);
+                                            loading.stopLoading();
+
+                                            if (res) {
+                                                props.onRemove(id);
+                                            } else {
+                                                toast.error('Không thể xóa bài học! Đã xảy ra lỗi gì đó!');
+                                            }
                                         }}
                                     >
                                         <div className="p-2 rounded-lg bg-[#252528]">

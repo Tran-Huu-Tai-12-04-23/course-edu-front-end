@@ -7,7 +7,7 @@ import ModalAddLesson from './ModalAddLesson';
 import { DragDropContext, Droppable } from '@hello-pangea/dnd';
 import ModalAddGroupLesson from './ModalAddGroupLesson';
 import Lesson from './Lesson';
-import { addNewGroupLesson, updateGroupLessonById } from './service';
+import { addNewGroupLesson, updateGroupLessonById, updateLessonById } from './service';
 import toast from 'react-hot-toast';
 
 type ManagerGroupLessonProps = {
@@ -45,11 +45,16 @@ function ManagerGroupLesson(props: ManagerGroupLessonProps) {
         const indexSource = result.source.index;
         console.log(indexDes);
         console.log(indexSource);
+
         const newItems = Array.from(groupLessonSelected?.lessons ?? []);
         const [reorderedItem] = newItems.splice(indexSource, 1);
         newItems.splice(indexDes, 0, reorderedItem);
+
         const clonedItems = newItems.map((item: ILesson, index) => ({ ...item, index }));
-        console.log(clonedItems);
+
+        const movedLesson1 = groupLessonSelected?.lessons[indexSource];
+        const movedLesson2 = groupLessonSelected?.lessons[indexDes];
+
         setGroupLesson((prev) => {
             return prev.map((it) => {
                 if (it.id === groupLessonSelected?.id) {
@@ -57,7 +62,7 @@ function ManagerGroupLesson(props: ManagerGroupLessonProps) {
                         ...it,
                         lessons: clonedItems,
                     };
-                    setGroupLessonSelected({ ...newGroupLesson, lessons: [] });
+                    setGroupLessonSelected({ ...newGroupLesson, lessons: [...clonedItems] });
                     return {
                         ...newGroupLesson,
                     };
@@ -65,6 +70,12 @@ function ManagerGroupLesson(props: ManagerGroupLessonProps) {
                 return it;
             });
         });
+
+        console.log({
+            movedLesson1,
+            movedLesson2,
+        });
+        if (movedLesson1 && movedLesson2) updateLessonsAPI(movedLesson1, movedLesson2);
     }
 
     const handleAddNewGroupLesson = async (res: IGroupLesson) => {
@@ -99,10 +110,19 @@ function ManagerGroupLesson(props: ManagerGroupLessonProps) {
         }
     }
 
-    async function handleRemoveGroupLesson(groupLessonId: string) {
-        setGroupLesson((prev) => prev.filter((item) => item.id !== groupLessonId));
-        if (groupLessonSelected && groupLessonSelected.id === groupLessonId) {
-            setGroupLessonSelected(null);
+    async function updateLessonsAPI(lesson1: ILesson, lesson2: ILesson) {
+        try {
+            // Use Promise.all to concurrently execute both API calls
+            var lesson2Index = lesson1.index;
+            await Promise.all([
+                updateLessonById(lesson1.id ?? 0, {
+                    ...lesson1,
+                    index: lesson2.index,
+                }),
+                updateLessonById(lesson2.id ?? 0, { ...lesson2, index: lesson2Index }),
+            ]);
+        } catch (error) {
+            console.error('Error updating group lessons:', error);
         }
     }
 
@@ -193,10 +213,11 @@ function ManagerGroupLesson(props: ManagerGroupLessonProps) {
                                                 ref={provided.innerRef}
                                             >
                                                 {groupLessonSelected.lessons &&
-                                                    groupLessonSelected.lessons.map((le) => (
+                                                    groupLessonSelected.lessons.map((le, index) => (
                                                         <Lesson
                                                             key={le.id}
                                                             data={le}
+                                                            index={index}
                                                             onRemove={(id) => {
                                                                 setGroupLesson((prev) => {
                                                                     return prev.map((item) => {
@@ -240,35 +261,40 @@ function ManagerGroupLesson(props: ManagerGroupLessonProps) {
                     </div>
                 )}
 
-                <ModalAddLesson
-                    isOpen={isAddNewLesson}
-                    onOpenChange={function (): void {}}
-                    onClose={function (): void {
-                        setIsAddNewLesson(false);
-                    }}
-                    onResult={function (res: ILesson): void {
-                        if (!groupLessonSelected) return;
-                        setGroupLesson((prev) => {
-                            return prev.map((it) => {
-                                if (it.id === groupLessonSelected?.id) {
-                                    const index =
-                                        groupLessonSelected.lessons.length > 0
-                                            ? groupLessonSelected.lessons[groupLessonSelected.lessons.length - 1].index
-                                            : 0;
-                                    setGroupLessonSelected({
-                                        ...it,
-                                        lessons: [...it.lessons, { ...res, index }],
-                                    });
-                                    return {
-                                        ...it,
-                                        lessons: [...it.lessons, { ...res }],
-                                    };
-                                }
-                                return it;
+                {groupLessonSelected && props.data.id && (
+                    <ModalAddLesson
+                        courseId={props.data.id}
+                        data={groupLessonSelected}
+                        isOpen={isAddNewLesson}
+                        onOpenChange={function (): void {}}
+                        onClose={function (): void {
+                            setIsAddNewLesson(false);
+                        }}
+                        onResult={function (res: ILesson): void {
+                            if (!groupLessonSelected) return;
+                            setGroupLesson((prev) => {
+                                return prev.map((it) => {
+                                    if (groupLessonSelected.lessons && it.id === groupLessonSelected?.id) {
+                                        const index =
+                                            groupLessonSelected.lessons.length > 0
+                                                ? groupLessonSelected.lessons[groupLessonSelected.lessons.length - 1]
+                                                      .index
+                                                : 0;
+                                        setGroupLessonSelected({
+                                            ...it,
+                                            lessons: [...it.lessons, { ...res, index }],
+                                        });
+                                        return {
+                                            ...it,
+                                            lessons: [...it.lessons, { ...res }],
+                                        };
+                                    }
+                                    return it;
+                                });
                             });
-                        });
-                    }}
-                />
+                        }}
+                    />
+                )}
             </div>
         </>
     );

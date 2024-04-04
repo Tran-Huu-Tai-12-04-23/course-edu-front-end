@@ -13,6 +13,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { fetchLoginWithGoogle, fetchUserInfoGoogle } from '../../services/auth.service';
 import { useAuth } from '../../context/authContext';
+import ModalEnterEmail from './modal-enter-email';
 
 enum keyOptionLogin {
     EMAIL = 'email',
@@ -117,6 +118,10 @@ function Login() {
                                     Đăng ký
                                 </Link>
                             </span>
+
+                            <ModalEnterEmail>
+                                <div className="text-primary ml-2">Quên mật khẩu</div>
+                            </ModalEnterEmail>
                             <span className="text-center text-sm">
                                 Việc bạn tiếp tục sử dụng trang web, đồng nghĩa bạn đồng ý với
                                 <Link href={path.AUTH.REGISTER} className="underline text-gray-500 ml-2 mr-2">

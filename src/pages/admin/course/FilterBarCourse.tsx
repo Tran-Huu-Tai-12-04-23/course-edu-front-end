@@ -39,11 +39,11 @@ function FilterBarCourse(props: FilterBarCourseProps) {
                     }}
                 />
                 <SelectStatusCourse
+                    value={status}
                     onResult={function (res: IStatusCourse): void {
                         setStatus(res);
                     }}
                 />
-
                 {/* <SelectOrderType
                     onResult={function (res: string): void {
                         setOrderType(res);

@@ -27,7 +27,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 export const AuthProvider: React.FC<AuthContextProps> = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState<any>(null);
     const [user, setUser] = useState<IUser | null>(null);
-    const [role, setRole] = useState<Roles | null>(Roles.ADMIN);
+    const [role, setRole] = useState<Roles | null>(Roles.STUDENT);
     const login = (user: IUser, token: IToken) => {
         setIsAuthenticated(true);
         setUser(user);

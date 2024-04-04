@@ -52,10 +52,6 @@ function Sidebar() {
                     name: 'Thêm bài viết',
                     path: path.ADMIN.ADD_POST,
                 },
-                {
-                    name: 'Chỉnh sửa bài viết',
-                    path: '/edit/:id',
-                },
             ],
         },
         {
@@ -84,7 +80,7 @@ function Sidebar() {
                                 className={`rounded-lg  min-w-[8rem] `}
                             >
                                 <div
-                                    onClick={() => router.replace(nav.path)}
+                                    onClick={() => router.push(nav.path)}
                                     className={`hover:text-primary ${
                                         pathname.includes(nav.path) ? 'text-primary' : 'text-black dark:text-white'
                                     } pl-4 pr-4  flex justify-start items-center gap-4 `}
@@ -98,9 +94,11 @@ function Sidebar() {
                         {nav.subNav &&
                             nav.subNav.map((subNav, index) => (
                                 <div
-                                    onClick={() => router.replace(subNav.path)}
+                                    onClick={() => router.push(subNav.path)}
                                     className={`${
-                                        pathname === subNav.path ? 'text-primary ' : ' text-black  dark:text-white '
+                                        pathname.substring(1) === subNav.path
+                                            ? 'text-primary '
+                                            : ' text-black  dark:text-white '
                                     } pl-10 p-2 cursor-pointer hover:text-primary hover:dark:text-primary`}
                                     key={index}
                                 >
