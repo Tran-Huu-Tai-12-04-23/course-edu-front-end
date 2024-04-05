@@ -1,14 +1,17 @@
-import { Accordion, AccordionItem, Button, Chip, Image } from '@nextui-org/react';
+import { Accordion, AccordionItem, Button, Image } from '@nextui-org/react';
 import { FaCheck } from 'react-icons/fa';
 import Review from '../../components/Review';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { ICourse } from '../../model/Course.model';
-import { Constant } from '../../constant';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import CurrencyFormatter from '../../components/CurrencyFormatter';
+import { checkExistRegisterCourse, createPayment, getCourseById } from './service';
+import { useAuth } from '../../context/authContext';
+import toast from 'react-hot-toast';
+import { useLoading } from '../../context/loadingContext';
 
 var settings = {
     dots: true,
@@ -17,28 +20,12 @@ var settings = {
     slidesToShow: 1,
     slidesToScroll: 1,
 };
-// get course by id
-export const getCourseById = async (id: string | number): Promise<ICourse | null> => {
-    try {
-        const response = await fetch(Constant.BASE_URL_API + 'course/' + id, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        const responseData: ICourse | null = await response.json();
-        return responseData;
-    } catch (error) {
-        console.error('Error during registration:', error);
-        return null;
-    }
-};
 
 function SummaryCourse() {
+    const loading = useLoading();
     const { courseId } = useParams();
+    const { user } = useAuth();
+    const [isCheckBuyExist, setIsCheckBuyExist] = useState(false);
     const [course, setCourse] = useState<ICourse | null>(null);
 
     useEffect(() => {
@@ -54,9 +41,67 @@ function SummaryCourse() {
         courseId && intiCourseData();
     }, [courseId]);
 
-    console.log(courseId);
-    const defaultContent =
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+    useEffect(() => {
+        const initCheckBuyExist = async () => {
+            if (user?.id && course?.id) {
+                const res = await checkExistRegisterCourse(user?.id, course?.id);
+                setIsCheckBuyExist(res);
+            }
+        };
+
+        user?.id && course?.id && initCheckBuyExist();
+    }, [course, user]);
+
+    const handleRegisterCourseFree = async () => {
+        if (!user?.id || !course?.id) return;
+        const registerCourseRequestDto = {
+            courseId: course?.id,
+            userId: user?.id,
+            isPayment: false,
+        };
+        loading.startLoading();
+        try {
+            const registerCourseResult = await createPayment({
+                ...registerCourseRequestDto,
+                isPayment: true,
+            });
+
+            console.log('Register Course Result:', registerCourseResult);
+
+            if (registerCourseResult) {
+                toast.success('Đăng ký khóa học thành công!');
+            }
+        } catch (error) {
+            // Handle errors here
+            console.error('Error:', error);
+        }
+        loading.stopLoading();
+    };
+
+    const handleRegisterCourseRequestHasFee = async () => {
+        if (!user?.id || !course?.id) return;
+        const registerCourseRequestDto = {
+            courseId: course?.id,
+            userId: user?.id,
+            isPayment: false,
+        };
+        loading.startLoading();
+        try {
+            const createPaymentCourse = await createPayment({
+                ...registerCourseRequestDto,
+                isPayment: true,
+            });
+            if (createPaymentCourse?.paymentURL) {
+                window.location.href = createPaymentCourse?.paymentURL;
+            }
+            console.log('Create Payment Course Result:', createPaymentCourse);
+        } catch (error) {
+            // Handle errors here
+            console.error('Error:', error);
+        }
+        loading.stopLoading();
+    };
+
     return (
         <>
             {!course && <h1>Loading ...</h1>}
@@ -116,7 +161,20 @@ function SummaryCourse() {
                             <Image className="w-full" alt={course.title} src={course.thumbnail} />
                             {course.price !== 0 && <CurrencyFormatter amount={course.price} />}
                             {course.price === 0 && <div className=" text-orange-500">Miến phí</div>}
-                            <Button color="primary">Đăng ký</Button>
+                            {isCheckBuyExist && <Button color="primary">'Truy cập học'</Button>}
+                            {!isCheckBuyExist && (
+                                <Button
+                                    onClick={() => {
+                                        course.price === 0
+                                            ? handleRegisterCourseFree()
+                                            : handleRegisterCourseRequestHasFee();
+                                    }}
+                                    color="primary"
+                                >
+                                    Đăng ký
+                                </Button>
+                            )}
+
                             <span className="text-center text-white/2">{course.subTitle}</span>
                         </div>
                     </div>

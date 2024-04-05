@@ -10,6 +10,8 @@ export const path = {
         DETAIL: '/post',
     },
     COURSE: {
+        MY_COURSE: '/course/my-register',
+        PAYMENT_NOTIFICATION: '/course/register/payment-notification',
         SUMMARY: '/course/summary',
         LEARNING: '/course/learning',
     },

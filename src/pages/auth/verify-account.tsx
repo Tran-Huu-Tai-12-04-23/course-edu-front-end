@@ -12,9 +12,7 @@ function VerifyAccount() {
             const params = Object.fromEntries(urlSearchParams.entries());
             const token = params.token;
             const email = params.email;
-
             const res = await verifyAccount({ token, email });
-
             if (res) {
                 toast.success('kích hoạt tài khoản thành công!');
                 router.replace(path.AUTH.LOGIN);

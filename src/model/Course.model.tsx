@@ -1,5 +1,6 @@
 import { TypeItemPost } from '../components/FragmentBlogItem/FragmentBlogItem.type';
 import { ICategoryCourse } from './Common.model';
+import { IUser } from './User.model';
 
 export type ICourse = {
     id?: number;
@@ -64,3 +65,32 @@ export enum IStatusCourse {
     UnPublished,
     ComingSoon,
 }
+
+export enum TypePayment {
+    VNPAY,
+    MOMO,
+    OTHER,
+}
+
+export type IPaymentHistory = {
+    user: IUser;
+    typePayment: TypePayment;
+    paymentAt?: Date;
+    isPayment: boolean;
+};
+export type IUserCourse = {
+    id?: string | number;
+    user: IUser;
+    course: ICourse;
+    registerAt: Date;
+    isPayment: boolean;
+    LessonPassed: ILesson[];
+    paymentHistory: IPaymentHistory;
+};
+
+export type IPaymentResponse = {
+    paymentURL: string;
+    typePayment: TypePayment;
+    code: string;
+    message: string;
+};

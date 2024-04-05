@@ -46,8 +46,16 @@ function CourseItem(props: CourseItemProps) {
                     )}
                 </p>
 
-                <Button className="text-tiny text-white w-full bg-primary" variant="flat" color="default" radius="lg">
-                    Đăng ký học
+                <Button
+                    onClick={() => {
+                        history(path.COURSE.SUMMARY + '/' + props.data.id);
+                    }}
+                    className="text-tiny text-white w-full bg-primary"
+                    variant="flat"
+                    color="default"
+                    radius="lg"
+                >
+                    Xem chi tiết
                 </Button>
             </CardFooter>
         </Card>

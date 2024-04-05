@@ -21,6 +21,7 @@ import AddCourseDetail from '../pages/admin/course/add/add-course-detail';
 import TestPage from '../pages/test';
 import VerifyAccount from '../pages/auth/verify-account';
 import RecoveryPassword from '../pages/auth/recovery-password';
+import PaymentNotification from '../pages/course/register/payment-notification';
 
 export type routeProps = {
     path: string;
@@ -141,6 +142,11 @@ export const privateRoutes: routeProps[] = [
     {
         path: path.USER.SETTING,
         component: <SettingPage />,
+        type: typeRoute.PRIVATE_ROUTE,
+    },
+    {
+        path: path.COURSE.PAYMENT_NOTIFICATION,
+        component: <PaymentNotification />,
         type: typeRoute.PRIVATE_ROUTE,
     },
 ];
