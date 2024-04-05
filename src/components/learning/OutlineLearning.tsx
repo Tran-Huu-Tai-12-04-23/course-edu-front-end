@@ -1,50 +1,40 @@
 import { Accordion, AccordionItem } from '@nextui-org/react';
+import { ICourse, IGroupLesson } from '../../model/Course.model';
 
-function OutlineLearning() {
-    const defaultContent =
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
-    return (
-        <div
-            style={{
-                height: 'calc(100vh - 10rem)',
-            }}
-            className="scroll-custom overflow-auto max-w-[30rem] w-[30rem] border-l-[1px] border-solid dark:border-gray-900"
-        >
+type OutlineLearningProps = {
+   data: ICourse;
+};
+function OutlineLearning(props: OutlineLearningProps) {
+   const groupLessons: IGroupLesson[] = props.data.groupLessons ?? [];
+
+   return (
+      <div
+         style={{
+            height: 'calc(100vh - 10rem)',
+         }}
+         className="scroll-custom overflow-auto max-w-[30rem] w-[30rem] border-l-[1px] border-solid dark:border-gray-900"
+      >
+         {groupLessons.length > 0 && (
             <Accordion className="max-w-[30rem] p-0 m-0 px-0">
-                <AccordionItem
-                    className="p-2"
-                    key="1"
-                    aria-label="Accordion 1"
-                    subtitle="Press to expand"
-                    title="Accordion 1"
-                >
-                    {defaultContent}
-                </AccordionItem>
-                <AccordionItem
-                    key="2"
-                    className="p-2"
-                    aria-label="Accordion 2"
-                    subtitle={
-                        <span>
-                            Press to expand <strong>key 2</strong>
-                        </span>
-                    }
-                    title="Accordion 2"
-                >
-                    {defaultContent}
-                </AccordionItem>
-                <AccordionItem
-                    className="p-2"
-                    key="3"
-                    aria-label="Accordion 3"
-                    subtitle="Press to expand"
-                    title="Accordion 3"
-                >
-                    {defaultContent}
-                </AccordionItem>
+               {groupLessons.map((gr: IGroupLesson, index: number) => (
+                  <AccordionItem
+                     key={index}
+                     className="p-2"
+                     aria-label={gr.title}
+                     subtitle="50% hoàn thành"
+                     title={gr.title}
+                  >
+                     {gr.lessons.map((les, indexChild) => (
+                        <div key={index} className="p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                           {index + 1} .{indexChild + 1}. {les.title}
+                        </div>
+                     ))}
+                  </AccordionItem>
+               ))}
             </Accordion>
-        </div>
-    );
+         )}
+      </div>
+   );
 }
 
 export default OutlineLearning;
