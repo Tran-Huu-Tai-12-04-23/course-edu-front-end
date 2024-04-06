@@ -42,7 +42,7 @@ export type ILesson = {
 
 export type IQuestion = {
    id?: string | number | null;
-   question: string;
+   content: string;
    answers: string[];
    correctAnswerIndex: number;
    explain?: string;

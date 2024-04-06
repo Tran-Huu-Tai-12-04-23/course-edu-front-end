@@ -1,4 +1,3 @@
-import { exampleQuestions } from '../../model/Question.model';
 import Question from './Question';
 import { Button } from '@nextui-org/react';
 import { MdSend } from 'react-icons/md';
@@ -26,17 +25,14 @@ function QuizLearning(props: QuizLearningProps) {
          style={{
             height: 'calc(100vh - 10rem)',
          }}
-         className="select-none scroll-custom overflow-auto w-full p-32"
+         className="select-none scroll-custom overflow-auto w-full ml-28 mr-28 pt-10 pb-28"
       >
          {party && <PartyMode />}
-         <h5 className="text-3xl text-center font-extrabold mb-5">
-            Digital Citizen: Artificial Intelligence Study Set 10 câu hỏi
-         </h5>
+         <h5 className="text-3xl text-center font-extrabold mb-5">{props.data.title}</h5>
 
          <div className="flex flex-col gap-4">
-            {exampleQuestions.map((ques, index) => (
-               <Question data={ques} key={index} index={index} />
-            ))}
+            {props.data.quiz &&
+               props.data.quiz.map((ques, index) => <Question data={ques} key={index} index={index} />)}
          </div>
 
          <div className="w-full flex justify-center items-center mt-10">

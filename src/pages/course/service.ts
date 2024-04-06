@@ -5,7 +5,6 @@ import { IUserCourse, IPaymentResponse, ICourse } from '../../model/Course.model
 export const changeCurrentProcessLearning = async (data: {
    courseId: string | number;
    lessonId: string | number;
-   groupLessonId: string | number;
 }): Promise<IUserCourse | null> => {
    try {
       const response = await fetch(Constant.BASE_URL_API + 'course/change-current-process-learning', {

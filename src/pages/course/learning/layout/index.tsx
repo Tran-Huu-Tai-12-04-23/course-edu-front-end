@@ -9,7 +9,7 @@ type LearningLayoutProps = {
 };
 function LearningLayout(props: LearningLayoutProps) {
    return (
-      <div className="w-screen min-h-screen ">
+      <div className="w-screen min-h-screen overflow-hidden ">
          <Header data={props.data} />
          {props.children}
          <Footer />

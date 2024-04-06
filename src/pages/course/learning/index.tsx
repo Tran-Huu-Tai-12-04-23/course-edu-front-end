@@ -7,6 +7,8 @@ import { changeCurrentProcessLearning, getCourseById, getUserCourse } from '../s
 import { useParams } from 'react-router-dom';
 import LearningLayout from './layout';
 import { useAuth } from '../../../context/authContext';
+import VideoLearning from '../../../components/learning/VideoLearning';
+import PostLearning from '../../../components/learning/PostLearning';
 
 function Learning() {
    const { courseId } = useParams();
@@ -33,13 +35,12 @@ function Learning() {
             if (res) {
                setUserCourse(res);
                if (!course?.groupLessons || course?.groupLessons.length == 0) return;
-               if (res.currentGroupLesson == null || res.currentLesson == null) {
+               if (res.currentLesson == null) {
                   const currentGroupLesson = course.groupLessons[0];
                   if (!currentGroupLesson.lessons || currentGroupLesson.lessons.length == 0) return;
                   const currentLesson = currentGroupLesson.lessons[0];
                   const resUpdate = await changeCurrentProcessLearning({
                      courseId: courseId,
-                     groupLessonId: currentGroupLesson.id ?? '',
                      lessonId: currentLesson.id ?? '',
                   });
                   resUpdate && setUserCourse(resUpdate);
@@ -52,22 +53,34 @@ function Learning() {
 
    console.log(course);
    console.log(userCourse);
-   return (
-      <div className="pt-header pb-footer flex justify-between overflow-hidden">
-         {!course && <div>Loading....</div>}
 
+   return (
+      <>
+         {!course && <div>Loading....</div>}
          {course && (
             <LearningLayout data={course}>
-               <div className="flex justify-between">
-                  {userCourse?.currentLesson && userCourse?.currentLesson.type === ITypeLesson.Quiz && (
-                     <QuizLearning data={userCourse?.currentLesson} />
-                  )}
-                  {/* <VideoLearning /> */}
-                  <OutlineLearning data={course} />
+               <div className="pt-header w-full pb-footer flex justify-between overflow-hidden">
+                  <div className="flex overflow-hidden w-full justify-between">
+                     {userCourse?.currentLesson && userCourse?.currentLesson.type === ITypeLesson.Quiz && (
+                        <QuizLearning data={userCourse?.currentLesson} />
+                     )}
+                     {userCourse?.currentLesson && userCourse?.currentLesson.type === ITypeLesson.Video && (
+                        <VideoLearning data={userCourse?.currentLesson} />
+                     )}
+                     {userCourse?.currentLesson && userCourse?.currentLesson.type === ITypeLesson.Post && (
+                        <PostLearning data={userCourse?.currentLesson} />
+                     )}
+                     {/* <VideoLearning /> */}
+                     <OutlineLearning
+                        currentLesson={userCourse?.currentLesson}
+                        onChangeLesson={(res: IUserCourse) => setUserCourse(res)}
+                        data={course}
+                     />
+                  </div>
                </div>
             </LearningLayout>
          )}
-      </div>
+      </>
    );
 }
 
