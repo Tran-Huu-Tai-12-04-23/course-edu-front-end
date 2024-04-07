@@ -66,7 +66,7 @@ export const publicRoutes: routeProps[] = [
       type: typeRoute.PUBLIC_ROUTE,
    },
    {
-      path: path.POST.DETAIL + '/:id',
+      path: path.POST.DETAIL + '/:postId',
       component: <DetailPost />,
       type: typeRoute.PUBLIC_ROUTE,
    },

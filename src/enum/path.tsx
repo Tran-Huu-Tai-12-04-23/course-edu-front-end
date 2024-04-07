@@ -1,6 +1,6 @@
 export const path = {
    NOT_FOUND: '/not-found',
-   HOME: '/',
+   HOME: '',
    POST: {
       INDEX: 'post',
       MANAGER_POST_USER: 'post/user/manager',
@@ -10,9 +10,10 @@ export const path = {
       DETAIL: 'post',
    },
    COURSE: {
+      DEFAULT: 'course',
       MY_COURSE: 'course/my-register',
       PAYMENT_NOTIFICATION: 'course/register/payment-notification',
-      SUMMARY: 'course/summary',
+      SUMMARY: 'course/summary/',
       LEARNING: 'course/learning/',
    },
    ROAD_MAP: {

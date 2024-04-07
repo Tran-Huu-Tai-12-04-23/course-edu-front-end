@@ -84,7 +84,7 @@ export type IUserCourse = {
    course: ICourse;
    registerAt: Date;
    isPayment: boolean;
-   LessonPassed: ILesson[];
+   lessonPassed: ILesson[];
    paymentHistory: IPaymentHistory;
    currentLesson?: ILesson;
    currentGroupLesson?: IGroupLesson;

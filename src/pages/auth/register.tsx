@@ -9,7 +9,6 @@ import toast from 'react-hot-toast';
 import { IResponse } from '../../model/Common.model';
 import { IUser } from '../../model/User.model';
 import { useLoading } from '../../context/loadingContext';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 import { useEffect } from 'react';
 import { useRouter } from '../../hook';

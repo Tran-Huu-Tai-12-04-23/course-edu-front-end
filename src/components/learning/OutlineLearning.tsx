@@ -26,6 +26,7 @@ function OutlineLearning(props: OutlineLearningProps) {
          style={{
             height: 'calc(100vh - 10rem)',
          }}
+         id="step-two"
          className=" flex-shrink-0 overflow-hidden max-w-[20rem] w-[20rem] border-l-[1px] border-solid dark:border-gray-900"
       >
          <h1 className="text-xl font-extrabold p-2">Nội dung khóa học</h1>

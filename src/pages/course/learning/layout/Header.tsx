@@ -6,38 +6,38 @@ import { PiSunLight } from 'react-icons/pi';
 import { SlNotebook } from 'react-icons/sl';
 import { MdContactSupport } from 'react-icons/md';
 import { IoIosArrowBack } from 'react-icons/io';
-import { useNavigate } from 'react-router-dom';
-import { path } from '../../../../enum/path';
-import { ICourse } from '../../../../model/Course.model';
+import { ICourse, IUserCourse } from '../../../../model/Course.model';
 import { useCallback } from 'react';
+import { useRouter } from '../../../../hook';
 
 type HeaderProps = {
-   data: ICourse;
+   course: ICourse;
+   userCourse: IUserCourse;
 };
 function Header(props: HeaderProps) {
-   const history = useNavigate();
+   const router = useRouter();
    const { toggleTheme } = useTheme();
 
    const totalLesson = useCallback(() => {
-      const totalLess = props.data.groupLessons?.reduce((acc, item) => acc + item.lessons.length, 0);
+      const totalLess = props.course.groupLessons?.reduce((acc, item) => acc + item.lessons.length, 0);
       return totalLess;
-   }, [props.data]);
+   }, [props.course]);
    return (
       <header className="h-header border-b-[1px] border-solid dark:border-gray-900 border-second backdrop-blur-2xl fixed z-[100000] left-0 top-0 right-0 flex justify-between items-center p-4">
          <div
             className=" hover:text-primary cursor-pointer select-none flex justify-start items-center gap-10 w-1/3"
-            onClick={() => history(path.HOME)}
+            onClick={() => router.back()}
          >
             <div className="flex justify-center items-center">
                <IoIosArrowBack className="text-xl" />
                <Image className="m-5" isBlurred width={50} src={logo} alt="Course EDU" />
             </div>
-            <h5 className="font-extrabold">{props.data.title}</h5>
+            <h5 className="font-extrabold">{props.course.title}</h5>
          </div>
 
          <div className="w-1/3 flex justify-center gap-10 select-none items-end">
             <Progress
-               size="md"
+               size="sm"
                radius="sm"
                classNames={{
                   base: 'max-w-md',
@@ -46,11 +46,11 @@ function Header(props: HeaderProps) {
                   label: 'tracking-wider font-medium text-default-600',
                   value: 'text-foreground/60',
                }}
-               label={`1/${totalLesson()} bài học`}
-               value={65}
+               label={`${props.userCourse.lessonPassed.length}/${totalLesson()} Bài học`}
+               value={props.userCourse.lessonPassed.length}
+               maxValue={totalLesson()}
                showValueLabel={true}
             />
-            {/* <span className="text-primary cursor-pointer font-extrabold">Xem huy hiệu</span> */}
          </div>
          <div className="w-1/3 flex justify-end items-center gap-4">
             <Button

@@ -12,6 +12,7 @@ import { IoClose } from 'react-icons/io5';
 import { TypeItemPost } from '../../../components/FragmentBlogItem/FragmentBlogItem.type';
 import { IPostItem, IPostRequest, IStatusPost } from '../../../model/Post.model';
 import { useAuth } from '../../../context/authContext';
+import { useRouter } from '../../../hook';
 
 const createNewPost = async (newPost: IPostRequest): Promise<IPostItem | null> => {
    try {
@@ -34,7 +35,7 @@ const createNewPost = async (newPost: IPostRequest): Promise<IPostItem | null> =
 };
 function CreatePost() {
    const pathname = useLocation();
-   const history = useNavigate();
+   const router = useRouter();
    const [thumbnail, setThumbnail] = useState<string>('');
    const [title, setTitle] = useState<string>('');
    const [description, setDescription] = useState<string>('');
@@ -62,7 +63,7 @@ function CreatePost() {
          const post: IPostItem | null = await createNewPost(newPostRequest);
          setIsLoading(false);
          if (post) {
-            history(path.POST.CREATE);
+            router.push(path.POST.MANAGER_POST_USER);
          }
       }
    };
@@ -79,7 +80,7 @@ function CreatePost() {
                         title,
                         description,
                         items,
-                        status: IStatusPost.Pending,
+                        status: IStatusPost.WAIT_APPROVE,
                      }}
                   />
                </div>
@@ -95,9 +96,9 @@ function CreatePost() {
             <BreadcrumbItem
                onClick={() => {
                   if (pathname.pathname.includes(path.ADMIN.POST)) {
-                     history(path.ADMIN.POST);
+                     router.push(path.ADMIN.POST);
                   } else {
-                     history(path.HOME);
+                     router.push(path.HOME);
                   }
                }}
             >

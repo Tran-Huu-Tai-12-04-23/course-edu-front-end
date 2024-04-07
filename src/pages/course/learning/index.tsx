@@ -9,6 +9,8 @@ import LearningLayout from './layout';
 import { useAuth } from '../../../context/authContext';
 import VideoLearning from '../../../components/learning/VideoLearning';
 import PostLearning from '../../../components/learning/PostLearning';
+import { Progress } from '@nextui-org/react';
+import LearningGuide from './learning-guide';
 
 function Learning() {
    const { courseId } = useParams();
@@ -51,25 +53,32 @@ function Learning() {
       courseId && user?.id && initUserCourseData();
    }, [user, course, courseId]);
 
-   console.log(course);
-   console.log(userCourse);
-
    return (
       <>
-         {!course && <div>Loading....</div>}
-         {course && (
-            <LearningLayout data={course}>
+         {!course && (
+            <div className="h-screen w-screen flex justify-center items-center">
+               <div>
+                  Loading....{' '}
+                  <Progress size="sm" isIndeterminate aria-label="Loading..." className="max-w-md" color="primary" />
+               </div>
+            </div>
+         )}
+
+         {course && userCourse && (
+            <LearningLayout course={course} userCourse={userCourse}>
                <div className="pt-header w-full pb-footer flex justify-between overflow-hidden">
-                  <div className="flex overflow-hidden w-full justify-between">
-                     {userCourse?.currentLesson && userCourse?.currentLesson.type === ITypeLesson.Quiz && (
-                        <QuizLearning data={userCourse?.currentLesson} />
-                     )}
-                     {userCourse?.currentLesson && userCourse?.currentLesson.type === ITypeLesson.Video && (
-                        <VideoLearning data={userCourse?.currentLesson} />
-                     )}
-                     {userCourse?.currentLesson && userCourse?.currentLesson.type === ITypeLesson.Post && (
-                        <PostLearning data={userCourse?.currentLesson} />
-                     )}
+                  <div className="flex overflow-hidden w-full justify-between ">
+                     <div className="w-full " id="step-one">
+                        {userCourse?.currentLesson && userCourse?.currentLesson.type === ITypeLesson.Quiz && (
+                           <QuizLearning data={userCourse?.currentLesson} />
+                        )}
+                        {userCourse?.currentLesson && userCourse?.currentLesson.type === ITypeLesson.Video && (
+                           <VideoLearning data={userCourse?.currentLesson} />
+                        )}
+                        {userCourse?.currentLesson && userCourse?.currentLesson.type === ITypeLesson.Post && (
+                           <PostLearning data={userCourse?.currentLesson} />
+                        )}
+                     </div>
                      {/* <VideoLearning /> */}
                      <OutlineLearning
                         currentLesson={userCourse?.currentLesson}

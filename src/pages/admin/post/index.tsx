@@ -10,52 +10,8 @@ import { Constant } from '../../../constant';
 import { IPaginationClientData, IPaginationResponseDto } from '../../../assets/data/PaginatedResponse.dto';
 import { IPostQueryDto } from '../../../assets/data/PostQuery.Dto';
 import { IPaginationRequestDto } from '../../../assets/data/PaginationRequest.Dto';
+import { getPaginationPost, countTotalPost } from './service';
 
-const getPaginationPost = async (
-   queryData: IPaginationRequestDto<IPostQueryDto>,
-): Promise<IPaginationResponseDto<IPostItem> | null> => {
-   try {
-      const response = await fetch(Constant.BASE_URL_API + 'post/pagination', {
-         method: 'POST',
-         headers: {
-            'Content-Type': 'application/json',
-         },
-         body: JSON.stringify(queryData),
-      });
-
-      if (!response.ok) {
-         throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const responseData: IPaginationResponseDto<IPostItem> = await response.json();
-      return responseData;
-   } catch (error) {
-      console.error('Error during registration:', error);
-      return null;
-   }
-};
-
-const countTotalPost = async (queryData: IPostQueryDto): Promise<number> => {
-   try {
-      const response = await fetch(Constant.BASE_URL_API + 'post/count', {
-         method: 'GET',
-         headers: {
-            'Content-Type': 'application/json',
-         },
-         body: JSON.stringify(queryData),
-      });
-
-      if (!response.ok) {
-         throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const responseData: number = await response.json();
-      return responseData;
-   } catch (error) {
-      console.error('Error during registration:', error);
-      return 0;
-   }
-};
 function Post() {
    const history = useNavigate();
    const [data, setData] = useState<IPostItem[]>([]);
@@ -73,8 +29,11 @@ function Post() {
    });
 
    const handleChangePage = async (page: number) => {
+      const filteredData = Object.fromEntries(
+         Object.entries(data).filter(([_, value]) => value !== undefined && value !== null),
+      );
       const queryData: IPaginationRequestDto<IPostQueryDto> = {
-         where: filterData,
+         where: filteredData,
          pageNumber: page,
          pageSize: paginationData.size,
       };
@@ -91,8 +50,11 @@ function Post() {
    };
 
    const getTotalCourse = async () => {
+      const filteredData = Object.fromEntries(
+         Object.entries(data).filter(([_, value]) => value !== undefined && value !== null),
+      );
       const queryData: IPostQueryDto = {
-         ...filterData,
+         ...filteredData,
       };
       const totalCourse = await countTotalPost(queryData);
       setPaginationData((prev) => {
@@ -123,8 +85,7 @@ function Post() {
 
    useEffect(() => {
       const filterData = async () => {
-         await getTotalCourse();
-         await handleChangePage(paginationData.currentPage);
+         await Promise.all([getTotalCourse(), handleChangePage(paginationData.currentPage)]);
       };
       setIsLoading(true);
       const queryTimeout = setTimeout(() => {
@@ -148,7 +109,14 @@ function Post() {
             <FilterBarPost onChange={(res: IPostQueryDto) => setFilterData(res)} />
 
             <div className="pt-5">
-               <Table data={data} isLoading={isLoading} />
+               <Table
+                  onRemove={(id) => setData((prev) => prev.filter((item) => item.id !== id))}
+                  data={data}
+                  isLoading={isLoading}
+                  onChangePost={function (post: IPostItem): void {
+                     setData((prev) => prev.map((p) => (p.id === post.id ? post : p)));
+                  }}
+               />
             </div>
             <div className="p-4 mt-5 rounded-xl  flex justify-end items-center ">
                <Pagination total={paginationData.totalPages} initialPage={1} className="" />

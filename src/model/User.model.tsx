@@ -1,5 +1,3 @@
-import { Roles } from '../App';
-
 export type IUser = {
    id?: number;
    email: string;
@@ -10,7 +8,7 @@ export type IUser = {
    role?: string | number;
    fullName?: string;
    bio?: string;
-
+   verifyAt?: Date;
    userSetting?: IUserSetting;
 };
 

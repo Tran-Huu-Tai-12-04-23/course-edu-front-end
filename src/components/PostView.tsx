@@ -45,9 +45,8 @@ export const getContentBlog = (data: TypeItemPost) => {
 function BlogView(props: PostViewProps) {
    const { data } = props;
 
-   console.log(data);
    return (
-      <Card className=" max-w-4xl m-auto mt-5 select-none over mb-10">
+      <Card className=" max-w-[70rem] m-auto mt-5 select-none over mb-10">
          <Image
             width={'100%'}
             alt={data.title}
@@ -62,10 +61,10 @@ function BlogView(props: PostViewProps) {
          <div className="w-full p-4 flex flex-col gap-4 ">
             <div className="w-full flex justify-between items-center">
                <User
-                  name="Jane Doe"
-                  description="Product Designer"
+                  name={props.data.user?.email}
+                  description={props.data.user?.fullName}
                   avatarProps={{
-                     src: 'https://i.pravatar.cc/150?u=a04258114e29026702d',
+                     src: props.data.user?.avatar,
                   }}
                />
 

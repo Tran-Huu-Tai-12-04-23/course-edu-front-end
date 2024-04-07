@@ -1,16 +1,17 @@
 import Header from './Header';
 import Footer from './Footer';
 import UtilsButton from './UtilsButton';
-import { ICourse } from '../../../../model/Course.model';
+import { ICourse, IUserCourse } from '../../../../model/Course.model';
 
 type LearningLayoutProps = {
    children: React.ReactNode;
-   data: ICourse;
+   course: ICourse;
+   userCourse: IUserCourse;
 };
 function LearningLayout(props: LearningLayoutProps) {
    return (
       <div className="w-screen min-h-screen overflow-hidden ">
-         <Header data={props.data} />
+         <Header course={props.course} userCourse={props.userCourse} />
          {props.children}
          <Footer />
          <UtilsButton />

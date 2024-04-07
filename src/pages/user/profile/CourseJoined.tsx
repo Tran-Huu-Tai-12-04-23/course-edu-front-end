@@ -1,18 +1,49 @@
-import { Card, Image } from '@nextui-org/react';
+import { Card, Image, Progress } from '@nextui-org/react';
+import { IUserCourse } from '../../../model/Course.model';
+import { useCallback } from 'react';
+import { useRouter } from '../../../hook';
+import { path } from '../../../enum/path';
 
-function CourseJoined() {
-    return (
-        <Card className="p-4 rounded-lg  gap-4 flex justify-start items-start cursor-pointer" isHoverable>
-            <Image src="https://files.fullstack.edu.vn/f8-prod/courses/21/63e1bcbaed1dd.png" className="w-1/2" />
-
-            <h5 className="font-extrabold text-xl">Lập trình C++ cơ bản, nâng cao</h5>
-            <h5>
-                Khóa học lập trình C++ từ cơ bản tới nâng cao dành cho người mới bắt đầu. Mục tiêu của khóa học này nhằm
-                giúp các bạn nắm được các khái niệm căn cơ của lập trình, giúp các bạn có nền tảng vững chắc để chinh
-                phục con đường trở thành một lập trình
-            </h5>
-        </Card>
-    );
+type CourseJoinedProps = {
+   data: IUserCourse;
+};
+function CourseJoined(props: CourseJoinedProps) {
+   const { data } = props;
+   const router = useRouter();
+   const totalLesson = useCallback(() => {
+      const totalLess = data.course.groupLessons?.reduce((acc, item) => acc + item.lessons.length, 0);
+      return totalLess;
+   }, [props.data]);
+   return (
+      <Card className="p-4 rounded-lg flex justify-start items-start cursor-pointer" isHoverable>
+         <div
+            onClick={() => {
+               router.push(path.COURSE.LEARNING + data.course.id);
+            }}
+            className="flex justify-start items-center gap-4 mb-2"
+         >
+            <Image src={data.course?.thumbnail} className="w-[20rem]" />
+            <div>
+               <h5 className="font-extrabold text-xl">{data.course?.title}</h5>
+               <h5>{data.course?.description}</h5>
+            </div>
+         </div>
+         <Progress
+            size="sm"
+            radius="sm"
+            classNames={{
+               track: 'drop-shadow-md border border-default',
+               indicator: 'bg-gradient-to-r from-pink-500 to-yellow-500',
+               label: 'tracking-wider font-medium text-default-600',
+               value: 'text-foreground/60',
+            }}
+            label={`${data.lessonPassed.length}/${totalLesson()} Bài học`}
+            value={data.lessonPassed.length}
+            maxValue={totalLesson()}
+            showValueLabel={true}
+         />
+      </Card>
+   );
 }
 
 export default CourseJoined;
