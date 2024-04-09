@@ -25,7 +25,7 @@ function CourseItem(props: CourseItemProps) {
          if (res) {
             router.push(path.COURSE.LEARNING + props.data.id);
          } else {
-            router.push(path.COURSE.SUMMARY + props.data.id);
+            router.push(path.COURSE.SUMMARY + '/' + props.data.id);
          }
       }
    };
@@ -56,7 +56,7 @@ function CourseItem(props: CourseItemProps) {
             <p className="font-semibold flex-shrink-0 mr-4 ml-4 text-white">
                {props.data.price !== 0 && <CurrencyFormatter amount={props.data.price} />}
                {props.data.price === 0 && (
-                  <Chip className="bg-orange-800/80 text-orange-500" variant="flat">
+                  <Chip className="bg-orange-600/80 text-white" variant="flat">
                      Miến phí
                   </Chip>
                )}

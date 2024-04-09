@@ -3,7 +3,6 @@ export const path = {
    HOME: '',
    POST: {
       INDEX: 'post',
-      MANAGER_POST_USER: 'post/user/manager',
       CREATE: 'post/create',
       MANAGER: 'post/manager',
       VIEW: 'post/view',
@@ -13,7 +12,7 @@ export const path = {
       DEFAULT: 'course',
       MY_COURSE: 'course/my-register',
       PAYMENT_NOTIFICATION: 'course/register/payment-notification',
-      SUMMARY: 'course/summary/',
+      SUMMARY: 'course/summary',
       LEARNING: 'course/learning/',
    },
    ROAD_MAP: {

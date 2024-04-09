@@ -4,11 +4,13 @@ import { changeCurrentProcessLearning } from '../../pages/course/service';
 import { IoMdPlayCircle } from 'react-icons/io';
 import { TfiLayoutListPost } from 'react-icons/tfi';
 import { MdQuiz } from 'react-icons/md';
+import { useCallback } from 'react';
 
 type OutlineLearningProps = {
    data: ICourse;
    currentLesson: ILesson | null | undefined;
    onChangeLesson: (res: IUserCourse) => void;
+   lessonPassedList: ILesson[];
 };
 function OutlineLearning(props: OutlineLearningProps) {
    const groupLessons: IGroupLesson[] = props.data.groupLessons ?? [];
@@ -21,6 +23,14 @@ function OutlineLearning(props: OutlineLearningProps) {
       });
       resUpdate && props.onChangeLesson(resUpdate);
    };
+
+   const checkPassedLesson = useCallback(
+      (lessonId: string | number) => {
+         const less = props.lessonPassedList.find((item) => item.id === lessonId);
+         return !!less;
+      },
+      [props.lessonPassedList],
+   );
    return (
       <div
          style={{
@@ -54,7 +64,10 @@ function OutlineLearning(props: OutlineLearningProps) {
                               props.currentLesson && props.currentLesson.id === les.id && ' bg-primary/70'
                            } p-4 text-sm border-t-1  border-gray-700/50 border-dashed flex justify-between items-center  hover:bg-gray-600/30 cursor-pointer`}
                         >
-                           {index + 1} .{indexChild + 1}. {les.title}
+                           <div>
+                              {index + 1} .{indexChild + 1}. {les.title}
+                              {les.id && checkPassedLesson(les.id) && <div className="mt-4 text-primary">Đã học</div>}
+                           </div>
                            {les.type === ITypeLesson.Quiz && (
                               <Button variant="light" isIconOnly startContent={<MdQuiz />} />
                            )}

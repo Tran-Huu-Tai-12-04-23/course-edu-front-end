@@ -61,7 +61,7 @@ function Login() {
          key: keyOptionLogin.EMAIL,
       },
       {
-         name: 'Sử dụng facbooke',
+         name: 'Sử dụng facebook',
          icon: <TiSocialFacebook className="text-xl text-blue-700" />,
          key: keyOptionLogin.FACEBOOK,
       },

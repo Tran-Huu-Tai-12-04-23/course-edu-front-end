@@ -63,7 +63,7 @@ function CreatePost() {
          const post: IPostItem | null = await createNewPost(newPostRequest);
          setIsLoading(false);
          if (post) {
-            router.push(path.POST.MANAGER_POST_USER);
+            router.push(path.USER.MANAGER_POST);
          }
       }
    };

@@ -40,7 +40,6 @@ function SummaryCourse() {
             }
          }
       };
-
       courseId && intiCourseData();
    }, [courseId]);
 
@@ -68,11 +67,11 @@ function SummaryCourse() {
             ...registerCourseRequestDto,
             isPayment: true,
          });
-
          console.log('Register Course Result:', registerCourseResult);
 
          if (registerCourseResult) {
             toast.success('Đăng ký khóa học thành công!');
+            router.replace('/' + path.COURSE.LEARNING + registerCourseRequestDto.courseId);
          }
       } catch (error) {
          // Handle errors here

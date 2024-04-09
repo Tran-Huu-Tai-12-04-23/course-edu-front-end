@@ -22,6 +22,7 @@ function DetailPost() {
 
       initData();
    }, []);
+
    return (
       <>
          {!post && (
@@ -47,9 +48,11 @@ function DetailPost() {
                <BlogView data={post}></BlogView>
                {isCommentBox && (
                   <CommentBox
+                     post={post}
                      onCLose={function (): void {
                         setIsCommentBox(false);
                      }}
+                     initComment={post.comments ?? []}
                   />
                )}
             </>

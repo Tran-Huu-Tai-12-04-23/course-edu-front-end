@@ -2,11 +2,42 @@ import { Button } from '@nextui-org/react';
 import { motion } from 'framer-motion';
 import ReactQuill from 'react-quill';
 import { FaLongArrowAltLeft } from 'react-icons/fa';
+import { IPostItem } from '../model/Post.model';
+import { useEffect, useState } from 'react';
+import { IComment } from '../model/Comment.model';
+import { createComment, getAllCommentPost } from '../pages/post/service';
+import RenderHTMLContent from './RenderHtmlContent';
+import { useAuth } from '../context/authContext';
 
 type DrawerBoxEditProps = {
    onCLose: () => void;
+   post: IPostItem;
+   initComment: IComment[];
 };
 export default function DrawerBoxEdit(props: DrawerBoxEditProps) {
+   const [comments, setComments] = useState<IComment[]>(props.initComment);
+   const [content, setContent] = useState('');
+   const [isLoading, setIsLoading] = useState(false);
+   const { user } = useAuth();
+
+   const handleAddComment = async () => {
+      const newComment = {
+         content,
+         user: user,
+      };
+
+      setIsLoading(true);
+      if (!props.post.id) return;
+      const res = await createComment(props.post.id, newComment);
+      console.log(res);
+
+      setIsLoading(false);
+      if (res) {
+         setComments((prev) => [...prev, { ...res }]);
+         setContent('');
+      }
+   };
+
    return (
       <motion.div
          initial={{
@@ -31,27 +62,27 @@ export default function DrawerBoxEdit(props: DrawerBoxEditProps) {
             onClick={props.onCLose}
          />
          <h5 className="text-xl mt-10 font-extrabold mb-4">Nhập nội dung bình luận tại đây</h5>
-         <ReactQuill className="border-solid rounded-lg border-[1px] dark:bg-black bg-white" />
+         <ReactQuill
+            onChange={(text) => setContent(text)}
+            value={content}
+            className="border-solid rounded-lg border-[1px] dark:bg-black bg-white"
+         />
 
          <div className="flex mt-5 justify-end items-center gap-4">
             <Button color="danger" onClick={props.onCLose}>
                Hủy
             </Button>
-            <Button color="success" className="text-white">
+            <Button isLoading={isLoading} onClick={handleAddComment} color="success" className="text-white">
                Bình luận
             </Button>
          </div>
 
          <div className="flex flex-col gap-4">
-            <div>Comment 1</div>
-            <div>Comment 1</div>
-            <div>Comment 1</div>
-            <div>Comment 1</div>
-            <div>Comment 1</div>
-
-            <Button variant="light" color="primary">
-               Xem thêm
-            </Button>
+            {comments.map((comment, index) => (
+               <div key={index} className="p-2 rounded-lg">
+                  <RenderHTMLContent htmlContent={comment.content} />
+               </div>
+            ))}
          </div>
       </motion.div>
    );

@@ -1,4 +1,3 @@
-// import VideoLearning from '../../../components/learning/VideoLearning';
 import { useState, useEffect, useCallback } from 'react';
 import OutlineLearning from '../../../components/learning/OutlineLearning';
 import QuizLearning from '../../../components/learning/QuizLearning';
@@ -11,7 +10,7 @@ import VideoLearning from '../../../components/learning/VideoLearning';
 import PostLearning from '../../../components/learning/PostLearning';
 import { Progress } from '@nextui-org/react';
 
-function Learning() {
+export function Learning() {
    const { courseId } = useParams();
    const { user } = useAuth();
    const [course, setCourse] = useState<ICourse | null>(null);
@@ -51,6 +50,11 @@ function Learning() {
       };
       courseId && user?.id && initUserCourseData();
    }, [user, course, courseId]);
+
+   const getNextLesson = useCallback(() => {
+      if (!userCourse?.course) return;
+      const nextLesson = userCourse?.course?.groupLessons.map((group) => {});
+   }, [userCourse]);
 
    return (
       <>
@@ -92,5 +96,3 @@ function Learning() {
       </>
    );
 }
-
-export default Learning;

@@ -1,4 +1,5 @@
 import { TypeItemPost } from '../components/FragmentBlogItem/FragmentBlogItem.type';
+import { IComment } from './Comment.model';
 import { IUser } from './User.model';
 
 export type IPostItem = {
@@ -14,6 +15,7 @@ export type IPostItem = {
    isApproved?: boolean;
    createAt?: Date;
    approveAt?: Date;
+   comments?: IComment[];
 };
 export type IPostRequest = {
    id?: number;
