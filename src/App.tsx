@@ -10,6 +10,7 @@ export enum Roles {
    ADMIN,
    STUDENT,
 }
+
 export default function App() {
    const { isAuthenticated, role } = useAuth();
 

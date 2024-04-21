@@ -15,6 +15,7 @@ import { fetchLoginWithGoogle, fetchUserInfoGoogle } from '../../services/auth.s
 import { useAuth } from '../../context/authContext';
 import ModalEnterEmail from './modal-enter-email';
 import { useRouter } from '../../hook';
+import { Helmet } from 'react-helmet-async';
 
 enum keyOptionLogin {
    EMAIL = 'email',
@@ -86,6 +87,10 @@ function Login() {
 
    return (
       <div className="max-w-2xl m-auto mt-5 select-none">
+         <Helmet>
+            {/* Standard metadata tags */}
+            <title>{typeLogin === keyOptionLogin.EMAIL ? 'Đăng nhập với gmail ' : 'Đăng nhập'}</title>
+         </Helmet>
          <Breadcrumbs isDisabled>
             <BreadcrumbItem>Trang chủ</BreadcrumbItem>
             <BreadcrumbItem>Đăng nhập</BreadcrumbItem>

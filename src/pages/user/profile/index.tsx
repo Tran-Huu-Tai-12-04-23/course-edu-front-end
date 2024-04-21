@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { IUserCourse } from '../../../model/Course.model';
 import { getUserCourseByUser } from '../service';
+import { Helmet } from 'react-helmet-async';
 
 function Profile() {
    const [userCourses, setUserCourses] = useState<IUserCourse[]>([]);
@@ -24,6 +25,9 @@ function Profile() {
 
    return (
       <div className="w-full">
+         <Helmet>
+            <title>Trang cá nhân của bạn</title>
+         </Helmet>
          <div className="w-full bg-[#15616d] relative flex rounded-b-xl justify-center items-center">
             <Image
                className="m-auto bg-contain h-[20rem]"

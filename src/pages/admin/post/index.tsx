@@ -6,11 +6,11 @@ import FilterBarPost from './FilterBarPost';
 import Table from './Table';
 import { useEffect, useState } from 'react';
 import { IPostItem } from '../../../model/Post.model';
-import { Constant } from '../../../constant';
-import { IPaginationClientData, IPaginationResponseDto } from '../../../assets/data/PaginatedResponse.dto';
+import { IPaginationClientData } from '../../../assets/data/PaginatedResponse.dto';
 import { IPostQueryDto } from '../../../assets/data/PostQuery.Dto';
 import { IPaginationRequestDto } from '../../../assets/data/PaginationRequest.Dto';
 import { getPaginationPost, countTotalPost } from './service';
+import { Helmet } from 'react-helmet-async';
 
 function Post() {
    const history = useNavigate();
@@ -29,14 +29,12 @@ function Post() {
    });
 
    const handleChangePage = async (page: number) => {
-      const filteredData = Object.fromEntries(
-         Object.entries(data).filter(([_, value]) => value !== undefined && value !== null),
-      );
       const queryData: IPaginationRequestDto<IPostQueryDto> = {
-         where: filteredData,
+         where: filterData,
          pageNumber: page,
          pageSize: paginationData.size,
       };
+
       setPaginationData((prev) => {
          return {
             ...prev,
@@ -50,11 +48,11 @@ function Post() {
    };
 
    const getTotalCourse = async () => {
-      const filteredData = Object.fromEntries(
-         Object.entries(data).filter(([_, value]) => value !== undefined && value !== null),
-      );
+      // const filteredData = Object.fromEntries(
+      //    Object.entries(data).filter(([_, value]) => value !== undefined && value !== null),
+      // );
       const queryData: IPostQueryDto = {
-         ...filteredData,
+         ...filterData,
       };
       const totalCourse = await countTotalPost(queryData);
       setPaginationData((prev) => {
@@ -99,6 +97,9 @@ function Post() {
 
    return (
       <AdminLayout>
+         <Helmet>
+            <title>Quản lý bài viết trong hệ thống</title>
+         </Helmet>
          <div className="w-full  p-4">
             <Breadcrumbs>
                <BreadcrumbItem onClick={() => history(path.ADMIN.DASHBOARD)}>Quản trị</BreadcrumbItem>

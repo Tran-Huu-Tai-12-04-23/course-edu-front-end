@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { verifyAccount } from './service';
 import { useRouter } from '../../hook';
 import { path } from '../../enum/path';
+import { Helmet } from 'react-helmet-async';
 
 function VerifyAccount() {
    const router = useRouter();
@@ -24,7 +25,13 @@ function VerifyAccount() {
       verify();
    }, []);
 
-   return <div></div>;
+   return (
+      <div>
+         <Helmet>
+            <title>Kích hoạt tài khoản</title>
+         </Helmet>
+      </div>
+   );
 }
 
 export default VerifyAccount;

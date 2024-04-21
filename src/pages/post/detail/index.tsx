@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom';
 import { Button, Progress } from '@nextui-org/react';
 import CommentBox from '../../../components/CommentBox';
 import { FaCommentAlt } from 'react-icons/fa';
+import { Helmet } from 'react-helmet-async';
 
 function DetailPost() {
    const { postId } = useParams();
@@ -25,6 +26,23 @@ function DetailPost() {
 
    return (
       <>
+         {post && (
+            <Helmet>
+               <title>{post?.title}</title>
+               <meta name="description" content={post.description} />
+               <meta name="keywords" content={post.title + post.description} />
+               <meta name="robots" content="index, follow" />
+               <link rel="canonical" href="https://www.example.com/" />
+               <meta property="og:title" content={post.description} />
+               <meta property="og:description" content={post.description} />
+               <meta property="og:image" content={post.thumbnail} />
+               <meta property="og:url" content={post.thumbnail} />
+               <meta name="twitter:card" content={post.thumbnail} />
+               <meta name="twitter:title" content={post?.title} />
+               <meta name="twitter:description" content={post.description} />
+               <meta name="twitter:image" content={post.thumbnail} />
+            </Helmet>
+         )}
          {!post && (
             <div className="h-screen w-screen flex justify-center items-center">
                <div>

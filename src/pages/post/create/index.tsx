@@ -13,6 +13,7 @@ import { TypeItemPost } from '../../../components/FragmentBlogItem/FragmentBlogI
 import { IPostItem, IPostRequest, IStatusPost } from '../../../model/Post.model';
 import { useAuth } from '../../../context/authContext';
 import { useRouter } from '../../../hook';
+import { Helmet } from 'react-helmet-async';
 
 const createNewPost = async (newPost: IPostRequest): Promise<IPostItem | null> => {
    try {
@@ -70,6 +71,9 @@ function CreatePost() {
 
    return (
       <div className="w-full h-full overflow-auto  pb-20 top-0 bottom-0 right-0 left-0  z-[100000000]">
+         <Helmet>
+            <title>Thêm bài viết - {title}</title>
+         </Helmet>
          {isPreview && (
             <>
                <div className="overflow-auto bg-[rgba(255,255,255,0.1)] dark:bg-[rgba(0,0,0,0.1)] backdrop-blur-3xl z-[10000000] fixed top-0 left-0 right-0 bottom-0">

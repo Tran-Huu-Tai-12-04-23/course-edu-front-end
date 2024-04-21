@@ -3,6 +3,7 @@ import BlogItem from '../../components/PostItem';
 import { useEffect, useState } from 'react';
 import { IPostItem } from '../../model/Post.model';
 import { getAllPostApprove } from './service';
+import { Helmet } from 'react-helmet-async';
 
 function ViewPost() {
    const [posts, setPosts] = useState<IPostItem[]>([]);
@@ -18,6 +19,11 @@ function ViewPost() {
    const topics = ['UX/UI design', 'Study English', 'SEO website', 'Other...'];
    return (
       <div className="pl-32 pr-32 mt-5 w-full">
+         <Helmet>
+            <title>Bài viết hay tổng hợp</title>
+            <meta name="description" content={'Bài viết hay tổng hợp'} />
+            <meta name="keywords" content={'Bài viết hay tổng hợp'} />
+         </Helmet>
          <h5 className="text-3xl font-extrabold">Bài viết mới nhất</h5>
          <h5 className="">
             Tổng hợp các bài viết chia sẻ về kinh nghiệm tự học lập trình online và các kỹ thuật lập trình web.

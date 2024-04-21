@@ -12,6 +12,7 @@ import { useLoading } from '../../context/loadingContext';
 import { useAuth } from '../../context/authContext';
 import { useEffect } from 'react';
 import { useRouter } from '../../hook';
+import { Helmet } from 'react-helmet-async';
 
 const registerFetch = async (userData: { email: string; password: string }): Promise<IResponse<IUser, IUser>> => {
    try {
@@ -68,6 +69,9 @@ function Register() {
 
       if (response.status === 200) {
          toast.success(response.message);
+         data.email = '';
+         data.password = '';
+         data.confirmPassword = '';
          path.AUTH.LOGIN;
       } else {
          toast.error(response.message);
@@ -95,6 +99,10 @@ function Register() {
 
    return (
       <div className="max-w-2xl m-auto mt-5 select-none">
+         <Helmet>
+            <title>Đăng ký tài khoản mới</title>
+         </Helmet>
+
          <Breadcrumbs isDisabled>
             <BreadcrumbItem>Trang chủ</BreadcrumbItem>
             <BreadcrumbItem>Đăng ký</BreadcrumbItem>

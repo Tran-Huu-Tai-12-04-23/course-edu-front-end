@@ -12,129 +12,129 @@ import { removeGroupLessonById, updateGroupLessonById } from './service';
 import toast from 'react-hot-toast';
 
 type GroupProps = {
-    data: IGroupLesson;
-    onSelect: (res: IGroupLesson) => void;
-    onRemove: (id: string | number) => void;
-    onUpdate: (id: string | number, res: IGroupLesson) => void;
+   data: IGroupLesson;
+   onSelect: (res: IGroupLesson) => void;
+   onRemove: (id: string | number) => void;
+   onUpdate: (id: string | number, res: IGroupLesson) => void;
 };
 function Group(props: GroupProps) {
-    const [isEdit, setIsEdit] = useState(false);
-    const [title, setTitle] = useState(props.data.title);
-    const [isLoading, setIsLoading] = useState(false);
+   const [isEdit, setIsEdit] = useState(false);
+   const [title, setTitle] = useState(props.data.title);
+   const [isLoading, setIsLoading] = useState(false);
 
-    const handleUpdateGroupLesson = async () => {
-        const newGroupLesson = {
-            ...props.data,
-            title: title,
-        };
+   const handleUpdateGroupLesson = async () => {
+      const newGroupLesson = {
+         ...props.data,
+         title: title,
+      };
 
-        if (!props.data.id) return;
+      if (!props.data.id) return;
 
-        if (!title) {
-            toast.error('Tên nhóm khóa học không được trống !');
-            return;
-        }
-        setIsLoading(true);
-        const res = await updateGroupLessonById(props.data.id, newGroupLesson);
-        setIsLoading(false);
+      if (!title) {
+         toast.error('Tên nhóm khóa học không được trống !');
+         return;
+      }
+      setIsLoading(true);
+      const res = await updateGroupLessonById(props.data.id, newGroupLesson);
+      setIsLoading(false);
 
-        if (res) {
-            props.onUpdate(props.data.id, res);
-            setIsEdit(false);
-        } else {
-            toast.error('Đã xảy ra lỗi, không thể chỉnh sửa tên');
-        }
-    };
+      if (res) {
+         props.onUpdate(props.data.id, res);
+         setIsEdit(false);
+      } else {
+         toast.error('Đã xảy ra lỗi, không thể chỉnh sửa tên');
+      }
+   };
 
-    const handleRemoveGroupLesson = async (id: string | number) => {
-        const res = await removeGroupLessonById(id);
-        if (res) {
-            props.onRemove(id);
-        } else {
-            toast.error('Không thể xóa nhóm bài học! đã xảy ra lỗi gì đó!');
-        }
-    };
-    return (
-        <Draggable
-            key={props.data.id}
-            draggableId={props.data.id ? props.data.id?.toString() : uuid()}
-            index={props.data.index}
-        >
-            {(provided) => (
-                <div
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    onClick={() => props.onSelect(props.data)}
-                    className="p-4 group w-full flex justify-between items-center gap-4 hover:bg-primary/10 cursor-pointer group"
-                >
-                    {/* {item.index + 1}. {item.title} */}
-                    <div className="flex justify-start items-center w-[70%]">
-                        <MdDragIndicator className="text-xl hover:cursor-move" />
-                        {isEdit && (
-                            <Input
-                                size="md"
-                                onKeyPress={(e) => {
-                                    if (e.key === 'Enter') {
-                                        e.preventDefault();
-                                        handleUpdateGroupLesson();
-                                    }
-                                }}
-                                onFocus={(e) => e.stopPropagation()}
-                                startContent={<h5>{props.data.index + 1}.</h5>}
-                                type="email"
-                                variant="underlined"
-                                disabled={!isEdit}
-                                value={title}
-                                className={`bg-transparent `}
-                                label=""
-                                onChange={(e) => {
-                                    setTitle(e.target.value);
-                                }}
-                                defaultValue={props.data.title}
-                                labelPlacement="outside"
-                            />
-                        )}
+   const handleRemoveGroupLesson = async (id: string | number) => {
+      const res = await removeGroupLessonById(id);
+      if (res) {
+         props.onRemove(id);
+      } else {
+         toast.error('Không thể xóa nhóm bài học! đã xảy ra lỗi gì đó!');
+      }
+   };
+   return (
+      <Draggable
+         key={props.data.id}
+         draggableId={props.data.id ? props.data.id?.toString() : uuid()}
+         index={props.data.index}
+      >
+         {(provided) => (
+            <div
+               ref={provided.innerRef}
+               {...provided.draggableProps}
+               {...provided.dragHandleProps}
+               onClick={() => props.onSelect(props.data)}
+               className="p-4 group w-full flex justify-between items-center gap-4 hover:bg-primary/10 cursor-pointer group"
+            >
+               {/* {item.index + 1}. {item.title} */}
+               <div className="flex justify-start items-center w-[70%]">
+                  <MdDragIndicator className="text-xl hover:cursor-move" />
+                  {isEdit && (
+                     <Input
+                        size="md"
+                        onKeyPress={(e) => {
+                           if (e.key === 'Enter') {
+                              e.preventDefault();
+                              handleUpdateGroupLesson();
+                           }
+                        }}
+                        onFocus={(e) => e.stopPropagation()}
+                        startContent={<h5>{props.data.index + 1}.</h5>}
+                        type="email"
+                        variant="underlined"
+                        disabled={!isEdit}
+                        value={title}
+                        className={`bg-transparent `}
+                        label=""
+                        onChange={(e) => {
+                           setTitle(e.target.value);
+                        }}
+                        defaultValue={props.data.title}
+                        labelPlacement="outside"
+                     />
+                  )}
 
-                        {!isEdit && (
-                            <h5 className="p-2 w-full truncate">
-                                {props.data.index + 1}.{props.data.title}
-                            </h5>
-                        )}
-                    </div>
-                    <div className={`group-hover:flex hidden justify-end items-center gap-4 `}>
-                        {!isEdit && (
-                            <Button
-                                size="sm"
-                                className="bg-blue-600 "
-                                isIconOnly
-                                onClick={() => setIsEdit(true)}
-                                startContent={<MdModeEditOutline className=" text-white" />}
-                            />
-                        )}
-                        {isEdit && (
-                            <Button
-                                isLoading={isLoading}
-                                size="sm"
-                                className="bg-blue-600"
-                                isIconOnly
-                                onClick={() => {
-                                    handleUpdateGroupLesson();
-                                }}
-                                startContent={<IoIosSave className=" text-white" />}
-                            />
-                        )}
-                        <ModalConfirmRemove
-                            id={props.data.id ?? ''}
-                            onRemove={async function (id: string | number) {
-                                await handleRemoveGroupLesson(id);
-                            }}
-                        >
-                            <div className="p-2 rounded-lg bg-danger-400">
-                                <FaTrash />
-                            </div>
-                        </ModalConfirmRemove>{' '}
-                        {/* <Button
+                  {!isEdit && (
+                     <h5 className="p-2 w-full truncate">
+                        {props.data.index + 1}.{props.data.title}
+                     </h5>
+                  )}
+               </div>
+               <div className={`group-hover:flex hidden justify-end items-center gap-4 `}>
+                  {!isEdit && (
+                     <Button
+                        size="sm"
+                        className="bg-blue-600 "
+                        isIconOnly
+                        onClick={() => setIsEdit(true)}
+                        startContent={<MdModeEditOutline className=" text-white" />}
+                     />
+                  )}
+                  {isEdit && (
+                     <Button
+                        isLoading={isLoading}
+                        size="sm"
+                        className="bg-blue-600"
+                        isIconOnly
+                        onClick={() => {
+                           handleUpdateGroupLesson();
+                        }}
+                        startContent={<IoIosSave className=" text-white" />}
+                     />
+                  )}
+                  <ModalConfirmRemove
+                     id={props.data.id ?? ''}
+                     onRemove={async function (id: string | number) {
+                        await handleRemoveGroupLesson(id);
+                     }}
+                  >
+                     <div className="p-2 rounded-lg bg-danger-400">
+                        <FaTrash />
+                     </div>
+                  </ModalConfirmRemove>
+                  {/* <Button
                                     onClick={onOpen}
                                     size="sm"
                                     color="secondary"
@@ -181,11 +181,11 @@ function Group(props: GroupProps) {
                                         </div>
                                     </PopoverContent>
                                 </Popover> */}
-                    </div>
-                </div>
-            )}
-        </Draggable>
-    );
+               </div>
+            </div>
+         )}
+      </Draggable>
+   );
 }
 
 export default Group;

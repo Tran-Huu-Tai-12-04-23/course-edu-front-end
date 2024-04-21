@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { IPostItem } from '../../../model/Post.model';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../../context/authContext';
+import { Helmet } from 'react-helmet-async';
 
 const getAllPostByUserId = async (userId: number): Promise<IPostItem[] | null> => {
    try {
@@ -50,6 +51,9 @@ function UserManagerPost() {
 
    return (
       <div className="w-full h-full p-10">
+         <Helmet>
+            <title>Quản lý bài viết của bạn</title>
+         </Helmet>
          <Breadcrumbs className="mt-5">
             <BreadcrumbItem
                onClick={() => {

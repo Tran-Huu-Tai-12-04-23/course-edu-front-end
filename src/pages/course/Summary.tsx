@@ -14,6 +14,7 @@ import toast from 'react-hot-toast';
 import { useLoading } from '../../context/loadingContext';
 import { useRouter } from '../../hook';
 import { path } from '../../enum/path';
+import { Helmet } from 'react-helmet-async';
 
 var settings = {
    dots: true,
@@ -106,6 +107,23 @@ function SummaryCourse() {
 
    return (
       <>
+         {course && (
+            <Helmet>
+               <title>{course?.title}</title>
+               <meta name="description" content={course.description} />
+               <meta name="keywords" content={course.title + course.subTitle + course.description} />
+               <meta name="robots" content="index, follow" />
+               <link rel="canonical" href="https://www.example.com/" />
+               <meta property="og:title" content={course.description} />
+               <meta property="og:description" content={course.description} />
+               <meta property="og:image" content={course.thumbnail} />
+               <meta property="og:url" content={course.thumbnail} />
+               <meta name="twitter:card" content={course.thumbnail} />
+               <meta name="twitter:title" content={course?.title} />
+               <meta name="twitter:description" content={course.description} />
+               <meta name="twitter:image" content={course.thumbnail} />
+            </Helmet>
+         )}
          {!course && <h1>Loading ...</h1>}
          {course && (
             <div className="max-w-screen-xl mt-5 m-auto select-none ">

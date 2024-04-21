@@ -10,6 +10,7 @@ import { useAuth } from '../../../context/authContext';
 import VideoLearning from '../../../components/learning/VideoLearning';
 import PostLearning from '../../../components/learning/PostLearning';
 import { Progress } from '@nextui-org/react';
+import { Helmet } from 'react-helmet-async';
 
 function Learning() {
    const { courseId } = useParams();
@@ -54,6 +55,23 @@ function Learning() {
 
    return (
       <>
+         {course && (
+            <Helmet>
+               <title>Học - {course?.title}</title>
+               <meta name="description" content={course.description} />
+               <meta name="keywords" content={course.title + course.subTitle + course.description} />
+               <meta name="robots" content="index, follow" />
+               <link rel="canonical" href="https://www.example.com/" />
+               <meta property="og:title" content={course.description} />
+               <meta property="og:description" content={course.description} />
+               <meta property="og:image" content={course.thumbnail} />
+               <meta property="og:url" content={course.thumbnail} />
+               <meta name="twitter:card" content={course.thumbnail} />
+               <meta name="twitter:title" content={course?.title} />
+               <meta name="twitter:description" content={course.description} />
+               <meta name="twitter:image" content={course.thumbnail} />
+            </Helmet>
+         )}
          {!course && (
             <div className="h-screen w-screen flex justify-center items-center">
                <div>
