@@ -45,7 +45,7 @@ function PaymentNotification() {
                <Image src={PaymentFailed} width={100} height={100} />
                <div className="m-4 flex flex-col gap-4">
                   <h1 className="">Thanh toán không thành công , vui lòng thử lại!</h1>
-                  <Button onClick={() => router.push(path.COURSE.MY_COURSE)} color="primary" variant="flat">
+                  <Button onClick={() => router.push('/' + path.COURSE.MY_COURSE)} color="primary" variant="flat">
                      Quay lại khóa học của tôi
                   </Button>
                </div>

@@ -22,6 +22,7 @@ import TestPage from '../pages/test';
 import VerifyAccount from '../pages/auth/verify-account';
 import RecoveryPassword from '../pages/auth/recovery-password';
 import PaymentNotification from '../pages/course/register/payment-notification';
+import PaymentManager from '../pages/admin/payment';
 
 export type routeProps = {
    path: string;
@@ -110,6 +111,11 @@ export const protectedRoutes: routeProps[] = [
    {
       path: path.ADMIN.USER,
       component: <UserManagement />,
+      type: typeRoute.PROTECTED_ROUTE,
+   },
+   {
+      path: path.ADMIN.PAYMENT,
+      component: <PaymentManager />,
       type: typeRoute.PROTECTED_ROUTE,
    },
 ];

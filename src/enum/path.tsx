@@ -33,6 +33,7 @@ export const path = {
       POST: 'admin/post',
       ADD_POST: 'admin/post/add',
       USER: 'admin/user',
+      PAYMENT: 'admin/payment',
    },
 
    USER_ADMIN_MANAGER: {},
